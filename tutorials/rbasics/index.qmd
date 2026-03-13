@@ -3,6 +3,7 @@ title: "Introduction to R (T3)"
 subtitle: "R basics — syntax, data types, and control structures"
 author: "Thomas Girke"
 date: last-modified
+code-tools: true
 sidebar: tutorials       # activates the Tutorials sidebar defined in _quarto.yml
 ---
 

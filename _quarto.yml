@@ -5,7 +5,7 @@ project:
 website:
   title: "GEN242"
   description: "Data Analysis in Genome Biology — UC Riverside"
-  site-url: "https://tgirke.github.io/GEN242_new"
+  site-url: "https://girke.bioinformatics.ucr.edu/GEN242_new"
   repo-url: "https://github.com/tgirke/GEN242_new"
   repo-actions: [edit, issue]
   favicon: assets/favicon.ico
@@ -225,7 +225,7 @@ format:
     toc-title: "On this page"
     number-sections: false
     code-fold: false
-    code-tools: true
+    code-tools: false
     code-link: true
     highlight-style: github
     df-print: paged
