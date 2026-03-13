@@ -1,0 +1,113 @@
+name: Render and Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:           # allow manual trigger from GitHub UI
+
+# Sets permissions for GitHub Pages deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Checkout ─────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Install R ────────────────────────────────────────────────────────
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.4"
+          use-public-rspm: true   # fast binary packages from Posit Package Manager
+
+      # ── 3. Cache R packages ─────────────────────────────────────────────────
+      - name: Cache R packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-${{ hashFiles('DESCRIPTION', 'renv.lock') }}
+          restore-keys: ${{ runner.os }}-r-
+
+      # ── 4. Install R dependencies ───────────────────────────────────────────
+      #    Option A — renv (recommended for reproducibility):
+      #    - name: Restore renv
+      #      run: Rscript -e 'install.packages("renv"); renv::restore()'
+      #
+      #    Option B — explicit install (shown here for simplicity):
+      - name: Install R packages
+        run: |
+          Rscript -e '
+            pkgs <- c(
+              "BiocManager", "knitr", "rmarkdown", "DT", "dplyr",
+              "ggplot2", "reticulate", "htmlwidgets", "plotly"
+            )
+            install.packages(pkgs, repos = "https://cloud.r-project.org")
+            BiocManager::install(c(
+              "GenomicRanges", "DESeq2", "edgeR", "systemPipeR"
+            ), ask = FALSE, update = FALSE)
+          '
+
+      # ── 5. Set up Python (for reticulate / Python chunks) ───────────────────
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python packages
+        run: pip install numpy pandas matplotlib seaborn
+
+      # ── 6. Install Quarto ───────────────────────────────────────────────────
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: "1.5.56"    # pin to a specific release for reproducibility
+
+      # ── 7. Restore Quarto freeze cache ─────────────────────────────────────
+      #    The _freeze/ directory holds cached chunk outputs.
+      #    Committing it to git (see .gitignore note below) means only
+      #    changed files re-execute — making CI fast even for heavy analyses.
+      - name: Restore Quarto freeze cache
+        uses: actions/cache@v4
+        with:
+          path: _freeze
+          key: quarto-freeze-${{ hashFiles('**/*.qmd', '**/*.Rmd') }}
+          restore-keys: quarto-freeze-
+
+      # ── 8. Render site ──────────────────────────────────────────────────────
+      - name: Render Quarto site
+        run: quarto render
+
+      # ── 9. Upload Pages artifact ────────────────────────────────────────────
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs            # matches output-dir in _quarto.yml
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'   # only deploy from main branch
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

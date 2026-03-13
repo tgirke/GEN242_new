@@ -1,0 +1,29 @@
+/*-- assets/custom.scss -------------------------------------------------------
+   Intentionally minimal. The cosmo theme provides all the quarto.org-style
+   chrome. We only override what's truly necessary.
+-----------------------------------------------------------------------------*/
+
+/*-- Logo area: keep it small and discrete -----------------------------------*/
+.navbar-brand img {
+  height: 28px;          /* controls logo display size */
+  width: auto;
+  opacity: 0.92;
+}
+
+/*-- Sidebar section headers: match quarto.org uppercase label style ---------*/
+.sidebar-section > .sidebar-item > .sidebar-item-text {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #6c757d;        /* muted, not distracting */
+  margin-top: 0.6rem;
+}
+
+/*-- Code blocks: subtle left accent (quarto.org does this too) --------------*/
+pre.sourceCode {
+  border-left: 3px solid #dee2e6;
+  border-radius: 0 4px 4px 0;
+}
+
+/*-- That's it. Everything else is stock cosmo. ------------------------------*/

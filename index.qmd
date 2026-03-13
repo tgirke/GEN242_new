@@ -1,0 +1,35 @@
+---
+title: "GEN242: Data Analysis in Genome Biology"
+subtitle: "Graduate course — University of California, Riverside"
+page-layout: full
+toc: false
+---
+
+This course covers the computational analysis of next-generation sequencing (NGS) data,
+including RNA-Seq, ChIP-Seq, and VAR-Seq experiments, using R/Bioconductor and
+workflow automation tools. Students develop practical skills in reproducible research,
+statistical analysis, and large-scale genomics.
+
+## Course components
+
+::: {.grid}
+
+::: {.g-col-6 .g-col-md-4}
+### [Slides](slides/index.qmd)
+Lecture slide decks organized by topic, from genome fundamentals through
+advanced NGS workflows.
+:::
+
+::: {.g-col-6 .g-col-md-4}
+### [Tutorials](tutorials/index.qmd)
+Step-by-step computational tutorials with executable R and Python code,
+interactive tables, and figures.
+:::
+
+::: {.g-col-6 .g-col-md-4}
+### [Assignments](assignments/index.qmd)
+Eight homework sets and a semester project covering the full bioinformatics
+analysis pipeline.
+:::
+
+:::
