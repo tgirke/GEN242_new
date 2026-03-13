@@ -61,18 +61,6 @@ gene_df |>
 
 ## Python interoperability
 
-```{python}
-#| label: python-example
-import numpy as np
-arr = np.array([1, 4, 9, 16, 25])
-print(f"Square roots: {np.sqrt(arr)}")
-```
-
-```{r}
-#| label: r-reads-python
-cat("Sum computed in R from Python array:", sum(py$arr), "\n")
-```
-
 ::: {.callout-tip}
 ## Freezing expensive computations
 Add `#| cache: true` to chunks that call slow Bioconductor functions.
