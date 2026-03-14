@@ -33,15 +33,20 @@ jobs:
           use-public-rspm: true
 
       # ── 3. Cache R packages ───────────────────────────────────────────────────
+      # id: cache-r lets downstream steps check cache-hit and skip installs
       - name: Cache R packages
+        id: cache-r
         uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-r-4.5-${{ hashFiles('.github/workflows/publish.yml') }}
-          restore-keys: ${{ runner.os }}-r-
+          restore-keys: ${{ runner.os }}-r-4.5-
 
-      # ── 4. Install system libraries needed by some Bioconductor packages ──────
+      # ── 4. Install system libraries ───────────────────────────────────────────
+      # Only runs on a cache miss — system libs are not cached by actions/cache
+      # but apt-get is fast (~30s) so we always run this step
       - name: Install system dependencies
+        if: steps.cache-r.outputs.cache-hit != 'true'
         run: |
           sudo apt-get update -y
           sudo apt-get install -y \
@@ -52,6 +57,7 @@ jobs:
 
       # ── 5. Install CRAN packages ──────────────────────────────────────────────
       - name: Install CRAN packages
+        if: steps.cache-r.outputs.cache-hit != 'true'
         run: |
           Rscript -e '
             cran_pkgs <- c(
@@ -65,6 +71,7 @@ jobs:
 
       # ── 6. Install core Bioconductor packages ─────────────────────────────────
       - name: Install core Bioconductor packages
+        if: steps.cache-r.outputs.cache-hit != 'true'
         run: |
           Rscript -e '
             BiocManager::install(version = "3.22", ask = FALSE)
@@ -79,12 +86,11 @@ jobs:
             ), ask = FALSE, update = FALSE)
           '
 
-      # ── 7. Install clusterProfiler separately ─────────────────────────────────
-      # Split out because it has many dependencies and can timeout in a large batch
+      # ── 7. Install clusterProfiler ────────────────────────────────────────────
       - name: Install clusterProfiler
+        if: steps.cache-r.outputs.cache-hit != 'true'
         run: |
           Rscript -e '
-            # Install dependencies first, then clusterProfiler
             BiocManager::install(c(
               "BiocGenerics", "Biobase", "graphite", "RBGL", "graph",
               "gson", "HDO.db", "DOSE", "fgsea", "enrichplot",
@@ -93,11 +99,11 @@ jobs:
             BiocManager::install("clusterProfiler", ask = FALSE, update = FALSE)
           '
 
-      # ── 8. Install single-cell packages separately ────────────────────────────
+      # ── 8. Install single-cell packages ──────────────────────────────────────
       - name: Install single-cell packages
+        if: steps.cache-r.outputs.cache-hit != 'true'
         run: |
           Rscript -e '
-            # Install dependencies first, then scran/scater
             BiocManager::install(c(
               "SingleCellExperiment", "SummarizedExperiment",
               "DelayedArray", "DelayedMatrixStats",
@@ -109,8 +115,9 @@ jobs:
                                  ask = FALSE, update = FALSE)
           '
 
-      # ── 9. Install systemPipeR separately ─────────────────────────────────────
+      # ── 9. Install systemPipeR ────────────────────────────────────────────────
       - name: Install systemPipeR
+        if: steps.cache-r.outputs.cache-hit != 'true'
         run: |
           Rscript -e '
             BiocManager::install(c(
@@ -120,6 +127,7 @@ jobs:
 
       # ── 10. Install ChIP/VAR packages ─────────────────────────────────────────
       - name: Install ChIP and VAR packages
+        if: steps.cache-r.outputs.cache-hit != 'true'
         run: |
           Rscript -e '
             BiocManager::install(c(
@@ -129,6 +137,7 @@ jobs:
           '
 
       # ── 11. Audit installed packages ──────────────────────────────────────────
+      # Always runs so we can see package status in every build log
       - name: Audit installed R packages
         run: |
           Rscript -e '
