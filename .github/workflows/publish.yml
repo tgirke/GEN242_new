@@ -84,19 +84,29 @@ jobs:
       - name: Install clusterProfiler
         run: |
           Rscript -e '
+            # Install dependencies first, then clusterProfiler
             BiocManager::install(c(
-              "clusterProfiler", "enrichplot", "fgsea", "DOSE"
+              "BiocGenerics", "Biobase", "graphite", "RBGL", "graph",
+              "gson", "HDO.db", "DOSE", "fgsea", "enrichplot",
+              "treeio", "ggtree", "yulab.utils", "aplot"
             ), ask = FALSE, update = FALSE)
+            BiocManager::install("clusterProfiler", ask = FALSE, update = FALSE)
           '
 
       # ── 8. Install single-cell packages separately ────────────────────────────
       - name: Install single-cell packages
         run: |
           Rscript -e '
+            # Install dependencies first, then scran/scater
             BiocManager::install(c(
-              "SingleCellExperiment", "scran", "scater", "scuttle",
-              "bluster", "metapod"
+              "SingleCellExperiment", "SummarizedExperiment",
+              "DelayedArray", "DelayedMatrixStats",
+              "scuttle", "bluster", "metapod", "igraph",
+              "BiocNeighbors", "BiocSingular", "ResidualMatrix",
+              "dqrng", "edgeR", "limma"
             ), ask = FALSE, update = FALSE)
+            BiocManager::install(c("scran", "scater"),
+                                 ask = FALSE, update = FALSE)
           '
 
       # ── 9. Install systemPipeR separately ─────────────────────────────────────
