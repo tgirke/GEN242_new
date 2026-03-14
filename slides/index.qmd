@@ -1,0 +1,6 @@
+---
+title: "Slides"
+sidebar: slides
+---
+
+Select a lecture from the sidebar.

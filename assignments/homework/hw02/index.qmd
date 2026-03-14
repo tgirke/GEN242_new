@@ -1,0 +1,6 @@
+---
+title: "HW02 — Homework"
+sidebar: assignments
+---
+
+Homework content goes here.

@@ -1,0 +1,6 @@
+---
+title: "T8 — RNA-Seq Workflow"
+sidebar: tutorials
+---
+
+Tutorial content goes here.

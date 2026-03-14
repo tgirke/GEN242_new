@@ -1,0 +1,6 @@
+---
+title: "S8 — Sequence Alignments"
+sidebar: slides
+---
+
+Slide content goes here.

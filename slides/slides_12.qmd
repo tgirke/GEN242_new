@@ -1,0 +1,6 @@
+---
+title: "S12 — R on HPC"
+sidebar: slides
+---
+
+Slide content goes here.

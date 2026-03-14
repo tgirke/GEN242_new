@@ -1,0 +1,6 @@
+---
+title: "Projects"
+sidebar: assignments
+---
+
+Project information goes here.

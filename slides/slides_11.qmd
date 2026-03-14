@@ -1,0 +1,6 @@
+---
+title: "S11 — Short Read Alignments"
+sidebar: slides
+---
+
+Slide content goes here.

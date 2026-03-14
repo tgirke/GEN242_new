@@ -1,0 +1,6 @@
+---
+title: "S21 — Graphics in R"
+sidebar: slides
+---
+
+Slide content goes here.

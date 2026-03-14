@@ -1,0 +1,5 @@
+---
+title: "Other"
+---
+
+Additional course information goes here.
