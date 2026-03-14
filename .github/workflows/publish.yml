@@ -5,15 +5,13 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  workflow_dispatch:           # allow manual trigger from GitHub UI
+  workflow_dispatch:
 
-# Sets permissions for GitHub Pages deployment
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Only allow one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -23,18 +21,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ── 1. Checkout ─────────────────────────────────────────────────────────
+      # ── 1. Checkout ──────────────────────────────────────────────────────────
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ── 2. Install R ────────────────────────────────────────────────────────
+      # ── 2. Install R ─────────────────────────────────────────────────────────
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
         with:
           r-version: "4.4"
-          use-public-rspm: true   # fast binary packages from Posit Package Manager
+          use-public-rspm: true
 
-      # ── 3. Cache R packages ─────────────────────────────────────────────────
+      # ── 3. Cache R packages ───────────────────────────────────────────────────
       - name: Cache R packages
         uses: actions/cache@v4
         with:
@@ -42,26 +40,63 @@ jobs:
           key: ${{ runner.os }}-r-${{ hashFiles('DESCRIPTION', 'renv.lock') }}
           restore-keys: ${{ runner.os }}-r-
 
-      # ── 4. Install R dependencies ───────────────────────────────────────────
-      #    Option A — renv (recommended for reproducibility):
-      #    - name: Restore renv
-      #      run: Rscript -e 'install.packages("renv"); renv::restore()'
-      #
-      #    Option B — explicit install (shown here for simplicity):
+      # ── 4. Install R dependencies ─────────────────────────────────────────────
       - name: Install R packages
         run: |
           Rscript -e '
-            pkgs <- c(
+            cran_pkgs <- c(
               "BiocManager", "knitr", "rmarkdown", "DT", "dplyr",
-              "ggplot2", "reticulate", "htmlwidgets", "plotly"
+              "ggplot2", "reticulate", "htmlwidgets", "plotly",
+              "tidyr", "stringr", "tibble", "purrr", "readr",
+              "RSQLite", "dbplyr", "ggrepel", "pheatmap", "RColorBrewer"
             )
-            install.packages(pkgs, repos = "https://cloud.r-project.org")
+            install.packages(cran_pkgs, repos = "https://cloud.r-project.org")
             BiocManager::install(c(
-              "GenomicRanges", "DESeq2", "edgeR", "systemPipeR"
+              "GenomicRanges", "GenomicFeatures", "GenomicAlignments",
+              "Biostrings", "IRanges", "S4Vectors",
+              "DESeq2", "edgeR", "limma",
+              "clusterProfiler", "enrichplot", "fgsea",
+              "ChIPseeker", "DiffBind",
+              "VariantAnnotation", "VariantFiltering",
+              "systemPipeR", "systemPipeRdata",
+              "SingleCellExperiment", "scran", "scater",
+              "BiocParallel", "BatchJobs",
+              "AnnotationDbi", "org.Hs.eg.db", "org.At.tair.db",
+              "TxDb.Athaliana.BioMart.plantsmart28",
+              "BSgenome.Athaliana.TAIR.TAIR9"
             ), ask = FALSE, update = FALSE)
           '
 
-      # ── 5. Set up Python (for reticulate / Python chunks) ───────────────────
+      # ── 5. Audit installed packages ───────────────────────────────────────────
+      # Read the Actions log after this step to see what installed successfully.
+      # Look for the MISSING PACKAGES section — fix any gaps before migrating
+      # real tutorial content.
+      - name: Audit installed R packages
+        run: |
+          Rscript -e '
+            pkgs <- installed.packages()[, c("Package", "Version")]
+            cat("\n===== INSTALLED PACKAGES =====\n")
+            print(pkgs, quote = FALSE)
+            cat("\n===== BIOCONDUCTOR VERSION =====\n")
+            cat(as.character(BiocManager::version()), "\n")
+            expected <- c(
+              "BiocManager", "knitr", "rmarkdown", "DT", "dplyr", "ggplot2",
+              "reticulate", "htmlwidgets", "plotly", "tidyr", "stringr",
+              "DESeq2", "edgeR", "limma", "clusterProfiler",
+              "systemPipeR", "GenomicRanges", "Biostrings",
+              "SingleCellExperiment", "scran", "scater",
+              "AnnotationDbi", "org.Hs.eg.db", "org.At.tair.db"
+            )
+            missing <- expected[!expected %in% rownames(pkgs)]
+            if (length(missing) > 0) {
+              cat("\n===== MISSING PACKAGES =====\n")
+              cat(paste(missing, collapse = "\n"), "\n")
+            } else {
+              cat("\n===== ALL EXPECTED PACKAGES PRESENT =====\n")
+            }
+          '
+
+      # ── 6. Set up Python ──────────────────────────────────────────────────────
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -70,16 +105,13 @@ jobs:
       - name: Install Python packages
         run: pip install numpy pandas matplotlib seaborn
 
-      # ── 6. Install Quarto ───────────────────────────────────────────────────
+      # ── 7. Install Quarto ─────────────────────────────────────────────────────
       - name: Install Quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
-          version: "1.5.56"    # pin to a specific release for reproducibility
+          version: "1.5.56"
 
-      # ── 7. Restore Quarto freeze cache ─────────────────────────────────────
-      #    The _freeze/ directory holds cached chunk outputs.
-      #    Committing it to git (see .gitignore note below) means only
-      #    changed files re-execute — making CI fast even for heavy analyses.
+      # ── 8. Restore Quarto freeze cache ────────────────────────────────────────
       - name: Restore Quarto freeze cache
         uses: actions/cache@v4
         with:
@@ -87,20 +119,20 @@ jobs:
           key: quarto-freeze-${{ hashFiles('**/*.qmd', '**/*.Rmd') }}
           restore-keys: quarto-freeze-
 
-      # ── 8. Render site ──────────────────────────────────────────────────────
+      # ── 9. Render site ────────────────────────────────────────────────────────
       - name: Render Quarto site
         run: quarto render
 
-      # ── 9. Upload Pages artifact ────────────────────────────────────────────
+      # ── 10. Upload Pages artifact ─────────────────────────────────────────────
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs            # matches output-dir in _quarto.yml
+          path: docs
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'   # only deploy from main branch
+    if: github.ref == 'refs/heads/main'
 
     environment:
       name: github-pages
