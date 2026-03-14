@@ -29,7 +29,7 @@ jobs:
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
         with:
-          r-version: "4.4"
+          r-version: "4.5"
           use-public-rspm: true
 
       # ── 3. Cache R packages ───────────────────────────────────────────────────
@@ -40,8 +40,18 @@ jobs:
           key: ${{ runner.os }}-r-${{ hashFiles('DESCRIPTION', 'renv.lock') }}
           restore-keys: ${{ runner.os }}-r-
 
-      # ── 4. Install R dependencies ─────────────────────────────────────────────
-      - name: Install R packages
+      # ── 4. Install system libraries needed by some Bioconductor packages ──────
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            libcurl4-openssl-dev libssl-dev libxml2-dev \
+            libharfbuzz-dev libfribidi-dev \
+            libgit2-dev libfontconfig1-dev libfreetype6-dev \
+            libbamtools-dev libboost-all-dev
+
+      # ── 5. Install CRAN packages ──────────────────────────────────────────────
+      - name: Install CRAN packages
         run: |
           Rscript -e '
             cran_pkgs <- c(
@@ -51,32 +61,68 @@ jobs:
               "RSQLite", "dbplyr", "ggrepel", "pheatmap", "RColorBrewer"
             )
             install.packages(cran_pkgs, repos = "https://cloud.r-project.org")
+          '
+
+      # ── 6. Install core Bioconductor packages ─────────────────────────────────
+      - name: Install core Bioconductor packages
+        run: |
+          Rscript -e '
+            BiocManager::install(version = "3.22", ask = FALSE)
             BiocManager::install(c(
               "GenomicRanges", "GenomicFeatures", "GenomicAlignments",
               "Biostrings", "IRanges", "S4Vectors",
               "DESeq2", "edgeR", "limma",
-              "clusterProfiler", "enrichplot", "fgsea",
-              "ChIPseeker", "DiffBind",
-              "VariantAnnotation", "VariantFiltering",
-              "systemPipeR", "systemPipeRdata",
-              "SingleCellExperiment", "scran", "scater",
-              "BiocParallel", "BatchJobs",
+              "BiocParallel",
               "AnnotationDbi", "org.Hs.eg.db", "org.At.tair.db",
               "TxDb.Athaliana.BioMart.plantsmart28",
               "BSgenome.Athaliana.TAIR.TAIR9"
             ), ask = FALSE, update = FALSE)
           '
 
-      # ── 5. Audit installed packages ───────────────────────────────────────────
-      # Read the Actions log after this step to see what installed successfully.
-      # Look for the MISSING PACKAGES section — fix any gaps before migrating
-      # real tutorial content.
+      # ── 7. Install clusterProfiler separately ─────────────────────────────────
+      # Split out because it has many dependencies and can timeout in a large batch
+      - name: Install clusterProfiler
+        run: |
+          Rscript -e '
+            BiocManager::install(c(
+              "clusterProfiler", "enrichplot", "fgsea", "DOSE"
+            ), ask = FALSE, update = FALSE)
+          '
+
+      # ── 8. Install single-cell packages separately ────────────────────────────
+      - name: Install single-cell packages
+        run: |
+          Rscript -e '
+            BiocManager::install(c(
+              "SingleCellExperiment", "scran", "scater", "scuttle",
+              "bluster", "metapod"
+            ), ask = FALSE, update = FALSE)
+          '
+
+      # ── 9. Install systemPipeR separately ─────────────────────────────────────
+      - name: Install systemPipeR
+        run: |
+          Rscript -e '
+            BiocManager::install(c(
+              "systemPipeR", "systemPipeRdata"
+            ), ask = FALSE, update = FALSE)
+          '
+
+      # ── 10. Install ChIP/VAR packages ─────────────────────────────────────────
+      - name: Install ChIP and VAR packages
+        run: |
+          Rscript -e '
+            BiocManager::install(c(
+              "ChIPseeker", "DiffBind",
+              "VariantAnnotation", "VariantFiltering"
+            ), ask = FALSE, update = FALSE)
+          '
+
+      # ── 11. Audit installed packages ──────────────────────────────────────────
       - name: Audit installed R packages
         run: |
           Rscript -e '
             pkgs <- installed.packages()[, c("Package", "Version")]
-            cat("\n===== INSTALLED PACKAGES =====\n")
-            print(pkgs, quote = FALSE)
             cat("\n===== BIOCONDUCTOR VERSION =====\n")
             cat(as.character(BiocManager::version()), "\n")
             expected <- c(
@@ -96,7 +142,7 @@ jobs:
             }
           '
 
-      # ── 6. Set up Python ──────────────────────────────────────────────────────
+      # ── 12. Set up Python ─────────────────────────────────────────────────────
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -105,13 +151,13 @@ jobs:
       - name: Install Python packages
         run: pip install numpy pandas matplotlib seaborn
 
-      # ── 7. Install Quarto ─────────────────────────────────────────────────────
+      # ── 13. Install Quarto ────────────────────────────────────────────────────
       - name: Install Quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: "1.5.56"
 
-      # ── 8. Restore Quarto freeze cache ────────────────────────────────────────
+      # ── 14. Restore Quarto freeze cache ───────────────────────────────────────
       - name: Restore Quarto freeze cache
         uses: actions/cache@v4
         with:
@@ -119,11 +165,11 @@ jobs:
           key: quarto-freeze-${{ hashFiles('**/*.qmd', '**/*.Rmd') }}
           restore-keys: quarto-freeze-
 
-      # ── 9. Render site ────────────────────────────────────────────────────────
+      # ── 15. Render site ───────────────────────────────────────────────────────
       - name: Render Quarto site
         run: quarto render
 
-      # ── 10. Upload Pages artifact ─────────────────────────────────────────────
+      # ── 16. Upload Pages artifact ─────────────────────────────────────────────
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
