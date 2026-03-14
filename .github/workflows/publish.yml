@@ -64,7 +64,8 @@ jobs:
               "BiocManager", "knitr", "rmarkdown", "DT", "dplyr",
               "ggplot2", "reticulate", "htmlwidgets", "plotly",
               "tidyr", "stringr", "tibble", "purrr", "readr",
-              "RSQLite", "dbplyr", "ggrepel", "pheatmap", "RColorBrewer"
+              "RSQLite", "dbplyr", "ggrepel", "pheatmap", "RColorBrewer", 
+              "tidyverse"
             )
             install.packages(cran_pkgs, repos = "https://cloud.r-project.org")
           '
