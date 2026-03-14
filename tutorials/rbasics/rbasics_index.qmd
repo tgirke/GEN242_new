@@ -1,0 +1,714 @@
+---
+title: "Introduction to R"
+author: "Thomas Girke"
+date: last-modified
+sidebar: tutorials
+---
+
+```{r setup}
+#| echo: false
+#| message: false
+#| warning: false
+options(width=100, max.print=1000)
+suppressPackageStartupMessages({
+    library(limma)
+    library(ggplot2)
+})
+```
+
+## Overview
+
+## What is R?
+
+[R](http://cran.at.r-project.org) is a powerful statistical environment and
+programming language for the analysis and visualization of data. The
+associated [Bioconductor](http://bioconductor.org/) and CRAN package
+repositories provide many additional R packages for statistical data analysis
+for a wide array of research areas. The R software is free and runs on all
+common operating systems.
+
+## Why Using R?
+
+* Complete statistical environment and programming language
+* Efficient functions and data structures for data analysis
+* Powerful graphics
+* Access to fast growing number of analysis packages
+* Most widely used language in bioinformatics
+* Is standard for data mining and biostatistical analysis
+* Technical advantages: free, open-source, available for all OSs
+
+## Books and Documentation
+* simpleR - Using R for Introductory Statistics (John Verzani, 2004) - [URL](http://cran.r-project.org/doc/contrib/Verzani-SimpleR.pdf)
+* Bioinformatics and Computational Biology Solutions Using R and Bioconductor (Gentleman et al., 2005) - [URL](http://www.bioconductor.org/help/publications/books/bioinformatics-and-computational-biology-solutions/)
+* More on this see "Finding Help" section in UCR Manual - [URL](http://manuals.bioinformatics.ucr.edu/home/R_BioCondManual#TOC-Finding-Help)
+
+## R Working Environments
+
+![R Projects and Interfaces](../images/rinterface.png){fig-alt="R interfaces diagram" fig-align="center"}
+
+Some R working environments with support for syntax highlighting and utilities to send code
+to the R console:
+
+* [RStudio/Posit Desktop](https://www.rstudio.com/products/rstudio/features): excellent choice for beginners ([Cheat Sheets](https://posit.co/resources/cheatsheets/?type=posit-cheatsheets/))
+* [RStudio/Posit Server](https://posit.co/download/rstudio-server/): web-based UI for RStudio. Available at UCR via [onDemand](https://hpcc.ucr.edu/manuals/hpc_cluster/selected_software/ondemand/#rstudio-on-ondemand)
+* [RStudio/Posit Cloud](https://rstudio.cloud/): cloud-based RStudio Server
+* [Vim-R-Tmux](../linux/index.qmd#nvim-r-tmux-essentials): R working environment based on vim and tmux.
+* [Emacs](http://www.xemacs.org/Download/index.html) ([ESS add-on package](http://ess.r-project.org/))
+* [gedit](https://wiki.gnome.org/Apps/Gedit), [Rgedit](http://rgedit.sourceforge.net/), [RKWard](https://rkward.kde.org/), [Eclipse](http://www.walware.de/goto/statet), [Tinn-R](http://www.sciviews.org/Tinn-R/), [Notepad++](https://notepad-plus-plus.org/), [NppToR](http://sourceforge.net/projects/npptor/)
+
+### Example: RStudio
+
+New integrated development environment (IDE) for [R](http://www.rstudio.com/ide/download/). Highly functional for both beginners and advanced.
+
+![RStudio IDE](../images/rstudio.png){fig-alt="RStudio IDE screenshot" fig-align="center"}
+
+Some useful shortcuts: `Ctrl+Enter` (send code), `Ctrl+Shift+C` (comment/uncomment), `Ctrl+1/2` (switch window focus)
+
+### Example: Nvim-R-Tmux
+
+Terminal-based Working Environment for R: [Nvim-R-Tmux](https://girke.bioinformatics.ucr.edu/GEN242/custom/slides/R_for_HPC/NvimR.html#1).
+
+![Nvim-R-Tmux IDE for R](../images/Nvim-R.gif){fig-alt="Nvim-R-Tmux animated demo" fig-align="center"}
+
+Install and usage instructions for Nvim-R are provided in this [slide show](https://girke.bioinformatics.ucr.edu/GEN242/custom/slides/R_for_HPC/NvimR.html#11) and
+[this tutorial](../linux/index.qmd#quick-configuration-in-user-accounts-of-ucrs-hpcc). The most detailed instructions
+can be found on the [Nvim-R_Tmux](https://github.com/tgirke/Nvim-R_Tmux) GitHub repo.
+
+## R Package Repositories
+
+* CRAN (>14,000 packages) general data analysis - [URL](http://cran.at.r-project.org/)
+* Bioconductor (>2,000 packages) bioscience data analysis - [URL](http://www.bioconductor.org/)
+* Omegahat (>90 packages) programming interfaces - [URL](https://github.com/omegahat?tab=repositories)
+* RStudio packages - [URL](https://www.rstudio.com/products/rpackages/)
+
+## Working Routine for Tutorials
+
+When working in R, a good practice is to write all commands directly into an [R script](../rprogramming/index.qmd#r-scripts), instead of the R console, and then send the commands for execution to the R console with the `Ctrl+Enter` shortcut in RStudio/Posit, or similar shortcuts in other R coding environments, such as [Nvim-R](../linux/index.qmd#nvim-r-tmux-essentials). This way all work is preserved and can be reused in the future.
+
+The following instructions provide a short overview of the standard working routine for loading R-based tutorials into an R IDE (Nvim-R or RStudio).
+
+1. Download the `*.qmd` or `*.R` source file — the link is in the top-right corner of each tutorial page (the `</> Code` button → `Source File`).
+   Or download directly from R:
+
+    ```{r download_file}
+    #| eval: false
+    download.file("https://raw.githubusercontent.com/tgirke/GEN242_new/main/tutorials/rbasics/index.qmd", "rbasics.qmd")
+    ```
+
+2. Load the file in Neovim (Nvim-R) or RStudio.
+
+3. Send code to the R console: `Space` in Neovim, `Ctrl+Enter` in RStudio.
+
+## Installation of R, RStudio and R Packages
+
+1. Install R for your operating system from [CRAN](http://cran.at.r-project.org/).
+
+2. Install RStudio from [Posit](http://www.rstudio.com/ide/download).
+
+3. Install CRAN packages from the R console:
+
+    ```{r install_cran}
+    #| eval: false
+    install.packages(c("pkg1", "pkg2"))
+    install.packages("pkg.zip", repos=NULL)
+    ```
+
+4. Install [Bioconductor](https://bioconductor.org/packages/release/BiocViews.html#___Software) packages:
+
+    ```{r install_bioc}
+    #| eval: false
+    if (!requireNamespace("BiocManager", quietly = TRUE))
+        install.packages("BiocManager")
+    BiocManager::version()
+    BiocManager::install(c("pkg1", "pkg2"))
+    ```
+
+5. For more details consult the [Bioc Install page](http://www.bioconductor.org/install/)
+   and the [BiocManager](https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html) vignette.
+
+## Getting Around
+
+### Startup and Closing Behavior
+
+* **Starting R**: The R GUI versions, including RStudio, under Windows and Mac OS X can be
+    opened by double-clicking their icons. Alternatively, type `R` in a terminal (default under Linux).
+
+* **Startup/Closing Behavior**: The R environment is controlled by hidden files in the startup directory:
+    `.RData`, `.Rhistory` and `.Rprofile` (optional).
+
+* **Closing R**:
+
+```{r closing_r}
+#| eval: false
+q()
+```
+```
+Save workspace image? [y/n/c]:
+```
+
+::: {.callout-tip}
+When responding with `y`, the entire R workspace will be written to the `.RData` file which
+can become very large. It is usually better to select `n` and instead save an analysis protocol
+to an `R` or `qmd` source file, so all data and objects can be quickly regenerated in future sessions.
+:::
+
+## Navigating Directories
+
+List objects in current R session
+```{r r_ls}
+#| eval: false
+ls()
+```
+
+Return content of current working directory
+```{r r_dirshow}
+#| eval: false
+dir()
+```
+
+Return path of current working directory
+```{r r_dirpath}
+#| eval: false
+getwd()
+```
+
+Change current working directory
+```{r r_setwd}
+#| eval: false
+setwd("/home/user")
+```
+
+Checking information about files
+```{r r_list_files}
+#| eval: false
+list.files(path="./", pattern="*.txt$", full.names=TRUE)
+file.exists(c("file1", "file2"))
+file.size(list.files(path="./", pattern=".txt$", full.names=TRUE))
+file.info(list.files(path="./", pattern=".txt$", full.names=TRUE))
+```
+
+## Basic Syntax
+
+Create an object with the assignment operator `<-` or `=`
+```{r r_assignment}
+#| eval: false
+object <- ...
+```
+
+General R command syntax
+```{r r_syntax}
+#| eval: false
+object <- function_name(arguments)
+object <- object[arguments]
+```
+
+Instead of the assignment operator one can use the `assign` function
+```{r r_assign_fct}
+#| eval: false
+assign("x", function(arguments))
+```
+
+To simplify chaining of several operations, `dplyr` provides the `%>%` (pipe) operator,
+where `x %>% f(y)` turns into `f(x, y)`. R 4.1+ also provides the native pipe `|>`.
+Details are provided in the [dplyr tutorial](../dplyr/index.qmd).
+
+```{r r_pipes}
+#| eval: false
+... %>% ...
+... |> ...
+```
+
+Finding help
+```{r r_find_help}
+#| eval: false
+?function_name
+```
+
+Load one or more R packages
+```{r r_package_load}
+#| eval: false
+library("my_library")
+lapply(c("my_library1", "my_library2"), require, character.only = TRUE)
+```
+
+List functions defined by a package
+```{r r_package_functions}
+#| eval: false
+library(help="my_library")
+```
+
+Load package vignette (PDF or HTML)
+```{r r_load_vignette}
+#| eval: false
+vignette("my_library")
+```
+
+Execute an R script from within R
+```{r r_execute_script}
+#| eval: false
+source("my_script.R")
+```
+
+Execute an R script from the command-line
+```{bash sh_execute_script}
+#| eval: false
+Rscript my_script.R
+R CMD BATCH my_script.R
+R --slave < my_script.R
+```
+
+## Data Types
+
+### Numeric data
+
+Example: `1, 2, 3, ...`
+
+```{r r_numeric_data}
+x <- c(1, 2, 3)
+x
+is.numeric(x)
+as.character(x)
+```
+
+### Character data
+
+Example: `"a", "b", "c", ...`
+
+```{r r_character_data}
+x <- c("1", "2", "3")
+x
+is.character(x)
+as.numeric(x)
+```
+
+### Complex data
+
+Example: mix of both
+
+```{r r_complex_data}
+c(1, "b", 3)
+```
+
+### Logical data
+
+Example: `TRUE` or `FALSE`
+
+```{r r_logical_data}
+x <- 1:10 < 5
+x
+!x
+which(x)
+```
+
+## Data Objects
+
+### Object Types
+
+* List of common object types
+    * `vectors`: ordered collection of numeric, character, complex and logical values
+    * `factors`: special type vectors with grouping information of its components
+    * `data.frames` including modern variants `DataFrame`, `tibbles`, etc.: two dimensional structures with different data types
+    * `matrices`: two dimensional structures with data of same type
+    * `arrays`: multidimensional arrays of vectors
+    * `lists`: general form of vectors with different types of elements
+    * `functions`: piece of code
+    * Many more ...
+
+* Simple rules for naming objects and their components
+    * Object, row and column names should not start with a number
+    * Avoid spaces in object, row and column names
+    * Avoid special characters like `#`
+
+#### Vectors (1D)
+
+Definition: `numeric` or `character`
+
+```{r r_vector_object}
+myVec <- setNames(1:10, letters[1:10])
+myVec[1:5]
+myVec[c(2,4,6,8)]
+myVec[c("b", "d", "f")]
+```
+
+#### Factors (1D)
+
+Definition: vectors with grouping information
+
+```{r r_factor_object}
+factor(c("dog", "cat", "mouse", "dog", "dog", "cat"))
+```
+
+#### Matrices (2D)
+
+Definition: two dimensional structures with data of same type
+
+```{r r_matrix_object}
+myMA <- matrix(1:30, 3, 10, byrow = TRUE)
+class(myMA)
+myMA[1:2,]
+myMA[1, , drop=FALSE]
+class(as.data.frame(myMA))
+```
+
+#### Data Frames (2D)
+
+Definition: `data.frames` are two dimensional objects with data of variable types
+
+```{r r_dataframe_object}
+myDF <- data.frame(Col1=1:10, Col2=10:1)
+myDF[1:2, ]
+class(as.matrix(myDF))
+```
+
+#### Tibbles
+
+`Tibbles` are a more modern version of `data.frames` with nicer printing behavior. Much more
+detailed information is provided in the [`dplyr/tidyverse`](../dplyr/index.qmd) tutorial.
+
+```{r r_tibble_object}
+library(tidyverse)
+as_tibble(iris)
+```
+
+::: {.callout-note}
+The above example uses the `iris` dataset available in every R installation. Many examples
+throughout this tutorial use this dataset.
+:::
+
+#### Arrays
+
+Definition: data structure with one, two or more dimensions
+
+#### Lists
+
+Definition: containers for any object type
+
+```{r r_list_object}
+myL <- list(name="Fred", wife="Mary", no.children=3, child.ages=c(4,7,9))
+myL
+myL[[4]][1:2]
+```
+
+## Functions
+
+Definition: piece of code
+
+```{r r_function_object}
+#| eval: false
+myfct <- function(arg1, arg2, ...) {
+    function_body
+}
+```
+
+## Subsetting of Data Objects
+
+**(1.) Subsetting by positive or negative index/position numbers**
+
+```{r r_subset_by_index}
+myVec <- 1:26; names(myVec) <- LETTERS
+myVec[1:4]
+```
+
+**(2.) Subsetting by same length logical vectors**
+
+```{r r_subset_by_logical}
+myLog <- myVec > 10
+myVec[myLog]
+```
+
+**(3.) Subsetting by field names**
+
+```{r r_subset_by_names}
+myVec[c("B", "K", "M")]
+```
+
+**(4.) Subset with `$` sign**: references a single column or list component by its name
+
+```{r r_subset_by_dollar}
+iris$Species[1:8]
+```
+
+## Important Utilities
+
+### Combining Objects
+
+The `c` function combines vectors and lists
+
+```{r r_combine_vectors}
+c(1, 2, 3)
+x <- 1:3; y <- 101:103
+c(x, y)
+```
+
+The `cbind` and `rbind` functions append columns and rows, respectively.
+```{r r_cbind_rbind}
+ma <- cbind(x, y)
+ma
+rbind(ma, ma)
+```
+
+### Accessing Dimensions of Objects
+
+```{r r_length_dim}
+length(iris$Species)
+dim(iris)
+```
+
+### Accessing Name Slots of Objects
+
+Accessing row and column names of 2D objects
+```{r col_row_names}
+rownames(iris)[1:8]
+colnames(iris)
+```
+
+Return name field of vectors and lists
+```{r name_slots}
+names(myVec)
+names(myL)
+```
+
+### Sorting Objects
+
+The function `sort` returns a vector in ascending or descending order.
+```{r sort_objects}
+sort(10:1)
+```
+
+The function `order` returns a sorting index for sorting an object alphanumerically.
+```{r order_objects}
+sortindex <- order(iris[,1], decreasing = FALSE)
+sortindex[1:12]
+iris[sortindex,][1:2,]
+```
+
+Sorting multiple columns
+```{r order_columns}
+iris[order(iris$Sepal.Length, iris$Sepal.Width),][1:2,]
+```
+
+### Checking Differences
+
+```{r identity}
+myma <- iris[1:2,]
+all(myma == iris[1:2,])
+myma[1,1] <- 1
+all(myma == iris[1:2,])
+```
+
+## Operators and Calculations
+
+### Comparison Operators
+
+Comparison operators: `==`, `!=`, `<`, `>`, `<=`, `>=`
+```{r comparison_operators}
+1==1
+```
+
+Logical operators: AND `&`, OR `|`, NOT `!`
+```{r logical_operators}
+x <- 1:10; y <- 10:1
+x > y & x > 5
+```
+
+### Basic Calculations
+
+```{r logical_calculations}
+x + y
+sum(x)
+mean(x)
+apply(iris[1:6,1:3], 1, mean)
+```
+
+## Reading and Writing External Data
+
+### Import of Tabular Data
+
+Import of a tab-delimited file
+```{r read_delim}
+#| eval: false
+myDF <- read.delim("myData.xls", sep="\t")
+```
+
+Import from Google Sheets using `googlesheets4`:
+```{r read_gs}
+#| eval: false
+library(googlesheets4)
+gs4_deauth()
+mysheet <- read_sheet("1U-32UcwZP1k3saKeaH1mbvEAOfZRdNHNkWK2GI1rpPM", skip=4)
+myDF <- as.data.frame(mysheet)
+```
+
+Import from Excel with `readxl`:
+```{r read_readxl}
+#| eval: false
+library("readxl")
+mysheet <- read_excel(targets_path, sheet="Sheet1")
+```
+
+Additional import functions are described in the [Tidyverse tutorial](../dplyr/index.qmd#reading-and-writing-tabular-files).
+
+### Export of Tabular Data
+```{r write_table}
+#| eval: false
+write.table(myDF, file="myfile.xls", sep="\t", quote=FALSE, col.names=NA)
+```
+
+### Line-wise Import/Export
+```{r readlines}
+#| eval: false
+myDF <- readLines("myData.txt")
+writeLines(month.name, "myData.txt")
+```
+
+### Save and Load R Objects
+```{r saveRDSlist}
+#| eval: false
+mylist <- list(C1=iris[,1], C2=iris[,2])
+saveRDS(mylist, "mylist.rds")
+mylist <- readRDS("mylist.rds")
+```
+
+::: {.callout-note}
+## Homework 3A
+[Object Subsetting Routines and Import/Export](../../assignments/homework/hw03/index.qmd)
+:::
+
+## Useful R Functions
+
+### Unique entries
+```{r unique}
+length(iris$Sepal.Length)
+length(unique(iris$Sepal.Length))
+```
+
+### Count occurrences
+```{r table_fct}
+table(iris$Species)
+```
+
+### Aggregate data
+```{r aggregate}
+aggregate(iris[,1:4], by=list(iris$Species), FUN=mean, na.rm=TRUE)
+```
+
+### Intersect data
+```{r intersect}
+month.name %in% c("May", "July")
+```
+
+### Merge data frames
+```{r merge}
+frame1 <- iris[sample(1:nrow(iris), 30), ]
+dim(frame1)
+my_result <- merge(frame1, iris, by.x=0, by.y=0, all=TRUE)
+dim(my_result)
+```
+
+## Graphics in R
+
+### Advantages
+
+- Powerful environment for visualizing scientific data
+- Integrated graphics and statistics infrastructure
+- Publication quality graphics
+- Fully programmable and highly reproducible
+- Full Markdown support via `knitr` and Quarto
+- Vast number of R packages with graphics utilities
+
+### Documentation for R Graphics
+
+**General**
+
+- Graphics Task Page - [URL](http://cran.r-project.org/web/views/Graphics.html)
+- R Graph Gallery - [URL](http://addictedtor.free.fr/graphiques/allgraph.php)
+- Paul Murrell's book R (Grid) Graphics - [URL](http://www.stat.auckland.ac.nz/~paul/RGraphics/rgraphics.html)
+
+**Interactive graphics**
+
+- `rgl` Open GL - [URL](http://rgl.neoscientists.org/gallery.shtml)
+- `iplots` - [URL](http://www.rosuda.org/iplots/)
+
+### Graphics Environments
+
+**Viewing and saving graphics in R**
+
+- On-screen graphics
+- postscript, pdf, svg
+- jpeg, png, wmf, tiff, ...
+
+**Four major graphic environments**
+
+(a) Low-level infrastructure: R base graphics (package `graphics`) and grid graphics (package `grid`)
+(b) High-level infrastructure: `lattice` and `ggplot2` built on top of `grid`
+
+### Base Graphics
+
+Overview of base graphics functions:
+
+| Function | Description |
+|----------|-------------|
+| `pdf`, `png` etc. | Open graphics device |
+| `plot` | Generic x-y plotting |
+| `barplot` | Bar plots |
+| `boxplot` | Box-and-whisker plots |
+| `hist` | Histograms |
+| `pie` | Pie charts |
+| `dotchart` | Cleveland dot plots |
+| `image`, `heatmap`, `contour`, `persp` | Plotting of matrices |
+| `xyplot`, `bwplot`, `dotplot` | Lattice plots |
+
+### Example: Scatter Plot and Regression Line
+
+```{r reg_plot}
+#| fig-cap: "Linear regression of petal width vs petal length in iris dataset"
+set.seed(1)
+y <- 1:30; x <- y + rnorm(30, sd=5)
+plot(x, y, pch=15, col="steelblue",
+     xlab="X", ylab="Y",
+     main="Regression of X on Y")
+myline <- lm(y ~ x)
+abline(myline, lwd=2, col="darkred")
+text(26, 5, paste("R^2 =", round(summary(myline)$r.squared, 2)), col="darkred")
+```
+
+### Example: Subplots
+
+```{r sub_plots}
+#| fig-cap: "Multiple base graphics plots in a single figure"
+par(mfrow=c(1,2), pty="s")
+ly <- seq(1, 100, by=5)
+y <- sqrt(ly); plot(y, main="Square Root")
+y <- log2(ly); plot(y, main="Log2")
+```
+
+### ggplot2 Examples
+
+The `ggplot2` package uses a grammar of graphics approach for building plots layer by layer.
+
+```{r ggplot2_scatter}
+#| fig-cap: "ggplot2 scatter plot of iris dataset"
+library(ggplot2)
+ggplot(iris, aes(Sepal.Length, Sepal.Width, color=Species)) +
+    geom_point(size=2, alpha=0.8) +
+    theme_bw() +
+    labs(x="Sepal Length", y="Sepal Width",
+         title="Iris: Sepal Dimensions by Species")
+```
+
+```{r ggplot2_boxplot}
+#| fig-cap: "ggplot2 boxplot of iris sepal length by species"
+ggplot(iris, aes(Species, Sepal.Length, fill=Species)) +
+    geom_boxplot() +
+    theme_bw() +
+    theme(legend.position="none") +
+    labs(y="Sepal Length")
+```
+
+## Session Info
+
+```{r sessionInfo}
+#| code-fold: true
+#| code-summary: "Show session info"
+sessionInfo()
+```
