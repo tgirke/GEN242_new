@@ -2,10 +2,11 @@
 """
 rmd2qmd.py — Convert Hugo/R Markdown .Rmd files to Quarto .qmd format
 Usage:
-    python3 rmd2qmd.py input.Rmd                        # auto output name
-    python3 rmd2qmd.py input.Rmd output.qmd             # explicit output name
-    python3 rmd2qmd.py input.Rmd --interactive          # step-by-step review
-    python3 rmd2qmd.py input.Rmd output.qmd --interactive
+    python3 rmd2qmd.py input.Rmd                                      # auto output name
+    python3 rmd2qmd.py input.Rmd output.qmd                           # explicit output name
+    python3 rmd2qmd.py input.Rmd --interactive                        # step-by-step review
+    python3 rmd2qmd.py input.Rmd output.qmd --interactive             # interactive + explicit
+    python3 rmd2qmd.py input.Rmd output.qmd --repo https://github.com/tgirke/GEN242_new
 
 What this script does (content is never changed, only formatting):
     1.  Replace YAML front matter
@@ -58,7 +59,7 @@ def ask(label, before, after, interactive):
 
 # ── Step 1: Replace YAML front matter ────────────────────────────────────────
 
-def replace_yaml(content, interactive, output_path=''):
+def replace_yaml(content, interactive, output_path='', repo_url=''):
     yaml_match = re.match(r'^---\n(.*?)\n---\n', content, re.DOTALL)
     if not yaml_match:
         print("  [YAML] WARNING: Could not find YAML front matter.")
@@ -76,6 +77,25 @@ def replace_yaml(content, interactive, output_path=''):
     author   = re.sub(r'^Author:\s*', '', author)
 
     output_base = os.path.basename(output_path) if output_path else "index.qmd"
+    # Build download URLs: raw GitHub URLs if --repo given, else plain filenames
+    if repo_url:
+        raw_base = repo_url.rstrip('/')
+        raw_base = raw_base.replace('https://github.com/', 'https://raw.githubusercontent.com/')
+        rel_path = output_path.replace('\\', '/').lstrip('./')
+        qmd_url  = raw_base + '/main/' + rel_path
+    else:
+        qmd_url = output_base
+
+    # Build badge HTML block inserted right after YAML
+    badge_block = (
+        '\n'
+        '<p align="right">\n'
+        '  <a href="' + qmd_url + '">\n'
+        '    <img src="https://img.shields.io/badge/Download-.qmd-blue?style=for-the-badge&logoColor=white" '
+        'alt="Download qmd">\n'
+        '  </a>\n'
+        '</p>\n'
+    )
 
     new_yaml = (
         '---\n'
@@ -83,11 +103,8 @@ def replace_yaml(content, interactive, output_path=''):
         'author: "' + author + '"\n'
         'date: last-modified\n'
         'sidebar: tutorials\n'
-        'other-links:\n'
-        '  - text: "Download .qmd"\n'
-        '    href: ' + output_base + '\n'
-        '    icon: download\n'
         '---\n'
+        + badge_block
     )
 
     new_content = content.replace(old_yaml_block, new_yaml, 1)
@@ -317,7 +334,7 @@ def update_links(content, interactive):
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
-def convert(input_path, output_path, interactive):
+def convert(input_path, output_path, interactive, repo_url=''):
     with open(input_path, encoding='utf-8') as f:
         content = f.read()
 
@@ -327,7 +344,7 @@ def convert(input_path, output_path, interactive):
     print(f"Mode:       {'interactive' if interactive else 'automatic'}\n")
 
     steps = [
-        ("1. YAML front matter",                 lambda c, i: replace_yaml(c, i, output_path)),
+        ("1. YAML front matter",                 lambda c, i: replace_yaml(c, i, output_path, repo_url)),
         ("2. Remove compile comment",             remove_compile_comment),
         ("3. Remove BiocStyle chunk",             remove_biocstyle),
         ("4. Remove Hugo source div",             remove_hugo_div),
@@ -357,6 +374,17 @@ def main():
     interactive = '--interactive' in args
     args = [a for a in args if a != '--interactive']
 
+    # Parse --repo <url>
+    repo_url = ''
+    if '--repo' in args:
+        idx = args.index('--repo')
+        if idx + 1 < len(args):
+            repo_url = args[idx + 1]
+            args = args[:idx] + args[idx+2:]
+        else:
+            print('Error: --repo requires a URL argument.')
+            sys.exit(1)
+
     input_path = args[0]
     if len(args) >= 2:
         output_path = args[1]
@@ -368,7 +396,7 @@ def main():
         print(f"Error: {input_path} not found.")
         sys.exit(1)
 
-    convert(input_path, output_path, interactive)
+    convert(input_path, output_path, interactive, repo_url)
 
 if __name__ == '__main__':
     main()

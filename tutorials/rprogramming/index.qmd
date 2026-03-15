@@ -1,6 +1,0 @@
----
-title: "T4 — Programming in R"
-sidebar: tutorials
----
-
-Tutorial content goes here.

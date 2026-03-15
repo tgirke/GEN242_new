@@ -12,8 +12,12 @@ sidebar: tutorials
 </p>
 
 <!--
-- Compile from command-line
+- Render Rmd from command-line
 Rscript -e "rmarkdown::render('rprogramming.Rmd', c('html_document'), clean=F); knitr::knit('rprogramming.Rmd', tangle=TRUE)"
+- Render qmd from command line:
+quarto render rprogramming_index.qmd
+Render qmd from R:
+quarto::quarto_render("rprogramming_index.qmd")
 -->
 
 

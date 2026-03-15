@@ -179,7 +179,7 @@ Use the conversion script in `scripts/rmd2qmd.py`. It handles all mechanical for
 python3 scripts/rmd2qmd.py \
   /path/to/old/Rbasics.Rmd \
   tutorials/rbasics/rbasics_index.qmd \
-  --repo https://github.com/tgirke/GEN242_new
+  --repo https://github.com/tgirke/GEN242
 ```
 
 **What the script does automatically:**
