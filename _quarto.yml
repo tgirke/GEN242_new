@@ -1,7 +1,11 @@
 project:
   type: website
   output-dir: docs            # GitHub Pages serves from /docs on main branch
-
+  render:
+    - "*.qmd"
+    - "*.md"
+    - "!**/*.Rmd" # exclude all .Rmd files from automatic rendering. This way you can keep them in same directory as reference.
+    # - "tutorials/rprogramming/rprogramming.Rmd" # uncomment to render specific .Rmd
 website:
   title: "GEN242"
   description: "Data Analysis in Genome Biology — UC Riverside"
@@ -131,7 +135,7 @@ website:
             - text: "T3 — Introduction to R"
               href: tutorials/rbasics/rbasics_index.qmd
             - text: "T4 — Programming in R"
-              href: tutorials/rprogramming/index.qmd
+              href: tutorials/rprogramming/rprogramming_index.qmd
             - text: "T5 — Parallel R"
               href: tutorials/rparallel/index.qmd
             - text: "T14 — R Markdown"
