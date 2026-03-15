@@ -10,6 +10,8 @@ quarto preview    # live-reloads in browser on every save
 quarto render     # full build → writes to /docs
 ```
 
+Trivial change deleteme
+
 ---
 
 ## Project structure
