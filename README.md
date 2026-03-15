@@ -138,7 +138,7 @@ nvim tutorials/rbasics/rbasics_index.qmd
 
 # When happy, commit and push to deploy
 git add tutorials/rbasics/rbasics_index.qmd
-git add _freeze/                          # always include freeze cache updates
+git add _freeze/    # always include freeze cache updates; this way locally rendered tutorial don't need to be rerendered on GitHub actions again!
 git commit -m "Update rbasics tutorial"
 git push origin main
 ```

@@ -3,11 +3,22 @@ title: "Introduction to R"
 author: "Thomas Girke"
 date: last-modified
 sidebar: tutorials
-other-links:
-  - text: "Download .qmd"
-    href: "https://raw.githubusercontent.com/tgirke/GEN242_new/main/tutorials/rbasics/rbasics_index.qmd"
-    icon: download
 ---
+
+<p align="right">
+  <a href="https://raw.githubusercontent.com/tgirke/GEN242/main/rbasics_index.qmd">
+    <img src="https://img.shields.io/badge/Download-.qmd-blue?style=for-the-badge&logoColor=white" alt="Download qmd">
+  </a>
+</p>
+
+<!--
+- Render Rmd from command-line
+Rscript -e "rmarkdown::render('Rbasics.Rmd', c('html_document'), clean=F); knitr::knit('Rbasics.Rmd', tangle=TRUE)"
+- Render qmd from command line:
+quarto render rbasics_index.qmd
+Render qmd from R:
+quarto::quarto_render("rbasics_index.qmd")
+-->
 
 
 
@@ -1293,8 +1304,7 @@ BiocManager::install(my_R_pkgs)
 
 ## Session Info
 
-```{r session_info}
-#| eval: true
+```
 sessionInfo()
 
 ```
