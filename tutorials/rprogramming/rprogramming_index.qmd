@@ -6,7 +6,7 @@ sidebar: tutorials
 ---
 
 <p align="right">
-  <a href="https://raw.githubusercontent.com/tgirke/GEN242_new/main/rprogramming_index.qmd">
+  <a href="https://raw.githubusercontent.com/tgirke/GEN242/main/tutorials/rprogramming/rprogramming_index.qmd">
     <img src="https://img.shields.io/badge/Download-.qmd-blue?style=for-the-badge&logoColor=white" alt="Download qmd">
   </a>
 </p>
