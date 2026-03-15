@@ -11,6 +11,7 @@ Live site: <https://girke.bioinformatics.ucr.edu/GEN242_new>
 - [One-time local setup](#one-time-local-setup)
 - [Daily workflow](#daily-workflow)
 - [Migrating a tutorial from the old site](#migrating-a-tutorial-from-the-old-site)
+- [Converting a .qmd back to .Rmd](#converting-a-qmd-back-to-rmd)
 - [Adding a new page to the navigation](#adding-a-new-page-to-the-navigation)
 - [GitHub Actions and deployment](#github-actions-and-deployment)
 - [R package cache](#r-package-cache)
@@ -51,7 +52,8 @@ GEN242_new/
 │   └── projects/index.qmd
 ├── links/index.qmd
 ├── scripts/
-│   └── rmd2qmd.py               # conversion script: .Rmd -> .qmd
+│   ├── rmd2qmd.py               # conversion script: .Rmd -> .qmd
+│   └── qmd2rmd.py               # conversion script: .qmd -> .Rmd
 ├── _freeze/                     # Quarto freeze cache — COMMIT THIS
 ├── .github/
 │   └── workflows/
@@ -256,6 +258,44 @@ When the script updates internal links (Step 9), it uses this map.
 | `.../tutorials/rmarkdown/rmarkdown/` | `../rmarkdown/index.qmd` |
 | `.../tutorials/rgraphics/rgraphics/` | `../rgraphics/index.qmd` |
 | `.../assignments/homework/hw03/hw03/` | `../../assignments/homework/hw03/index.qmd` |
+
+---
+
+## Converting a .qmd back to .Rmd
+
+Use `scripts/qmd2rmd.py` to convert a Quarto `.qmd` file back to R Markdown `.Rmd` format.
+This is useful when you need to run content through Bioconductor tools or workflows that
+require the standard knitr/rmarkdown toolchain.
+
+```bash
+# Auto-named output (rbasics_index.qmd -> Rbasics.Rmd)
+python3 scripts/qmd2rmd.py tutorials/rbasics/rbasics_index.qmd
+
+# Explicit output name
+python3 scripts/qmd2rmd.py tutorials/rbasics/rbasics_index.qmd Rbasics.Rmd
+
+# Interactive mode — review each change before applying
+python3 scripts/qmd2rmd.py tutorials/rbasics/rbasics_index.qmd Rbasics.Rmd --interactive
+```
+
+**What the script reverses automatically:**
+
+| `rmd2qmd.py` did | `qmd2rmd.py` reverses |
+|---|---|
+| Quarto YAML front matter | Restores Rmd YAML + BiocStyle chunk |
+| `#\| eval: false` options | Restores `eval=FALSE` inline options |
+| `bash` chunks | Restores `sh` chunks |
+| `![](images/x.png)` figures | Restores `<center><img src="../images/x.png"/>` |
+| `**Step N.**` bold labels | Restores indented numbered list items |
+| Relative `.qmd` links | Restores absolute old-site URLs |
+
+**Important:** This conversion is lossless only if you avoided Quarto-specific features
+(callout blocks `:::`, cross-references `@fig-xxx`, layout divs) during authoring.
+If you stuck to plain markdown and standard chunk options, the round-trip is clean.
+
+Run with `--interactive` the first time for each file to spot any edge cases before
+committing the output.
+
 
 ---
 
