@@ -18,3 +18,16 @@ pre.sourceCode {
   border-left: 3px solid #dee2e6;
   border-radius: 0 4px 4px 0;
 }
+
+/* Scrollable code chunks: apply #| classes: [scrollable] to long chunks */
+pre.sourceCode.scrollable {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Line number styling — subtle, not distracting */
+code.sourceCode .ln {
+  color: #adb5bd;
+  padding-right: 1em;
+  user-select: none;   /* prevents line numbers being copied with code */
+}

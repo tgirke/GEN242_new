@@ -227,6 +227,7 @@ format:
     code-fold: false
     code-tools: false
     code-link: true
+    code-line-numbers: true
     highlight-style: github
     df-print: paged
     fig-align: center
