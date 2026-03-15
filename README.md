@@ -4,13 +4,23 @@
 
 ```bash
 # Install Quarto: https://quarto.org/docs/get-started/
+# Use: sudo dpkg -i quarto-<version>.deb
+#      quarto --version
 git clone https://github.com/tgirke/GEN242 && cd GEN242
 
-quarto preview    # live-reloads in browser on every save
+quarto preview --no-browser # live-reloads in browser on every save; not --no-browser only needed on ChromeOS
+quarto preview tutorials/<path_to_file>.qmd --no-browser # renders only specific qmd
 quarto render     # full build → writes to /docs
 ```
 
-Trivial change deleteme
+Commit to github
+
+```bash
+git add .
+git status    # review
+git commit -m "some message"
+git push origin main
+```
 
 ---
 

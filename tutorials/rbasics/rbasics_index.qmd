@@ -5,7 +5,7 @@ date: last-modified
 sidebar: tutorials
 other-links:
   - text: "Download .qmd"
-    href: rbasics_index.qmd
+    href: "https://raw.githubusercontent.com/tgirke/GEN242_new/main/tutorials/rbasics/rbasics_index.qmd"
     icon: download
 ---
 
@@ -1293,7 +1293,8 @@ BiocManager::install(my_R_pkgs)
 
 ## Session Info
 
-```
+```{r session_info}
+#| eval: true
 sessionInfo()
 
 ```
