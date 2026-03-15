@@ -175,6 +175,9 @@ This is the main task for porting content from the old Hugo/GEN242 site.
 
 Use the conversion script in `scripts/rmd2qmd.py`. It handles all mechanical formatting changes without touching content.
 
+
+Needs to be run from root directory of repos!!!
+
 ```bash
 python3 scripts/rmd2qmd.py \
   /path/to/old/Rbasics.Rmd \
