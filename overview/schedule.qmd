@@ -1,0 +1,10 @@
+---
+title: "Schedule"
+date: last-modified
+page-layout: article
+---
+
+## Detailed course schedule
+
+<iframe width='100%' height='925' src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRlUuNRvSaVTTX-q3O2siF3Jvex2yR8DJ3KSHyBKigeI9aRpJKnhEV9e6QK9TLvDC75hZH7iM27qeBQ/pubhtml?widget=true&amp;headers=false"></iframe>
+

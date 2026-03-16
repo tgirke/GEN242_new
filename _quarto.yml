@@ -32,8 +32,8 @@ website:
             href: overview/introduction.qmd
           - text: "Syllabus"
             href: overview/syllabus.qmd
-          - text: "Other"
-            href: overview/other.qmd
+          - text: "Schedule"
+            href: overview/schedule.qmd
       - text: "Schedule"
         href: schedule/index.qmd
       - text: "Slides"

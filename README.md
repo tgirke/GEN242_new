@@ -146,13 +146,13 @@ git push origin main
 ### Rendering a single page (without the full preview server)
 
 ```bash
-quarto render tutorials/rbasics/rbasics_index.qmd
+quarto render tutorials/rbasics/rbasics_index.qmd # add --cache-refresh to force refresh
 ```
 
 ### Full site render
 
 ```bash
-quarto render
+quarto render # add --cache-refresh to force refresh
 ```
 
 This writes all output to `docs/`. Only needed occasionally — GitHub Actions handles full builds automatically on every push.
@@ -223,7 +223,7 @@ The sidebar in `_quarto.yml` needs to point to the new file. Find the T3 entry a
 ### Step 4 — Test locally
 
 ```bash
-quarto render tutorials/rbasics/rbasics_index.qmd
+quarto render tutorials/rbasics/rbasics_index.qmd # add --cache-refresh to force refresh
 # or
 quarto preview --no-browser
 ```
