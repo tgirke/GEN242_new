@@ -82,7 +82,7 @@ jobs:
               "DESeq2", "edgeR", "limma",
               "BiocParallel",
               "AnnotationDbi", "org.Hs.eg.db", "org.At.tair.db",
-              "TxDb.Athaliana.BioMart.plantsmart28",
+              "TxDb.Athaliana.BioMart.plantsmart28", "txdbmaker",
               "BSgenome.Athaliana.TAIR.TAIR9"
             ), ask = FALSE, update = FALSE)
           '
