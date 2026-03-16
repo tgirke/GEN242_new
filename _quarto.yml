@@ -127,9 +127,9 @@ website:
         - section: "Computing Environment"
           contents:
             - text: "T1 — GitHub Introduction"
-              href: tutorials/github/index.qmd
+              href: tutorials/github/github.qmd
             - text: "T2 — Linux & HPCC Cluster"
-              href: tutorials/linux/index.qmd
+              href: tutorials/linux/linux.qmd
         - section: "R Fundamentals"
           contents:
             - text: "T3 — Introduction to R"
