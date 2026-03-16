@@ -223,7 +223,7 @@ format:
   html:
     theme:
       light: [cosmo, assets/custom.scss]
-      dark:  [cosmo, assets/custom-dark.scss]
+      dark:  [darkly, assets/custom-dark.scss]
     toc: true
     toc-depth: 3
     toc-title: "On this page"
