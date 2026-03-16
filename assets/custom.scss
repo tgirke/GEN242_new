@@ -29,5 +29,18 @@ pre.sourceCode.scrollable {
 code.sourceCode .ln {
   color: #adb5bd;
   padding-right: 1em;
-  user-select: none;   /* prevents line numbers being copied with code */
+  user-select: none;
+}
+
+/* Fix navbar icons in dark mode — scoped here because custom.scss
+   is the primary stylesheet loaded for both themes */
+.quarto-dark .navbar .quarto-navigation-tool,
+.quarto-dark .navbar .quarto-navigation-tool i,
+.quarto-dark .navbar .quarto-navigation-tool i.bi {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.quarto-dark .navbar .quarto-navigation-tool:hover i,
+.quarto-dark .navbar .quarto-navigation-tool:hover i.bi {
+  color: #ffffff !important;
 }
