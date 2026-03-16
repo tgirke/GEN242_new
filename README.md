@@ -371,6 +371,17 @@ rm -rf _freeze/
 quarto render
 ```
 
+For GitHub actions all required R packages are defined in publish.yml. When making changes there the entire R install will run from the beginning. 
+A shortcut to avoid this is to not put the new package in publish.yml at all, but instead install it at the top of the tutorial that needs it, inside a hidden chunk:
+
+```{r install_pkg}
+#| echo: false
+#| eval: !expr !requireNamespace("newpackage", quietly = TRUE)
+if (!requireNamespace("newpackage", quietly = TRUE))
+    install.packages("newpackage")
+```
+
+
 ---
 
 ## Troubleshooting
