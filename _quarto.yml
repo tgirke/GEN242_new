@@ -35,7 +35,7 @@ website:
           - text: "Schedule"
             href: overview/schedule.qmd
       - text: "Schedule"
-        href: schedule/index.qmd
+        href: overview/schedule.qmd
       - text: "Slides"
         href: slides/index.qmd
       - text: "Tutorials"
@@ -139,7 +139,7 @@ website:
             - text: "T5 — Parallel R"
               href: tutorials/rparallel/rparallel_index.qmd
             - text: "T14 — R Markdown"
-              href: tutorials/rmarkdown/index.qmd
+              href: tutorials/rmarkdown/rmarkdown_index.qmd
             - text: "T16 — Graphics & Visualization"
               href: tutorials/rgraphics/index.qmd
             - text: "T17 — Shiny Apps"

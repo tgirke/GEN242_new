@@ -1,6 +1,0 @@
----
-title: "T14 — R Markdown"
-sidebar: tutorials
----
-
-Tutorial content goes here.
