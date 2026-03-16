@@ -137,7 +137,7 @@ website:
             - text: "T4 — Programming in R"
               href: tutorials/rprogramming/rprogramming_index.qmd
             - text: "T5 — Parallel R"
-              href: tutorials/rparallel/index.qmd
+              href: tutorials/rparallel/rparallel_index.qmd
             - text: "T14 — R Markdown"
               href: tutorials/rmarkdown/index.qmd
             - text: "T16 — Graphics & Visualization"
