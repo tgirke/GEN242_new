@@ -141,7 +141,7 @@ website:
             - text: "T14 — R Markdown"
               href: tutorials/rmarkdown/rmarkdown_index.qmd
             - text: "T16 — Graphics & Visualization"
-              href: tutorials/rgraphics/index.qmd
+              href: tutorials/rgraphics/rgraphics_index.qmd
             - text: "T17 — Shiny Apps"
               href: tutorials/shinyapps/index.qmd
             - text: "T18 — Tidyverse & SQLite"
