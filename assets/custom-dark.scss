@@ -45,3 +45,22 @@ h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
   padding: 0.1em 0.3em;
   border-radius: 3px;
 }
+
+/* Fix navbar toggle and search icons in dark mode */
+a.quarto-color-scheme-toggle.quarto-navigation-tool {
+  color: rgba(255, 255, 255, 0.85) !important;
+  filter: brightness(10) !important;
+}
+
+a.quarto-color-scheme-toggle.quarto-navigation-tool:hover {
+  color: #ffffff !important;
+}
+
+div#quarto-search.type-overlay {
+  color: rgba(255, 255, 255, 0.85) !important;
+  filter: brightness(10) !important;
+}
+
+div#quarto-search.type-overlay:hover {
+  color: #ffffff !important;
+}
