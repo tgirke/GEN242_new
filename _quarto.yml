@@ -205,7 +205,7 @@ website:
 
   # ── Footer ─────────────────────────────────────────────────────────────────
   page-footer:
-    left: "© 2025 Thomas Girke, UC Riverside"
+    left: "© 2026 Thomas Girke, UC Riverside"
     right:
       - text: "GEN242 on GitHub"
         href: https://github.com/tgirke/GEN242
