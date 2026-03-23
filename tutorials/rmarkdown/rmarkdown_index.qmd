@@ -1,11 +1,9 @@
 ---
-title: "R Markdown"
-author: "Thomas Girke"
+title: "R Markdown Tutorial"
+author: "Your Name"
 date: last-modified
 sidebar: tutorials
-format:
-  html:
-    self-contained: true
+bibliography: bibtex.bib
 ---
 
 <p align="right">
