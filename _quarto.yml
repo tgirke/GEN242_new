@@ -151,7 +151,7 @@ website:
         - section: "Analysis Applications"
           contents:
             - text: "T6 — NGS Analysis Basics"
-              href: tutorials/rsequences/index.qmd
+              href: tutorials/rsequences/rsequences_index.qmd
             - text: "T7 — Workflow Framework"
               href: tutorials/systempiper/index.qmd
             - text: "T8 — RNA-Seq Workflow"
