@@ -1,6 +1,0 @@
----
-title: "T19 — Building R Packages"
-sidebar: tutorials
----
-
-Tutorial content goes here.

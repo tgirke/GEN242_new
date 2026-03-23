@@ -147,7 +147,7 @@ website:
             - text: "T18 — Tidyverse & SQLite"
               href: tutorials/dplyr/dplyr_index.qmd
             - text: "T19 — Building R Packages"
-              href: tutorials/rpackages/index.qmd
+              href: tutorials/rpackages/rpackages_index.qmd
         - section: "Analysis Applications"
           contents:
             - text: "T6 — NGS Analysis Basics"
