@@ -15,3 +15,4 @@ __pycache__/
 **/*.quarto_ipynb
 /docs/
 _freeze/site_libs/
+_freeze/site_libs/
