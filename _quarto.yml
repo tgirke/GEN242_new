@@ -130,7 +130,7 @@ website:
               href: tutorials/github/github.qmd
             - text: "T2 — Linux & HPCC Cluster"
               href: tutorials/linux/linux.qmd
-        - section: "R Fundamentals"
+        - section: "Analysis Programming"
           contents:
             - text: "T3 — Introduction to R"
               href: tutorials/rbasics/rbasics_index.qmd
@@ -148,7 +148,7 @@ website:
               href: tutorials/dplyr/index.qmd
             - text: "T19 — Building R Packages"
               href: tutorials/rpackages/index.qmd
-        - section: "NGS Workflows"
+        - section: "Analysis Applications"
           contents:
             - text: "T6 — NGS Analysis Basics"
               href: tutorials/rsequences/index.qmd
