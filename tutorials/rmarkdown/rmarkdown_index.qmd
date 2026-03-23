@@ -1,9 +1,11 @@
 ---
-title: "R Markdown Tutorial"
-author: "Your Name"
+title: "R Markdown"
+author: "Thomas Girke"
 date: last-modified
 sidebar: tutorials
-bibliography: bibtex.bib
+format:
+  html:
+    self-contained: true
 ---
 
 <p align="right">
@@ -20,13 +22,6 @@ quarto render rmarkdown_index.qmd
 Render qmd from R:
 quarto::quarto_render("rmarkdown_index.qmd")
 -->
-
-```{r check_dt}
-#| echo: false
-if (!file.exists(system.file("htmlwidgets/lib/datatables", package="DT"))) {
-  install.packages("DT", repos = "https://cloud.r-project.org")
-}
-```
 
 ## R Markdown Overview
 
