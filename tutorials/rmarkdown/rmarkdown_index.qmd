@@ -3,6 +3,7 @@ title: "R Markdown Tutorial"
 author: "Your Name"
 date: last-modified
 sidebar: tutorials
+bibliography: bibtex.bib
 ---
 
 <p align="right">
