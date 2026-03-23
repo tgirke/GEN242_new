@@ -21,6 +21,13 @@ Render qmd from R:
 quarto::quarto_render("rmarkdown_index.qmd")
 -->
 
+```{r check_dt}
+#| echo: false
+if (!file.exists(system.file("htmlwidgets/lib/datatables", package="DT"))) {
+  install.packages("DT", repos = "https://cloud.r-project.org")
+}
+```
+
 
 ## R Markdown Overview
 
