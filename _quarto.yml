@@ -145,7 +145,7 @@ website:
             - text: "T17 — Shiny Apps"
               href: tutorials/shinyapps/shinyapps_index.qmd
             - text: "T18 — Tidyverse & SQLite"
-              href: tutorials/dplyr/index.qmd
+              href: tutorials/dplyr/dplyr_index.qmd
             - text: "T19 — Building R Packages"
               href: tutorials/rpackages/index.qmd
         - section: "Analysis Applications"
