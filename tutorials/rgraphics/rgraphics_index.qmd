@@ -1,8 +1,9 @@
 ---
 title: "Graphics and Data Visualization in R"
-author: "First/last name (first.last@ucr.edu)"
+author: "Thomas Girke"
 date: last-modified
 sidebar: tutorials
+bibliography: bibtex.bib
 ---
 
 <p align="right">
