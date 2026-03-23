@@ -3,6 +3,7 @@ title: "Introduction to R"
 author: "Thomas Girke"
 date: last-modified
 sidebar: tutorials
+bibliography: bibtex.bib
 ---
 
 <p align="right">
