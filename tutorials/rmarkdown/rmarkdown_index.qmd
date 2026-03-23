@@ -28,7 +28,6 @@ if (!file.exists(system.file("htmlwidgets/lib/datatables", package="DT"))) {
 }
 ```
 
-
 ## R Markdown Overview
 
 R Markdown combines markdown (an easy to write plain text format) with embedded
