@@ -237,11 +237,13 @@ Check for:
 ### Step 5 — Commit and push
 
 ```bash
-git add tutorials/rbasics/
-git add _freeze/
-git add _quarto.yml
-git commit -m "Migrate T3 Introduction to R tutorial"
-git push origin main
+FOLDER="rbasics" \
+git add tutorials/$FOLDER/ \
+git add _freeze/ \
+git add _quarto.yml \
+git commit -m "Migrate $FOLDER tutorial" \
+git push origin main \
+git add tutorials/$FOLDER/ \
 ```
 
 GitHub Actions will build and deploy automatically. Monitor progress at:  
@@ -381,6 +383,13 @@ if (!requireNamespace("newpackage", quietly = TRUE))
     install.packages("newpackage")
 ```
 
+To trigger the refresh of the R install with all packages, run
+
+```bash
+git add .github/workflows/publish.yml
+git commit -m "Add newpackage to R install list"
+git push origin main
+```
 
 ---
 
