@@ -153,7 +153,7 @@ website:
             - text: "T6 — NGS Analysis Basics"
               href: tutorials/rsequences/rsequences_index.qmd
             - text: "T7 — Workflow Framework"
-              href: tutorials/systempiper/index.qmd
+              href: tutorials/systempiper/systemPipeR_index.qmd
             - text: "T8 — RNA-Seq Workflow"
               href: tutorials/sprnaseq/index.qmd
             - text: "T9 — Cluster Analysis"
