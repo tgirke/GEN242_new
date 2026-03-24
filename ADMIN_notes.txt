@@ -382,7 +382,8 @@ A shortcut to avoid this is to not put the new package in publish.yml at all, bu
 
 ```{r install_pkg}
 #| echo: false
-#| eval: !expr !requireNamespace("newpackage", quietly = TRUE)
+#| eval: !expr 
+!requireNamespace("newpackage", quietly = TRUE)
 if (!requireNamespace("newpackage", quietly = TRUE))
     install.packages("newpackage")
 ```
