@@ -5,10 +5,7 @@ Live site: <https://girke.bioinformatics.ucr.edu/GEN242/>
 
 ## Course Description
 
-This course covers the computational analysis of next-generation sequencing (NGS) data,
-including RNA-Seq, ChIP-Seq, and VAR-Seq experiments, using R/Bioconductor and
-workflow automation tools. Students develop practical skills in reproducible research,
-statistical analysis, and large-scale genomics.
+This course introduces algorithms, statistical methods and data analysis programming routines relevant for genome biology.
 
 ## Contents
 

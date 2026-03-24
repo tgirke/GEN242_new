@@ -5,10 +5,11 @@ page-layout: full
 toc: false
 ---
 
-This course covers the computational analysis of next-generation sequencing (NGS) data,
-including RNA-Seq, ChIP-Seq, and VAR-Seq experiments, using R/Bioconductor and
-workflow automation tools. Students develop practical skills in reproducible research,
-statistical analysis, and large-scale genomics.
+This course introduces algorithms, statistical methods and data analysis
+programming for genome biology. It consists of three main components: lectures,
+hands-on practicals and student course projects. Students develop practical
+skills in reproducible research, statistical analysis, and large-scale
+genomics.
 
 ## Course components
 
