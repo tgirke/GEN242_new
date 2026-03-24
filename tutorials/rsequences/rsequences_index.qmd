@@ -13,11 +13,13 @@ bibliography: bibtex.bib
 </p>
 
 <!--
-- Compile from command-line
+- Render Rmd from command-line
 Rscript -e "rmarkdown::render('Rsequences.Rmd', c('html_document'), clean=F); knitr::knit('Rsequences.Rmd', tangle=TRUE)"; Rscript ../md2jekyll.R Rsequences.knit.md 10; Rscript -e "rmarkdown::render('Rsequences.Rmd', c('pdf_document'))"
+- Render qmd from command line:
+quarto render rsequences_index.qmd
+Render qmd from R:
+quarto::quarto_render("rsequences_index.qmd")
 -->
-
-
 
 
 ## Overview
