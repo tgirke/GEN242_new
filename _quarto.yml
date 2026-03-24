@@ -9,8 +9,8 @@ project:
 website:
   title: "GEN242"
   description: "Data Analysis in Genome Biology — UC Riverside"
-  site-url: "https://girke.bioinformatics.ucr.edu/GEN242_new"
-  repo-url: "https://github.com/tgirke/GEN242_new"
+  site-url: "https://girke.bioinformatics.ucr.edu/GEN242"
+  repo-url: "https://github.com/tgirke/GEN242"
   repo-actions: [edit, issue]
   favicon: assets/favicon.ico
 

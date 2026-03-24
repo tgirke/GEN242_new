@@ -64,3 +64,15 @@ div#quarto-search.type-overlay {
 div#quarto-search.type-overlay:hover {
   color: #ffffff !important;
 }
+
+/* Code output — same background as code input boxes in dark mode */
+div.cell-output-stdout pre,
+div.cell-output-display pre,
+div.cell-output pre {
+  background-color: #2d2d2d;
+  border-left: 3px solid #555;
+  border-radius: 0 4px 4px 0;
+  padding: 0.5em 0.75em;
+  font-size: 0.875em;
+}
+
