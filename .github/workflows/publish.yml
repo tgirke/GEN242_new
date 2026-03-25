@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-4.5-${{ hashFiles('.github/workflows/publish.yml') }}-v2
+          key: ${{ runner.os }}-r-4.5-${{ hashFiles('.github/workflows/publish.yml') }}-v3
           restore-keys: ${{ runner.os }}-r-4.5-
 
       # ── 4. Install system libraries ───────────────────────────────────────────
@@ -65,7 +65,7 @@ jobs:
               "ggplot2", "reticulate", "htmlwidgets", "plotly",
               "tidyr", "stringr", "tibble", "purrr", "readr",
               "RSQLite", "dbplyr", "ggrepel", "pheatmap", "RColorBrewer", 
-              "tidyverse", "batchtools"
+              "tidyverse", "batchtools", "kableExtra"
             )
             install.packages(cran_pkgs, repos = "https://cloud.r-project.org")
           '
