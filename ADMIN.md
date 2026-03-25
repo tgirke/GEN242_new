@@ -69,12 +69,6 @@ GEN242_new/
 ### 1. Install Quarto
 
 Download and install from <https://quarto.org/docs/get-started/>.  
-__Verify important__: in step 5 the tutorials are rendered locally and NOT on 
-GitHub. This is assured by pushing the rendered result from `git add _freeze/`.
-Also _cache directories from within the tutorial directories are not pushed
-to GitHub. The entry in .gitignore ensures this too. Also, when adding 
-a package to `.github/workflows/publish.yml`, github actions will reinstall
-R and all packages. 
 
 ```bash
 quarto --version
@@ -177,7 +171,12 @@ mean a sidebar or navbar entry in `_quarto.yml` points to a file that doesn't ex
 ## Migrating a tutorial from the old site
 
 This is the main task for porting content from the old Hugo/GEN242 site.
-In step
+__Verify important__: in step 5 the tutorials are rendered locally and NOT on 
+GitHub. This is assured by pushing the rendered result from `git add _freeze/`.
+Also _cache directories from within the tutorial directories are not pushed
+to GitHub. The entry in .gitignore ensures this too. Also, when adding 
+a package to `.github/workflows/publish.yml`, github actions will reinstall
+R and all packages. 
 
 ### Step 1 — Convert the .Rmd file
 
