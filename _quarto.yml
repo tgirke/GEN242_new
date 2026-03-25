@@ -60,7 +60,7 @@ website:
       title: "Slides"
       style: docked
       background: light
-      collapse-level: 1
+      collapse-level: 2
       contents:
         - text: "All Slides"
           href: slides/index.qmd
@@ -120,7 +120,7 @@ website:
       title: "Tutorials"
       style: docked
       background: light
-      collapse-level: 1
+      collapse-level: 2
       contents:
         - text: "All Tutorials"
           href: tutorials/index.qmd
@@ -174,7 +174,7 @@ website:
       title: "Assignments"
       style: docked
       background: light
-      collapse-level: 1
+      collapse-level: 2
       contents:
         - text: "Overview"
           href: assignments/index.qmd

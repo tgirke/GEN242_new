@@ -65,7 +65,7 @@ jobs:
               "ggplot2", "reticulate", "htmlwidgets", "plotly",
               "tidyr", "stringr", "tibble", "purrr", "readr",
               "RSQLite", "dbplyr", "ggrepel", "pheatmap", "RColorBrewer", 
-              "tidyverse"
+              "tidyverse", "batchtools"
             )
             install.packages(cran_pkgs, repos = "https://cloud.r-project.org")
           '
