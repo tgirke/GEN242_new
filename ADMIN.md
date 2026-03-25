@@ -234,16 +234,24 @@ Check for:
 
 ### Step 5 — Commit and push
 
+Step-wise
 ```bash
-git add tutorials/rbasics/
-git add _freeze/
-git add _quarto.yml
-git commit -m "Migrate T3 Introduction to R tutorial"
+FOLDER="rbasics" && 
+git add "tutorials/$FOLDER/" && 
+git add _freeze/ && 
+git add _quarto.yml && 
+git commit -m "Migrate $FOLDER tutorial" && 
 git push origin main
+```
+
+Single line
+```bash
+FOLDER="rbasics"; git add "tutorials/$FOLDER/"; git add _freeze/; git add _quarto.yml; git commit -m "Migrate $FOLDER tutorial"; git push origin main
 ```
 
 GitHub Actions will build and deploy automatically. Monitor progress at:  
 <https://github.com/tgirke/GEN242_new/actions>
+
 
 ### Internal link map
 
