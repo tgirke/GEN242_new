@@ -93,7 +93,7 @@ exploration, and enhancing the user experience.
 #| align: center
 #| cap: Important functionalities of systemPipeR. (A) Illustration of workflow design concepts, and (B) examples of visualization functionalities for NGS data.
 
-knitr::include_graphics("utilities.png")
+knitr::include_graphics("images/utilities.png")
 
 ```
 
@@ -855,7 +855,7 @@ workflow project with the `SPRproject` function. Next, the `importWF` function i
 the Rmd file for code chunks that define workflow steps, and subsequently import them in to the 
 `SAL` workflow container of the project. 
 
-```{r importWF_rmd}
+```{r importWF_rmd, eval=TRUE}
 sal_rmd <- SPRproject(logs.dir = ".SPRproject_rmd") 
 
 sal_rmd <- importWF(sal_rmd, 
