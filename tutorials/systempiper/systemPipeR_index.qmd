@@ -86,16 +86,8 @@ associated Shiny App provides various interactive features for result
 exploration, and enhancing the user experience.
 
 
-```{r utilities}
-#| warning: false
-#| echo: false
-#| width: 100%
-#| align: center
-#| cap: Important functionalities of systemPipeR. (A) Illustration of workflow design concepts, and (B) examples of visualization functionalities for NGS data.
+![Important functionalities of systemPipeR. (A) Illustration of workflow design concepts, and (B) examples of visualization functionalities for NGS data.](images/utilities.png){width=70% fig-align="center"}
 
-knitr::include_graphics("images/utilities.png")
-
-```
 
 ### Workflow control class
 
@@ -113,17 +105,7 @@ experimental design, defines sample labels, replicate information, and other
 relevant information. 
 
 
-
-```{r sysargslistImage}
-#| warning: false
-#| echo: false
-#| width: 100%
-#| align: center
-#| cap: Workflow design overview.
-
-knitr::include_graphics("images/spr_overview.png")
-
-```
+![Workflow design overview](images/spr_overview.png){width=100% fig-align="center"}
 
 Figure \@ref(fig:sysargslistImage) illustrates the design of the `systemPipeR` (SPR) 
 WMS. (A) The root directory of a SPR Project includes files and directories
@@ -174,16 +156,7 @@ the [CWL syntax](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/systempip
 information in `targets` with CWL parameters are described
 [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/systempiper/systempiper/#cwl_targets). 
 
-```{r sprandCWL}
-#| warning: false
-#| echo: false
-#| width: 100%
-#| align: center
-#| cap: Parameter files. Illustration how the different fields in cwl, yml and targets files are connected to assemble command-line calls, here for 'Hello World' example.
-
-knitr::include_graphics("images/SPR_CWL_hello.png")
-
-```
+![Parameter files. Illustration how the different fields in cwl, yml and targets files are connected to assemble command-line calls, here for 'Hello World' example.](images/SPR_CWL_hello.png){width=60% fig-align="center"}
 
 ### Workflow templates 
 
@@ -329,16 +302,7 @@ sal
 
 ```
 
-```{r wf}
-#| warning: false
-#| echo: false
-#| width: 100%
-#| align: center
-#| cap: Status check of workflow. The run status flags of each workflow step are given in its summary view.
-
-knitr::include_graphics("images/runwf.png")
-
-```
+![Status check of workflow. The run status flags of each workflow step are given in its summary view.](images/runwf.png){width=80% fig-align="center"}
 
 __5. Workflow topology graph.__ Workflows can be displayed as topology graphs
 using the `plotWF` function. The run status information for each step and various 
@@ -350,15 +314,7 @@ plotWF(sal)
 
 ```
 
-```{r rnaseq}
-#| warning: false
-#| echo: false
-#| width: 100%
-#| align: center
-#| cap: Toplogy graph of RNA-Seq workflow.
-knitr::include_graphics("images/plotWF.png")
-
-```
+![Topology graph of RNA-Seq workflow.](images/plotWF.png){width=60% fig-align="center"}
 
 __6. Report generation.__ The `renderReport` and `renderLogs` function can be used
 for generating scientific and technical reports, respectively. Alternatively, scientific
@@ -1215,21 +1171,7 @@ The resulting plot includes the following information.
 If no layout parameters are provided, then `plotWF` will automatically detect reasonable settings
 for a user's system, including width, height, layout, plot method, branch styles and others.
 
-```{r}
-#| eval: false
-plotWF(sal, show_legend = TRUE, width = "80%", rstudio = TRUE)
-
-```
-
-```{r plot_wf}
-#| warning: false
-#| echo: false
-#| width: 100%
-#| align: center
-
-knitr::include_graphics("images/plotwf.png")
-
-```
+![](images/plotwf.png){width=60% fig-align="center"}
 
 For more details about the `plotWF` function, please visit its help with `?plotWF`.
 
