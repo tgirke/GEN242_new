@@ -16,3 +16,4 @@ __pycache__/
 /docs/
 _freeze/site_libs/
 _freeze/site_libs/
+*_cache/
