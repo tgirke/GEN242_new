@@ -1,0 +1,12 @@
+input_file:
+  class: File
+  path: ./data/tair10.fasta
+database_name:
+  class: File
+  path: ./data/tair10_blast_db
+molecule_type: nucl
+results_path:
+  class: Directory
+  path: ./results
+ModulesToLoad:
+  module1: ncbi-blast

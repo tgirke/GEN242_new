@@ -12,7 +12,7 @@ bibliography: bibtex.bib
   </a>
 </p>
 
-```{css}
+```{css, echo=FALSE}
 pre code {
 white-space: pre !important;
 overflow-x: scroll !important;
@@ -93,7 +93,7 @@ exploration, and enhancing the user experience.
 #| align: center
 #| cap: Important functionalities of systemPipeR. (A) Illustration of workflow design concepts, and (B) examples of visualization functionalities for NGS data.
 
-knitr::include_graphics("images/utilities.png")
+knitr::include_graphics("utilities.png")
 
 ```
 
@@ -121,7 +121,7 @@ relevant information.
 #| align: center
 #| cap: Workflow design overview.
 
-knitr::include_graphics("../spr_overview.png")
+knitr::include_graphics("images/spr_overview.png")
 
 ```
 
@@ -315,7 +315,7 @@ finish. The `steps` argument of `runWF` can be used to run only selected steps.
 For details, consult the help file with `?runWF`. During the run, detailed status
 information will be provided for each workflow step.
 
-```{r eval}
+```{r eval=FALSE}
 sal <- runWF(sal)  
 
 ```
@@ -345,7 +345,7 @@ using the `plotWF` function. The run status information for each step and variou
 other details are embedded in these graphs. Additional details are provided in the [visualize workflow
 section](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/systempiper/systempiper/#visualize-workflow) below.
 
-```{r eval}
+```{r eval=FALSE}
 plotWF(sal)
 
 ```
@@ -356,7 +356,7 @@ plotWF(sal)
 #| width: 100%
 #| align: center
 #| cap: Toplogy graph of RNA-Seq workflow.
-knitr::include_graphics("../plotWF.png")
+knitr::include_graphics("images/plotWF.png")
 
 ```
 
@@ -368,7 +368,7 @@ it provides the advantage that any modifications to the Rmd file are
 instantly reflected in the HTML report, eliminating the necessity to update the `sal` object.
 
 
-```{r eval}
+```{r eval=FALSE}
 # Scietific report
 sal <- renderReport(sal)
 rmarkdown::render("systemPipeRNAseq.Rmd", clean = TRUE, output_format = "BiocStyle::html_document") 
@@ -3148,7 +3148,7 @@ appendStep(sal) <- LineWise({
 ```
 
 
-![](../heatmap1.png){fig-align="center"}<div align="center">Heat map with hierarchical clustering dendrograms of DEGs.</div></br>
+![](images/heatmap1.png){fig-align="center"}<div align="center">Heat map with hierarchical clustering dendrograms of DEGs.</div></br>
 
 
 ## Version information

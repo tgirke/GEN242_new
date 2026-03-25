@@ -1,0 +1,14 @@
+SampleName: _SampleName_
+query:
+  class: File
+  path: _query_file_
+database_name:
+  class: File
+  path: ./data/tair10_blast_db
+evalue: 1e-6
+outfmt: 6
+results_path:
+  class: Directory
+  path: ./results
+ModulesToLoad:
+  module1: ncbi-blast
