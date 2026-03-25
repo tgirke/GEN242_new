@@ -14,6 +14,14 @@ website:
   repo-actions: [edit, issue]
   favicon: assets/favicon.ico
 
+  # ──Notification banner: comment out when not needed
+  announcement:
+    icon: info-circle
+    dismissable: true
+    content: "**New:** Site has been updated to Quarto. Please report any issues via the GitHub issue tracker."
+    type: info  # info: blue, warning: yellow, danger: red, success: green
+    position: below-navbar # below-navbar: appears just below the top navbar; above-navbar: appears above the navbar at the very top
+
   # ── Top navigation bar ─────────────────────────────────────────────────────
   # Flat, like quarto.org: one word per section, minimal dropdowns.
   # Sections with many pages (Slides, Tutorials, Assignments) open into a
