@@ -241,7 +241,7 @@ Check for:
 
 Step-wise
 ```bash
-quarto render tutorials/<tutorial_dir>/<tutorial_file_name>.qmd
+quarto render tutorials/<tutorial_dir>/<tutorial_file_name>.qmd # use render instead of preview only
 FOLDER="rbasics" && 
 git add "tutorials/$FOLDER/" && 
 git add _freeze/ && 
