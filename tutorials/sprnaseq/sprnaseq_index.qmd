@@ -30,16 +30,6 @@ unlink(".SPRproject/", recursive = TRUE)
 
 ```
 
-```{css, echo=FALSE}
-pre code {
-white-space: pre !important;
-overflow-x: scroll !important;
-word-break: keep-all !important;
-word-wrap: initial !important;
-}
-
-```
-
 <!--
 Rscript -e "rmarkdown::render('sprnaseq.Rmd', c('BiocStyle::html_document'), clean=F); knitr::knit('sprnaseq.Rmd', tangle=TRUE)"
 -->
@@ -693,6 +683,7 @@ further information, refer to the help documentation by typing
 ```{r read_counting}
 #| eval: false
 #| spr: true
+#| classes: scrollable
 appendStep(sal) <- LineWise(
     code = {
         library(GenomicFeatures); library(BiocParallel)
