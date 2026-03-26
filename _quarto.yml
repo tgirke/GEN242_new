@@ -167,7 +167,7 @@ website:
             - text: "T9 — Cluster Analysis"
               href: tutorials/rclustering/rclustering_index.qmd
             - text: "T10 — Enrichment Analysis"
-              href: tutorials/rfea/index.qmd
+              href: tutorials/rfea/rfea_index.qmd
             - text: "T11 — ChIP-Seq Workflow"
               href: tutorials/spchipseq/index.qmd
             - text: "T12 — scRNA-Seq Methods"
