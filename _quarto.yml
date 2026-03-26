@@ -163,7 +163,7 @@ website:
             - text: "T7 — Workflow Framework"
               href: tutorials/systempiper/systemPipeR_index.qmd
             - text: "T8 — RNA-Seq Workflow"
-              href: tutorials/sprnaseq/index.qmd
+              href: tutorials/sprnaseq/sprnaseq_index.qmd
             - text: "T9 — Cluster Analysis"
               href: tutorials/rclustering/index.qmd
             - text: "T10 — Enrichment Analysis"
