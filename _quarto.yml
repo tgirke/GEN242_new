@@ -165,7 +165,7 @@ website:
             - text: "T8 — RNA-Seq Workflow"
               href: tutorials/sprnaseq/sprnaseq_index.qmd
             - text: "T9 — Cluster Analysis"
-              href: tutorials/rclustering/index.qmd
+              href: tutorials/rclustering/rclustering_index.qmd
             - text: "T10 — Enrichment Analysis"
               href: tutorials/rfea/index.qmd
             - text: "T11 — ChIP-Seq Workflow"
