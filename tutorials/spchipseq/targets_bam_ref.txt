@@ -1,0 +1,2 @@
+FileName1	FileName2	SampleName	Factor	SampleLong	Experiment	Date	SampleReference
+./results/bowtie2_alignment/C_1A.sorted_C.bam	./results/bowtie2_alignment/AP1_1.sorted_AP1.bam	C_1A	C	Control Mock	1	23-Mar-12	AP1_1
