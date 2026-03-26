@@ -12,16 +12,6 @@ bibliography: bibtex.bib
   </a>
 </p>
 
-```{css, echo=FALSE}
-pre code {
-white-space: pre !important;
-overflow-x: scroll !important;
-word-break: keep-all !important;
-word-wrap: initial !important;
-}
-
-```
-
 <!--
 - Compile from command-line
 Rscript -e "rmarkdown::render('systemPipeR.Rmd', c('BiocStyle::html_document'), clean=F); knitr::knit('systemPipeR.Rmd', tangle=TRUE)"
@@ -587,7 +577,7 @@ names under the `Species` column, and then the resulting `data.frames` are
 exported to three tabular files. 
 
 
-```{r}
+```{r rstep1}
 appendStep(sal) <- LineWise(code = {
                               mapply(function(x, y) write.csv(x, y),
                                      split(iris, factor(iris$Species)),
