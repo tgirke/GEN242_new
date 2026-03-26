@@ -1,0 +1,277 @@
+---
+title: "scRNA-Seq Embedding Methods" 
+author: "Author: Daniela Cassol, Le Zhang, Thomas Girke"
+date: "Last update: `r format(Sys.time(), '%d %B, %Y')`" 
+output:
+  html_document:
+    toc: true
+    toc_float:
+        collapsed: true
+        smooth_scroll: true
+    toc_depth: 3
+    fig_caption: yes
+    code_folding: show
+    number_sections: true
+fontsize: 14pt
+bibliography: bibtex.bib
+weight: 10
+type: docs
+---
+
+<!---
+- Compile from command-line
+Rscript -e "rmarkdown::render('scRNAseq.Rmd', c('html_document'), clean=FALSE); knitr::knit('scRNAseq.Rmd', tangle=TRUE)"
+-->
+
+<div style="text-align: right"> 
+Source code downloads: &nbsp; &nbsp;
+[ [.Rmd](https://raw.githubusercontent.com/tgirke/GEN242//main/content/en/tutorials/scrnaseq/scRNAseq.Rmd) ] &nbsp; &nbsp; 
+[ [.R](https://raw.githubusercontent.com/tgirke/GEN242//main/content/en/tutorials/scrnaseq/scRNAseq.R) ]
+</div>
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+
+This tutorial introduces the usage of several software implementations of
+embedding algorithms for high-dimensional gene expression data [@Duo2018-oo] that are often
+used for single cell RNA-Seq (scRNA-Seq) data.  Many of them are available as R packages on CRAN, 
+Bioconductor and/or GitHub. Examples include PCA, MDS,
+[SC3](http://bioconductor.org/packages/release/bioc/html/SC3.html)
+[@Kiselev2017-ye],
+[isomap](https://bioconductor.org/packages/release/bioc/html/RDRToolbox.html),
+[t-SNE](https://cran.r-project.org/web/packages/Rtsne/)
+[@donaldson2010package], [FIt-SNE](https://github.com/KlugerLab/FIt-SNE)
+[@Linderman2019-qh], and
+[UMAP](https://cran.r-project.org/web/packages/umap/index.html)
+[@McInnes2018-tc]. In addition, some packages such as Bioconductor's
+[scater](https://bioconductor.org/packages/release/bioc/vignettes/scater/inst/doc/overview.html)
+package provide in a single environment access to a wide range of embedding methods that can be
+conveniently and uniformly applied to Bioconductor's S4 object class called
+[`SingleCellExperiment`](https://bioconductor.org/packages/3.12/bioc/html/SingleCellExperiment.html)
+for handling scRNA-Seq data [@Senabouth2019-cr; @Amezquita2020-vu]. The
+performance of the different embedding methods for scRNA-Seq data has been
+intensively tested by several studies, including Sun et al. [-@Sun2019-po;
+-@Sun2020-ct].
+
+For illustration purposes, the following example code first applies four widely
+used embedding methods to a bulk RNA-Seq data set [@Howard2013-fq], and then to a much more
+complex scRNA-Seq data set [@Aztekin2019-sw] obtained from the
+[`scRNAseq`](https://bioconductor.org/packages/release/data/experiment/html/scRNAseq.html)
+package.
+
+## Bulk RNA-Seq data
+
+### Generate `SummarizedExperiment` and `SingleCellExperiment` 
+
+The following loads the bulk RNA-Seq data from Howard _et al._ [-@Howard2013-fq]
+into `SummarizedExperiment` and `SingleCellExperiment` objects. This is done
+by first creating a `SummarizedExperiment` object and then coercing it to a 
+`SingleCellExperiment` object, as well as intializing the `SingleCellExperiment` 
+directly. 
+
+
+#### Create `SummarizedExperiment` and coerce to `SingleCellExperiment`
+
+The required `targetsPE.txt` and `countDFeByg.xls` files can be downloaded 
+from [here](https://github.com/tgirke/GEN242/tree/main/content/en/tutorials/scrnaseq/results).
+
+```{r create_se_sce1a, eval=TRUE, message=FALSE, warning=FALSE}
+library(SummarizedExperiment); library(SingleCellExperiment)                                                                                                                        
+targetspath <- "results/targetsPE.txt"                                                                                                                                                      
+countpath <- "results/countDFeByg.xls"                                                                                                                                              
+targets <- read.delim(targetspath, comment.char = "#")                                                                                                                              
+rownames(targets) <- targets$SampleName                                                                                                                                             
+countDF <- read.delim(countpath, row.names=1, check.names=FALSE)                                                                                                                    
+(se <- SummarizedExperiment(assays=list(counts=countDF), colData=targets))                                                                                                          
+(sce <- as(se, "SingleCellExperiment"))
+```
+
+#### Create `SingleCellExperiment` directly
+
+```{r create_se_sce1b, eval=TRUE}
+sce2 <- SingleCellExperiment(assays=list(counts=countDF), colData=targets)
+```
+
+### Prepare data for plotting with embedding methods
+
+The data are preprocessed (_e.g._normalized) to plot them with the `run`
+embedding functions from the
+[`scran`](https://bioconductor.org/packages/3.12/bioc/vignettes/scran/inst/doc/scran.html)
+and [`scater`](https://bioconductor.org/packages/release/bioc/vignettes/scater/inst/doc/overview.html) packages.
+
+```{r preprocess1, eval=TRUE, message=FALSE, warning=FALSE}
+library(scran); library(scater)
+sce <- logNormCounts(sce)
+colLabels(sce) <- factor(colData(sce)$Factor) # This uses replicate info from above targets file as pseudo-clusters
+```
+
+### Embed with different methods and plot results
+
+Note, the embedding results are sequentially appended to the
+SingleCellExperiment object, meaning one can use the plot function whenever
+necessary.
+
+#### (a) tSNE 
+
+```{r run_tsne1, eval=TRUE}
+sce <- runTSNE(sce)
+reducedDimNames(sce)
+plotTSNE(sce, colour_by="label", text_by="label")
+```
+
+#### (b) MDS 
+
+```{r run_mds1, eval=TRUE}
+sce <- runMDS(sce)
+reducedDimNames(sce)
+plotMDS(sce, colour_by="label", text_by="label")
+```
+
+#### (c) UMAP 
+
+```{r run_umap1, eval=TRUE}
+sce <- runUMAP(sce) 
+reducedDimNames(sce)
+plotUMAP(sce, colour_by="label", text_by="label")
+```
+
+#### (d) PCA 
+
+PCA plot for first two components.
+
+```{r run_pca1a, eval=TRUE, message=FALSE, warning=FALSE}
+sce <- runPCA(sce) # gives a warning due to small size of data set but it still works 
+reducedDimNames(sce)
+plotPCA(sce, colour_by="label", text_by="label")
+```
+
+Multiple components can be plotted in a series of pairwise plots. When more
+than two components are plotted, the diagonal boxes in the scatter plot matrix
+show the density for each component.
+
+```{r run_pca1b, eval=TRUE, message=FALSE, warning=FALSE}
+sce <- runPCA(sce, ncomponents=20) # gives a warning due to small size of data set but it still works 
+reducedDimNames(sce)
+plotPCA(sce, colour_by="label", text_by="label", ncomponents = 4)
+```
+
+## scRNA-Seq data
+
+### Load scRNA-Seq data 
+
+The `scRNAseq` package is used to load the scRNA-Seq data set from Xenopus tail 
+directly into a SingleCellExperiment object [@Aztekin2019-sw].
+
+```{r create_sce2, eval=FALSE, message=FALSE, warning=FALSE}
+library(scRNAseq)
+sce <- AztekinTailData()
+```
+
+### Prepare data for plotting with embedding methods 
+
+Similarly as above, the data are preprocessed (_e.g._normalized) to plot them with the `run`
+embedding functions from the
+[`scran`](https://bioconductor.org/packages/3.12/bioc/vignettes/scran/inst/doc/scran.html)
+package. In addition, the data is clustered with the `quickCluster` function.
+
+```{r preprocess2, eval=FALSE}
+library(scran); library(scater)
+sce <- logNormCounts(sce)
+clusters <- quickCluster(sce)
+# sce <- computeSumFactors(sce, clusters=clusters)
+colLabels(sce) <- factor(clusters)
+table(colLabels(sce))
+```
+
+To acclerate the testing performance of the following code, the size of the expression matrix 
+is reduced to cell types with values $\ge10^4$.
+
+```{r filter2, eval=FALSE}
+filter <- colSums(assays(sce)$counts) >= 10^4
+sce <- sce[, filter]
+```
+
+To color items in the downstream dot plots by cell type instead of the above clustering result, 
+one can use the cell type info under `colData()`. Note, this step is not evaluated here.
+
+```{r collor_by_celltype2, eval=TRUE}
+# colLabels(sce) <- colData(sce)$cluster
+```
+
+### Embed with different methods and plot results
+
+As under the bulk RNA-Seq section, the embedding results are sequentially
+appended to the `SingleCellExperiment` object, meaning one can use the plot
+function whenever necessary.
+
+#### (a) tSNE 
+
+```{r run_tsne2, eval=FALSE}
+sce <- runTSNE(sce)
+reducedDimNames(sce)
+plotTSNE(sce, colour_by="label", text_by="label")
+```
+
+![](results/sctsne.png)                                                                                                                                                     
+<div align="center">tSNE embedding of scRNA-Seq data</div></br>  
+
+#### (b) MDS 
+
+```{r run_mds2, eval=FALSE}
+sce <- runMDS(sce)
+reducedDimNames(sce)
+plotMDS(sce, colour_by="label", text_by="label")
+```
+
+![](results/scmds.png)                                                                                                                                                     
+<div align="center">MDS embedding of scRNA-Seq data</div></br>  
+
+## (c) UMAP 
+
+```{r run_umap2, eval=FALSE}
+sce <- runUMAP(sce) # Note, the UMAP embedding is already stored in downloaded SingleCellExperiment object by authers. So one can just use this one or recompute it. 
+reducedDimNames(sce)
+plotUMAP(sce, colour_by="label", text_by="label")
+```
+
+![](results/scumap.png)                                                                                                                                                     
+<div align="center">UMAP embedding of scRNA-Seq data</div></br>  
+
+
+## (d) PCA 
+
+PCA result plotted for first two components.
+
+```{r run_pca2, eval=FALSE}
+sce <- runPCA(sce) 
+reducedDimNames(sce)
+plotPCA(sce, colour_by="label", text_by="label")
+```
+
+![](results/scpca.png)                                                                                                                                                     
+<div align="center">PCA embedding of scRNA-Seq data</div></br>  
+
+Multiple components can be plotted in a series of pairwise plots. When more
+than two components are plotted, the diagonal boxes in the scatter plot matrix
+show the density for each component.
+
+```{r run_pca2b, eval=FALSE, message=FALSE, warning=FALSE}
+sce <- runPCA(sce, ncomponents=20) 
+reducedDimNames(sce)
+plotPCA(sce, colour_by="label", text_by="label", ncomponents = 4)
+```
+
+![](results/scpca_multi.png)                                                                                                                                                     
+<div align="center">PCA embedding of scRNA-Seq data for multiple components</div></br>  
+
+## Version Information
+
+```{r sessionInfo}
+sessionInfo()
+```
+
+## References

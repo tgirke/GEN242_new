@@ -171,7 +171,7 @@ website:
             - text: "T11 — ChIP-Seq Workflow"
               href: tutorials/spchipseq/spchipseq_index.qmd
             - text: "T12 — scRNA-Seq Methods"
-              href: tutorials/scrnaseq/index.qmd
+              href: tutorials/scrnaseq/scrnaseq_index.qmd
             - text: "T13 — VAR-Seq Workflow"
               href: tutorials/spvarseq/index.qmd
             - text: "T20 — CWL Automation"
