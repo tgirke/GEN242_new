@@ -386,6 +386,17 @@ quarto render
 
 ## Troubleshooting
 
+### Determine which R packages are required by tutorials
+Run the following script from the root directory. It captures the following patterns:
+
+- library(pkg) and require(pkg)
+- pkg::function() and pkg:::function()
+- BiocManager::install(c("pkg1", "pkg2")) and install.packages(c(...))
+
+```bash
+python3 scripts/check_packages.py
+```
+
 ### `:::` artifacts appearing in rendered HTML
 
 A code chunk is inside a numbered list without proper separation. The `rmd2qmd.py` script handles this automatically. If you see it in a manually edited file, either:
