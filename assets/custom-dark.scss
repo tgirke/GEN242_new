@@ -33,9 +33,15 @@ pre.sourceCode {
   border-radius: 0 4px 4px 0;
 }
 
-pre.sourceCode.scrollable {
+/* Scrollable code chunks — use #| classes: scrollable on long chunks */
+div.scrollable {
   max-height: 400px;
-  overflow-y: auto;
+  overflow-y: auto !important;
+}
+
+div.scrollable pre.sourceCode {
+  max-height: none !important;
+  overflow-y: visible !important;
 }
 
 /* Fix inline code in headings in dark mode */

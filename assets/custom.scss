@@ -19,10 +19,15 @@ pre.sourceCode {
   border-radius: 0 4px 4px 0;
 }
 
-/* Scrollable code chunks: apply #| classes: [scrollable] to long chunks */
-pre.sourceCode.scrollable {
+/* Scrollable code chunks — use #| classes: scrollable on long chunks */
+div.scrollable {
   max-height: 400px;
-  overflow-y: auto;
+  overflow-y: auto !important;
+}
+
+div.scrollable pre.sourceCode {
+  max-height: none !important;  /* let the wrapper control height, not the pre */
+  overflow-y: visible !important;
 }
 
 /* Line number styling — subtle, not distracting */
