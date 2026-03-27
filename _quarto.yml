@@ -175,7 +175,7 @@ website:
             - text: "T13 — VAR-Seq Workflow"
               href: tutorials/spvarseq/spvarseq_index.qmd
             - text: "T20 — CWL Automation"
-              href: tutorials/cmdtocwl/index.qmd
+              href: tutorials/cmdtocwl/cmdtocwl_index.qmd
 
     # ── Assignments ──────────────────────────────────────────────────────────
     - id: assignments
