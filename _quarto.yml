@@ -173,7 +173,7 @@ website:
             - text: "T12 — scRNA-Seq Methods"
               href: tutorials/scrnaseq/scrnaseq_index.qmd
             - text: "T13 — VAR-Seq Workflow"
-              href: tutorials/spvarseq/index.qmd
+              href: tutorials/spvarseq/spvarseq_index.qmd
             - text: "T20 — CWL Automation"
               href: tutorials/cmdtocwl/index.qmd
 

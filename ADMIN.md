@@ -238,7 +238,6 @@ Check for:
 
 ### Step 5 — Commit and push
 
-Step-wise
 ```bash
 quarto render tutorials/<tutorial_dir>/<tutorial_file_name>.qmd # use render instead of preview only
 FOLDER="rbasics" && 
@@ -247,11 +246,6 @@ git add _freeze/ &&
 git add _quarto.yml && 
 git commit -m "Migrate $FOLDER tutorial" && 
 git push origin main
-```
-
-Single line
-```bash
-FOLDER="rbasics"; git add "tutorials/$FOLDER/"; git add _freeze/; git add _quarto.yml; git commit -m "Migrate $FOLDER tutorial"; git push origin main
 ```
 
 GitHub Actions will build and deploy automatically. Monitor progress at:  

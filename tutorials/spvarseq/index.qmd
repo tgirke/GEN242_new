@@ -1,6 +1,0 @@
----
-title: "T13 — VAR-Seq Workflow"
-sidebar: tutorials
----
-
-Tutorial content goes here.
