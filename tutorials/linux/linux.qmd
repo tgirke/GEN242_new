@@ -626,154 +626,257 @@ Important modifier keys to control vim/nvim
 * [HPCC Vim/Nvim Overview](https://hpcc.ucr.edu/manuals/hpc_cluster/terminalide/#vimnvim-overview)
 * [HPCC Linux Manual (old)](http://hpcc.ucr.edu/manuals_linux-basics_vim.html)
 
-## Nvim-R-Tmux essentials 
 
-Terminal-based Working Environment for R: 
-![Nvim-R-Tmux](images/Nvim-R.gif){fig-align="center"}.
-<center>Nvim-R-Tmux IDE for R</center>
+## nvim-R-Tmux Essentials
 
+Terminal-based Working Environment for R, Python and Bash:
+![nvim-R-Tmux IDE for R](images/Nvim-R.gif){fig-align="center" width=80%}.
 
 ### Basics
 
-Tmux is a terminal multiplexer that allows to split terminal windows and to detach/reattach to
-existing terminal sessions. Combinded with the `nvim-r` plugin it provides a powerful command-line working 
-environment for R where users can send code from a script to the R console or command-line.
-Both tmux and the `nvim-r` plugin need to be installed on a system. On HPCC Cluster both are configured
-in each user account. If this is not the case then follow the quick configuration instructions given in the following subsection.
+[Tmux](https://github.com/tmux/tmux) is a terminal multiplexer that allows
+splitting terminal windows and detaching/reattaching to existing terminal
+sessions. Combined with the [R.nvim](https://github.com/R-nvim/R.nvim) plugin
+it provides a powerful command-line working environment for R where users can
+send code from a script to the R console. The
+[hlterm](https://github.com/jalvesaq/hlterm) plugin provides the same
+functionality for Python and Bash scripts. All three tools need to be installed
+on a system. On HPCC Cluster they can be configured in each user account by
+following the instructions below.
 
-### Quick configuration in user accounts of UCR's HPCC
+### Quick configuration on UCR's HPCC
 
-Skip these steps if Nvim-R-Tmux is already configured in your account. Or follow the [detailed
-instructions](https://github.com/tgirke/Nvim-R_Tmux) to install Nvim-R-Tmux from scratch on your own system.
+Skip these steps if nvim-R-Tmux is already configured in your account. Or
+follow the [detailed step-wise install
+instructions](https://github.com/tgirke/nvim-R-Tmux#step-wise-install)
+to install nvim-R-Tmux from scratch on your own system (e.g. laptop).
 
-1. Log in to your user account on HPCC and execute `Install_Nvim-R_Tmux` (old version: `install_nvimRtmux`). Alternatively, follow these step-by-step [install commands](https://github.com/tgirke/Nvim-R_Tmux).
-2. To enable the nvim-R-tmux environment, log out and in again.
-3. Follow usage instructions of next section.
+1. Log in to your user account on HPCC and clone the repository:
 
-### Basic usage of Nvim-R-Tmux
+```bash
+git clone https://github.com/tgirke/nvim-R-Tmux.git
+cd nvim-R-Tmux
+bash install_nvim_r_tmux.sh
+```
 
-The official and much more detailed user manual for `Nvim-R` is available [here](https://github.com/jalvesaq/Nvim-R/blob/master/doc/Nvim-R.txt).
-The following gives a short introduction into the basic usage of Nvim-R-Tmux. The short overview is on this [slide](https://docs.google.com/presentation/d/1AYVON1pS-vBe5NLp89L2HMBZZjr6L-Z20zN6ZG9r7L0/edit#slide=id.p):
+2. Log out and back in to activate the environment.
+
+3. Follow the usage instructions in the next section.
+
+### Basic usage of nvim-R-Tmux
+
+The official and much more detailed user manual for R.nvim is available
+[here](https://github.com/R-nvim/R.nvim/blob/main/doc/R.nvim.txt). The
+following gives a short introduction into the basic usage of nvim-R-Tmux.
+A short overview is on this [slide](https://docs.google.com/presentation/d/1AYVON1pS-vBe5NLp89L2HMBZZjr6L-Z20zN6ZG9r7L0/edit#slide=id.p):
 
 <center><iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTdNORZZ6y3qBt5SMqW1owr3xdtczf9UeK88eFtLbZtatfW3H1XztX_VvQaeOZ5kDcce8qVodPgbAmI/embed?start=false&loop=false&delayms=3000" frameborder="0" width="416" height="256" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></center>
 
+**1. Start tmux session**
 
-__1. Start tmux session__
+Running Nvim from within a tmux session is strongly recommended for remote
+work on HPCC — it allows re-attaching to sessions after disconnects. When
+using tmux it is important to remember on which head node it was started (on
+HPCC: `skylark` or `bluejay`), since it can only be restarted from the same
+head node.
 
-
-Note, running Nvim from within a tmux session is optional. One can skip this step if tmux functionality is not required. However, when working on remote systems, the option of re-attaching to terminal sessions is often indispensable. When using `tmux` it is important to remember on which head node it was started (on HPCC: `skylark` or `bluejay`), since it can only be restarted from the head node where it is running.
-
-```sh
-tmux # starts a new tmux session 
-tmux a # attaches to an existing session 
+```bash
+tmux a                 # starts a new tmux session with default layout or re-attaches to existing session
 ```
 
-__2. Open nvim-connected R session__ 
+The default session opens five named windows that can be changed in a user's `~/.tmux.conf` file. 
+Switch between windows with `Ctrl-a 1` through `Ctrl-a 5`.
 
-Open a `*.R` or `*.Rmd` file with `nvim` and intialize a connected R session with `\rf`. This command can be remapped to other key combinations, e.g. uncommenting lines 10-12 in `.config/nvim/init.vim` will remap it to the `F2` key. Note, the resulting split window among Nvim and R behaves like a split viewport in `nvim` or `vim` meaning the usage of `Ctrl-w w` followed by `i` and `Esc` is important for navigation.
+**2. Open nvim-connected R session**
 
-```sh
-nvim myscript.R # or *.Rmd file
+Open a `*.R` or `*.Rmd` file with `nvim` and initialize a connected R session
+with `\rf`. The resulting split window between Nvim and R behaves like a split
+viewport in nvim, meaning `Ctrl-w w` followed by `i` and `Esc` is important
+for navigation between panes.
+
+```bash
+nvim myscript.R        # open an R script (or *.Rmd / *.qmd file)
 ```
 
-__3. Send R code from nvim to the R pane__
+Then inside nvim press `\rf` to start the connected R session.
 
-Single lines of code can be sent from nvim to the R console by pressing the space bar. To send 
-several lines at once, one can select them in nvim's visual mode and then hit the space bar. 
-Please note, the default command for sending code lines in the nvim-r-plugin is `\l`. This key 
-binding has been remapped in the provided `.config/nvim/init.vim` file to the space bar. Most other key bindings (shortcuts) still start with the `\` as LocalLeader, _e.g._ `\rh` opens the help for a function/object where the curser is located in nvim. More details on this are given below.
+**3. Send R code from nvim to the R pane**
+
+Single lines of code can be sent from nvim to the R console by pressing
+`Enter` in normal mode. To send several lines at once, select them in nvim's
+visual mode (press `v` to start selection) and then press `Enter`. The default
+keybinding for sending code in R.nvim is `\l` — this has been remapped in the
+provided `init.lua` to `Enter` for consistency with other editors.
 
 ### Important keybindings for nvim
 
-The main advantages of Neovim compared to Vim are its better performance and its built-in terminal emulator facilitating the communication among Neovim and interactive programming environments such as R. Since the Vim and Neovim environments are managed independently, one can run them in parallel on the same system without interfering with each other. The usage of Neovim is almost identical to Vim.
+The main advantages of Neovim compared to Vim are its better performance and
+its built-in terminal emulator facilitating communication between Neovim and
+interactive programming environments such as R. The usage of Neovim is almost
+identical to Vim.
 
-In the following keybinding syntax, keys connected with a dash `-` need to be pressed at the same time, _e.g._ `Ctrl-w` or `Ctrl-a`. Any key after that (space separated) needs to be pressed after releasing the combined keys. So `Ctrl-w w` means: press `Ctrl` and `w` simultaneously, then release both keys, and then press `w`. Usually, these key combinations need to be pressed in a short sequence to work. 
+In the following keybinding syntax, keys connected with `-` need to be pressed
+simultaneously, e.g. `Ctrl-w`. Any key after that (space separated) needs to
+be pressed after releasing the combined keys. So `Ctrl-w w` means: press
+`Ctrl` and `w` simultaneously, release both, then press `w`.
 
-__Nvim commands__
+**Modes**
 
-* `\rf`: opens vim-connected R session. If you do this the first time in your user account, you might be asked to create an `R` directory under `~/`. If so approve this action by pressing `y`. 
-* `spacebar`: sends code from vim to R; here remapped in `init.vim` from default `\l`
-* `\ce`: send code chunk where cursor is and show commands in console. 
-* `\ch`: send all code chunks above cursor including current one. For many more options, see section 4 in main Nvim-R manual [here](https://raw.githubusercontent.com/jalvesaq/Nvim-R/master/doc/Nvim-R.txt).
-* `:split` or `:vsplit`: splits viewport (similar to pane split in tmux)
-* `gz`: maximizes size of viewport in normal mode (similar to Tmux's `Ctrl-a z` zoom utility) 
-* `Ctrl-w w`: jumps cursor to R viewport and back; toggle between insert (`i`) and command (`Esc`) mode is required for navigation and controlling the environment.
-* `Ctrl-w r`: swaps viewports
-* `Ctrl-w =`: resizes splits to equal size
-* `:vsplit term://bash` or `:terminal`: opens terminal in split mode or in a separate window, respectively. 
-* `:resize <+5 or -5>`: resizes height by specified value
-* `:vertical resize <+5 or -5>`: resizes width by specified value
-* `Ctrl-w H` or `Ctrl-w K`: toggles between horizontal/vertical splits
-* `Ctrl-spacebar`: omni completion for R objects/functions when nvim is in insert mode. Note, this has been remapped in `init.vim` from difficult to type default `Ctrl-x Ctrl-o`. 
-* `:set mouse=n`: enables mouse support and `: set mouse-=n` disables it
-* `:set mouse=a`: enables mouse support and `: set mouse-=a` disables it. The `a` option applies it to all vim modes, which sometimes results in unexpected behavior. On some systems the `n` option may be more suitable. To enable mouse support by default, include `set mouse=n` in Nvim’s config file located in a user’s home under `~/.config/nvim/init.vim`. 
-* `:h nvim-R`: opens nvim-R's user manual; navigation works the same as for any Vim/Nvim help document
-* `/` or `?`: searches in text forward or backward, respectively.
-* `:%s/search_pattern/replace_pattern/cg`: replacement syntax. The `c` flag at the end will ask for confirmation of each replacement. Drop it if this is not required.
-* `:%s/\s\+$//`: removes trailing spaces at end of lines
-* `yy`, `dd` and `p`: deletes, copies and pastes lines where the cursor is. See vim's visual mode [here](https://opensource.com/article/19/2/getting-started-vim-visual-mode) for more options.
-* `:set spell`: turns on spell checking, and `:set nospell` turns it off. Misspelled words are highlighted. To get spelling suggestions, place the cursor on a misspelled word and then press `z=`. Suggestions can be accepted by the given numbers and then pressing `Enter`. To jump to the next or previous misspelled word, type use `]s` or `[s`, respectively. New (custom) words can be added to the spelling dictionary with `zg`. 
-* `:Rhelp fct_name`: opens help for a function from nvim's command mode with text completion support
-* `Ctrl-s and Ctrl-x`: freezes/unfreezes vim (some systems)
-* `:set tabstop=20`: quick and simple way to view tab delimited tables
+| Key | Action |
+|-----|--------|
+| `i` | enter insert mode (for typing) |
+| `Esc` | return to normal mode |
+| `:` | enter command mode |
 
-An extended listing of important nvim commands is [here](https://hpcc.ucr.edu/manuals/hpc_cluster/terminalide/#vimnvim-overview).
+**R.nvim commands** (in `.R` / `.Rmd` / `.qmd` files)
 
-### File browser built into vim: `NERDtree`
+| Key / Command | Action |
+|---------------|--------|
+| `\rf` | open connected R session |
+| `Enter` | send current line to R (normal mode) |
+| `Enter` | send selection to R (visual mode) |
+| `\aa` | send entire file to R |
+| `\ff` | send current function to R |
+| `\ce` | send current chunk (Rmd/Quarto) |
+| `\ch` | send all chunks above cursor |
+| `\rh` | open R help for word under cursor |
+| `\ro` | toggle object browser |
+| `\rv` | view data frame under cursor |
+| `Alt -` | insert `<-` |
+| `Alt ,` | insert `\|>` |
+| `:RMapsDesc` | list all R.nvim keybindings |
+| `:RConfigShow` | show current R.nvim config |
 
-NERDtree provides file browser functionality for Vim. To enable it, the NERDtree plugin needs to be installed. It is included in the account configuration 
-with `Install_Nvim-R_Tmux` mentioned [above](https://bit.ly/43Ci6MF). To use NERDtree, open 
-a file with vim/nvim and then type in normal mode `zz`.  
-The basic NERDtree usage is explained [here](https://github.com/tgirke/Nvim-R_Tmux#33-basic-nerdtree-usage).
+**Viewport and split commands**
+
+| Key / Command | Action |
+|---------------|--------|
+| `:split` or `:vsplit` | split viewport horizontally or vertically |
+| `gz` | maximize size of viewport in normal mode |
+| `Ctrl-w w` | jump cursor between splits |
+| `Ctrl-w r` | swap viewports |
+| `Ctrl-w =` | resize splits to equal size |
+| `Ctrl-w H` or `Ctrl-w K` | toggle between horizontal/vertical split |
+| `Ctrl-h/j/k/l` | jump to split in that direction |
+| `:terminal` | open terminal in current window |
+| `Esc` | exit terminal insert mode |
+| `Space-m` | quick toggle mouse on/off |
+| `:set mouse=a` or `n` | alternative mouse on/off with `-n` or `-n` |
+
+**Search and edit**
+
+| Key / Command | Action |
+|---------------|--------|
+| `/` or `?` | search forward or backward |
+| `:%s/search/replace/cg` | find and replace (with confirmation) |
+| `:%s/\s\+$//` | remove trailing whitespace |
+| `yy`, `dd`, `p` | copy, cut, paste current line |
+| `:set spell` / `:set nospell` | toggle spell checking |
+| `z=` | spelling suggestions for word under cursor |
+
+**Completion and help**
+
+| Key / Command | Action |
+|---------------|--------|
+| `Ctrl-Space` | omni completion for R objects/functions (insert mode) |
+| `:h r-nvim` | open R.nvim user manual |
+| `:Rhelp fct_name` | open help for a function with tab completion |
+
+**Other useful commands**
+
+| Key / Command | Action |
+|---------------|--------|
+| `:set tabstop=20` | table viewing with aligned columns |
+
+### File browser: neo-tree
+
+[neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim) provides file
+browser functionality for Neovim, replacing the older NERDTree plugin. To
+open or close the file browser, press `zz` in normal mode.
+
+| Key | Action |
+|-----|--------|
+| `zz` | toggle file browser open/close |
+| `Enter` | open selected file |
+| `a` | create new file or directory |
+| `d` | delete file or directory |
+| `r` | rename file |
+| `H` | toggle hidden files on/off |
+| `?` | open neo-tree help |
+| `q` | close file browser |
+| `Ctrl-w w` | jump cursor back to editor |
+
+Hidden files (dotfiles) are not shown by default. Press `H` to toggle them.
+
+### nvim IDEs for Python and Bash
+
+For languages other than R, the
+[hlterm](https://github.com/jalvesaq/hlterm) plugin provides REPL
+integration for Neovim. It is the modern replacement for the older
+`vimcmdline` plugin and is written by the same author as R.nvim (Jakson
+Alves de Aquino). Supported languages include Python, Bash/Shell, Julia,
+JavaScript, and many others.
+
+The usage is very similar to R.nvim. Open a Python or Bash script with nvim,
+start the interpreter with `\s`, and send lines with `Enter`:
+
+```bash
+nvim myscript.py       # open Python script
+nvim myscript.sh       # open Bash script
+```
+
+| Key | Action |
+|-----|--------|
+| `\s` | start interpreter (Python or Bash) |
+| `Enter` | send current line (normal mode) |
+| `Enter` | send selection (visual mode) |
+
+The `Enter` keybinding is buffer-local — R files use R.nvim's Enter and
+Python/Bash files use hlterm's Enter without any conflict.
 
 ### Important keybindings for tmux
 
-__Pane-level commands__
+**Prefix key: `Ctrl-a`** (hold Ctrl and press a, release both, then press
+the next key)
 
-* `Ctrl-a %`: splits pane vertically
-* `Ctrl-a "`: splits pane horizontally
-* `Ctrl-a o`: jumps cursor to next pane
-* `Ctrl-a Ctrl-o`: swaps panes
-* `Ctrl-a <space bar>`: rotates pane arrangement
-* `Ctrl-a Alt <left or right>`: resizes to left or right
-* `Ctrl-a Esc <up or down>`: resizes to left or right
-* `Ctrl-a : set -g mouse on`: turns on mouse support
+**Pane-level commands**
 
-__Window-level comands__
+| Key | Action |
+|-----|--------|
+| `Ctrl-a \|` | split pane vertically |
+| `Ctrl-a -` | split pane horizontally |
+| `Ctrl-a` + arrow | move between panes |
+| `Alt` + arrow | resize pane (no prefix needed) |
+| `Ctrl-a z` | zoom/unzoom active pane (maximize) |
+| `Ctrl-a o` | rotate pane arrangement |
+| `Ctrl-a x` | close current pane |
+| `Ctrl-a m` | toggle mouse on/off |
 
-* `Ctrl-a n`: switches to next tmux window 
-* `Ctrl-a Ctrl-a`: switches to previous tmux window
-* `Ctrl-a c`: creates a new tmux window 
-* `Ctrl-a 1`: switches to specific tmux window selected by number
+**Window-level commands**
 
-__Session-level comands__
+| Key | Action |
+|-----|--------|
+| `Ctrl-a c` | create new window |
+| `Ctrl-a n` / `Ctrl-a p` | next / previous window |
+| `Ctrl-a 1`…`5` | jump to window by number |
+| `Ctrl-a ,` | rename current window |
 
-* `Ctrl-a d`: detaches from current session
-* `Ctrl-a s`: switch between available tmux sesssions
-* `$ tmux new -s <name>`: starts new session with a specific name
-* `$ tmux ls`: lists available tmux session(s)
-* `$ tmux attach -t <id>`: attaches to specific tmux session  
-* `$ tmux attach`: reattaches to session 
-* `$ tmux kill-session -t <id>`: kills a specific tmux session
-* `Ctrl-a : kill-session`: kills a session from tmux command mode that can be initiated with `Ctrl-a :`
+**Session-level commands**
 
-Mouse support in tmux can be enabled with the following command.
+| Key / Command | Action |
+|---------------|--------|
+| `Ctrl-a d` | detach from current session |
+| `Ctrl-a s` | switch between sessions |
+| `tmux` | start new session with default layout |
+| `tmux a` | reattach to existing session |
+| `tmux new -s NAME` | start new named session |
+| `tmux a -t NAME` | reattach to named session |
+| `tmux ls` | list active sessions |
+| `Ctrl-a : kill-session` | kill current session |
+| `Ctrl-a r` | reload tmux config |
 
-* `Ctrl-a : set -g mouse on`  
+Mouse support is enabled by default. Use `Ctrl-a m` to toggle it off when
+you need to select text for terminal copy/paste. On most terminals,
+`Shift+click` selects text even when mouse support is active.
 
-To turn mouse support on by default, include on a separate line of `~/.tmux.conf` this command: `set -g mouse on`
 
-## Nvim IDEs for other languages
-
-For other languages, such as Bash, Python and Ruby, one can use the
-[vimcmdline](https://github.com/jalvesaq/vimcmdline) plugin for nvim (or vim). To
-install it, one needs to copy from the `vimcmdline` resository the directories
-`ftplugin`, `plugin` and `syntax` and their files to `~/.config/nvim/`. For
-user accounts of UCR’s HPCC, the above install script `install_nvimRtmux` includes the 
-install of `vimcmdline` (since 09-Jun-18).
-
-The usage of `vimcmdline` is very similar to `nvim-R`. To start a connected terminal session, one
-opens with nvim a code file with the extension of a given language (_e.g._ `*.sh` for Bash or `*.py` for Python), 
-while the corresponding interactive interpreter session is initiated
-by pressing the key sequence `\s` (corresponds to `\rf` under `nvim-R`). Subsequently, code lines can be sent 
-with the space bar. More details are available [here](https://github.com/jalvesaq/vimcmdline). 
