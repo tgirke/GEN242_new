@@ -601,7 +601,6 @@ serve different purposes and are often used together in the same workflow:
 | Resource needed | Login node (no Slurm required) | Slurm compute node allocation |
 | Languages | R, Python, Bash, and more | Tool-specific (RStudio=R, Jupyter=Python/R) |
 | Install overhead | Minimal (config files only) | Server-side setup required |
-| Best for | Quick access, scripting, job submission, monitoring, lightweight interactive work | Heavy computation, interactive visualization, GUI workflows |
 | Bandwidth | Minimal (text only) | Higher (browser-based) |
 
 A typical HPC workflow combines both: use nvim-R-Tmux as the persistent
