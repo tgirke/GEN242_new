@@ -578,9 +578,9 @@ The following list includes examples of several widely used code editors.
 
 * __Vi/Vim/Neovim__: Non-graphical (terminal-based) editor. Vi is guaranteed to be available on any system. Vim and Nvim (Neovim) are the improved versions of vi.
 * __Emacs__: Non-graphical or window-based editor. You still need to know keystroke commands to use it. Installed on all Linux distributions and on most other Unix systems.
+* __VS Code__: Widely used code editor developed by Microsoft. Provides wide range of functionalities.
 * __Pico__: Simple terminal-based editor available on most versions of Unix. Uses keystroke commands, but they are listed in logical fashion at bottom of screen. 
 * __Nano__: A simple terminal-based editor which is default on modern Debian systems. 
-* __Atom__: Modern text editor developed by GitHub project.
 
 ### Why does it matter?
 
