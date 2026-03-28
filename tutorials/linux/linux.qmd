@@ -571,8 +571,7 @@ Similarly, one can view the limits of the group a user belongs to.
 sacctmgr show account $GROUP format=Account,User,Partition,GrpCPUs,GrpMem,GrpNodes,GrpTRES%30 --ass | head -3
 ```
 
-
-## Text/code editors
+## Code editors and IDEs
 
 The following list includes examples of several widely used code editors.
 
@@ -582,17 +581,40 @@ The following list includes examples of several widely used code editors.
 * __Pico__: Simple terminal-based editor available on most versions of Unix. Uses keystroke commands, but they are listed in logical fashion at bottom of screen. 
 * __Nano__: A simple terminal-based editor which is default on modern Debian systems. 
 
-### Why does it matter?
+### Why use a terminal-based environment on HPC?
 
-To work efficiently on remote systems like a computer cluster, it is essential
-to learn how to work in a pure command-line interface. GUI environments like
-RStudio and similar coding environments are not suitable for this. In addition,
-there is a lot of value of knowing how to work in an environment that is not
-restricted to a specific programming language. Therefore, this class embraces
-RStudio where it is useful, but for working on remote systems like HPCC Cluster, it 
-uses Nvim and Tmux. Both are useful for many programming languages.
-Combinded with the `nvim-r` plugin they also provide a powerful command-line working
-environment for R. The following provides a brief introduction to this environment.
+HPCC provides several excellent web-based GUI environments via
+[OnDemand](https://hpcc.ucr.edu/manuals/hpc_cluster/selected_software/ondemand/)
+including RStudio Server (Posit), VS Code, JupyterHub, and Matlab. These
+run directly on compute nodes through Slurm and are great for interactive
+data exploration and visualization.
+
+nvim-R-Tmux complements rather than replaces these tools. The two approaches
+serve different purposes and are often used together in the same workflow:
+
+**Key differences**
+
+| | nvim-R-Tmux | OnDemand (RStudio, VS Code, Jupyter) |
+|---|---|---|
+| Access | Any SSH terminal | Browser (available anywhere) |
+| Availability | Any Linux system | Only where OnDemand is deployed |
+| Resource needed | Login node (no Slurm required) | Slurm compute node allocation |
+| Languages | R, Python, Bash, and more | Tool-specific (RStudio=R, Jupyter=Python/R) |
+| Install overhead | Minimal (config files only) | Server-side setup required |
+| Best for | Quick access, scripting, job submission, monitoring, lightweight interactive work | Heavy computation, interactive visualization, GUI workflows |
+| Bandwidth | Minimal (text only) | Higher (browser-based) |
+
+A typical HPC workflow combines both: use nvim-R-Tmux as the persistent
+backbone for writing code, submitting and monitoring Slurm jobs, and quick
+interactive R/Python work on the login node; switch to OnDemand RStudio or
+JupyterHub when you need interactive visualization or resource-intensive
+exploration on a compute node.
+
+The core advantage of nvim-R-Tmux for HPC work is robustness — a tmux
+session on the login node persists indefinitely regardless of network
+interruptions, VPN drops, or closing your laptop. Your R session, open
+files, and command history are exactly where you left them when you
+reconnect.
 
 ### Vim overview
 
