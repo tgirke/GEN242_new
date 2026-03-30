@@ -11,13 +11,13 @@ GEN242 - Spring 2025
 
 ## Printable syllabus
 
-See Google Doc version [here](https://docs.google.com/document/d/1Bm1rK70mQFm63cmCizQ6XqTRBug6fMG1Ck4SOc-qv5I/edit?usp=sharing).
+See Google Doc version [here](https://docs.google.com/document/d/1jW4kAAKZHKsDdZcMwA91gQyq4tS_ZVJPXyt-bNqD4_Q/edit?usp=sharing).
 
 ## Instructor
 Name: Thomas Girke <br> 
 Email: thomas.girke@ucr.edu <br>
 Office location: virtual via Zoom <br>
-Office hour: Tue 4:30 - 5:30 PM & Fri 4:00 - 5:00 PM <br>
+Office hour: Tue 4:30 - 5:30 PM & Thu 5:00 - 6:00 PM <br>
 Zoom URL: privately shared
 
 ## Description
@@ -91,46 +91,9 @@ separate monitors. This allows simultaneous viewing of presentations on one
 screen and following along hands-on practicals on the other screen. 
 
 ## Schedule
+The course schedule is [here](https://docs.google.com/spreadsheets/d/11ZNOikBisszY6rC8qa50Ihy5OVoFqHN0v-EZCnSUsro/edit?gid=0#gid=0). 
+It will be finalized during the first week based on student preferences.
 
-
-|Week     |Topic                                                                |
-|---------|---------------------------------------------------------------------|
-| Week 1  | Course Introduction                                                 |
-|         | Databases and Software for Genome Biology                           |
-|         | Discussion: Introduction to Linux and HPC                           |
-|         | Reading: A1, T1, T2                                                 |
-| Week 2  | Sequencing Technologies                                             |
-|         | Discussion: Introduction to R                                       |
-|         | Reading: A2-A4, T3                                                  |
-| Week 3  | Sequence Alignments and Searching                                   |
-|         | Multiple Sequence Alignments                                        |
-|         | Discussion: Programming in R and Parallel Evaluations               |
-|         | Reading: A5-A6, T4-T5                                               |
-| Week 4  | Short Read Alignment Algorithms                                     |
-|         | Discussion: Basics of NGS Analysis                                  |
-|         | Reading: A7-A10, T6                                                 |
-| Week 5  | Gene Expression Analysis, Microarrays, bulk RNA-Seq and scRNA-Seq   |
-|         | Discussion: NGS Workflow Overview using CWL; RNA-Seq Analysis       |
-|         | Reading: A11-A15, T7-T8                                             |
-| Week 6  | Analysis of ChIP-Seq and VAR-Seq Experiments                        |
-|         | Discussion: ChIP-Seq and VAR-Seq Analysis Workflows                 |
-|         | Reading: A16-A18, T9-T10                                            |
-| Week 7  | Students present publication related to their chosen course project |
-|         | Discussion: Q&A about papers                                        |
-|         | Reading: A19-A23                                                    |
-| Week 8  | Clustering algorithms                                               |
-|         | Pathway and GO annotation systems                                   |
-|         | Discussion: Gene Set Enrichment Analysis                            |
-|         | Reading: A24-A26, T7 (Sec 3.14-3.15), T11                           |
-| Week 9  | Genome and Transcriptome Assembly Algorithms                        |
-|         | Optional: Profile HMMs for Protein Family Modeling                  |
-|         | Introduction to Phylogenetics                                       |
-|         | Discussion: Graphics and Data Visualization                         |
-|         | Parallel Processing                                                 |
-|         | Reading: A27-A29, T12                                               |
-| Week 10 | Final presentations of student data analysis projects               |
-|         | Discussion: Tips and tricks for efficient data analysis programming |
-|         | Reading: A30-A31, T3 (Sec 12,13-17)                                 |
 
 
 ## Reading list
