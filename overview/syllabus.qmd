@@ -125,6 +125,16 @@ It will be finalized during the first week based on student preferences.
 | Thu, Jun 04, 3:30–4:20 PM | Final Discussion                                            |
 | Mon, Jun 09               | Project Reports Due                                         |
 
+## Learning Outcomes
+
+By the end of this course, students will be able to understand and apply core
+computational methods for genomics data analysis, including command-line, HPC,
+and R-based workflows for common sequencing data types. They will be able to
+interpret, implement, and critically evaluate analytical approaches for tasks
+such as alignment, expression analysis, enrichment analysis, and related
+genomics applications, while developing reproducible and well-documented
+analysis practices. Students will also learn to use modern AI-based tools
+productively and critically in coding, data analysis, and research planning.
 
 ## Reading list
 
