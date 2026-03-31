@@ -93,25 +93,25 @@ It will be finalized during the first week based on student preferences.
 
 | Time and Date             | Topic                                                       |
 | ------------------------- | ----------------------------------------------------------- |
-| Tue, Mar 31, 2:00–3:20 PM | Course Introduction and Modern Genomics Data Analysis       |
+| Tue, Mar 31, 2:00–3:20 PM | Course Introduction                                         |
 | Thu, Apr 02, 2:00–3:20 PM | Introduction to GitHub                                      |
 | Thu, Apr 02, 3:30–4:20 PM | Introduction to Linux & HPC                                 |
 | Tue, Apr 07, 2:00–3:20 PM | Sequencing Technologies for Downstream Data Analysis        |
 | Thu, Apr 09, 2:00–3:20 PM | Introduction to R                                           |
 | Thu, Apr 09, 3:30–4:20 PM | Introduction to R and R Markdown / Quarto                   |
 | Tue, Apr 14, 2:00–3:20 PM | Sequence Alignments and Searching                           |
-| Thu, Apr 16, 2:00–3:20 PM | Programming in R I                                          |
-| Thu, Apr 16, 3:30–4:20 PM | Programming in R II                                         |
+| Thu, Apr 16, 2:00–3:20 PM | Programming in R (Part I)                                   |
+| Thu, Apr 16, 3:30–4:20 PM | Programming in R (Part II)                                  |
 | Tue, Apr 21, 2:00–3:20 PM | Short Read Alignment Algorithms                             |
 | Thu, Apr 23, 2:00–3:20 PM | Module System, Big Data and Parallel Processing             |
 | Thu, Apr 23, 3:30–4:20 PM | NGS Analysis Basics                                         |
 | Tue, Apr 28, 2:00–3:20 PM | Gene Expression Analysis                                    |
-| Thu, Apr 30, 2:00–3:20 PM | Functional Enrichment Analysis (Pathways)                   |
+| Thu, Apr 30, 2:00–3:20 PM | Functional Enrichment Analysis (e.g. GO, Pathways, etc)     |
 | Thu, Apr 30, 3:30–4:20 PM | RNA-seq Analysis Workflows and Practical Organization       |
 | Tue, May 05, 2:00–3:20 PM | ML/AI Foundations for Genomics Data Analysis                |
 | Thu, May 07, 2:00–3:20 PM | ML/AI Applications in Transcriptomics and Genome Analysis   |
 | Thu, May 07, 3:30–4:20 PM | ML/AI for Clustering, Classification, and Pattern Discovery |
-| Tue, May 12, 2:00–3:20 PM | AI as a Tutor and Research Assistant in Data Analysis       |
+| Tue, May 12, 2:00–3:20 PM | Generative AI as a Tutor and Programming Assistant          |
 | Thu, May 14, 2:00–3:20 PM | Paper Presentations                                         |
 | Thu, May 14, 3:30–4:20 PM | Paper Presentations                                         |
 | Tue, May 19, 2:00–3:20 PM | Paper Presentations                                         |
