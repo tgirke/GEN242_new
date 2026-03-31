@@ -22,14 +22,11 @@ Zoom URL: privately shared
 
 ## Description
 
-Introduction to algorithms, statistical methods and data analysis programming
-routines relevant for genome biology. The class consists of three
-main components: lectures, hands-on practicals and student course projects. The
-lecture topics cover databases, sequence (NGS) analysis, phylogenetics,
-comparative genomics, genome-wide profiling methods, network biology and more.
-The hands-on practicals include homework assignments and course projects
-focusing on data analysis programming of next generation genome data using
-command-line tools on a computer cluster and the programming environment R.
+Introduction to algorithms, statistics, and data analysis
+programming for genomics. Covers the theory of analyzing large-scale genomics,
+profiling, phylogenetics, and drug discovery data. Introduces the corresponding
+data analysis programming techniques using command-line tools on a computer
+cluster and the programming environment R.
 Credit: 4 units (2x 1.5 hours lectures, 1 hour discussion)
 
 ## Objectives of course
