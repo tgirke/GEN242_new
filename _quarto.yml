@@ -16,12 +16,12 @@ website:
   favicon: assets/favicon.ico
 
   # ──Notification banner: comment out when not needed
-  announcement:
-    icon: info-circle
-    dismissable: true
-    content: "**New:** This site has transitioned to Quarto. At this point, functionalities are still limited, and content is not yet complete."
-    type: info  # info: blue, warning: yellow, danger: red, success: green
-    position: below-navbar # below-navbar: appears just below the top navbar; above-navbar: appears above the navbar at the very top
+  # announcement:
+  #  icon: info-circle
+  #  dismissable: true
+  #  content: "**New:** This site has transitioned to Quarto. At this point, functionalities are still limited, and content is not yet complete."
+  #  type: info  # info: blue, warning: yellow, danger: red, success: green
+  #  position: below-navbar # below-navbar: appears just below the top navbar; above-navbar: appears above the navbar at the very top
 
   # ── Top navigation bar ─────────────────────────────────────────────────────
   # Flat, like quarto.org: one word per section, minimal dropdowns.
@@ -75,53 +75,49 @@ website:
           href: slides/index.qmd
         - section: "Foundations"
           contents:
-            - text: "S1 — Course Introduction"
-              href: slides/slides_01.qmd
-            - text: "S2 — Genome Basics"
-              href: slides/slides_02.qmd
-            - text: "S3 — Databases & Software"
-              href: slides/slides_03.qmd
-            - text: "S4 — Git and GitHub"
-              href: slides/slides_04/slides_04.qmd
-            - text: "S5 — Linux and HPC"
-              href: slides/slides_05/slides_05.qmd
-            - text: "S6 — DNA Sequencing"
+            - text: "Course Introduction"
+              href: slides/course_intro/course_intro_page.qmd
+            - text: "Linux and HPC"
+              href: slides/linux_hpc_intro/linux_hpc_intro_page.qmd
+            - text: "Git and GitHub"
+              href: slides/github_intro/github_intro_page.qmd
+            - text: "DNA Sequencing"
               href: slides/slides_06.qmd
         - section: "R Programming"
           contents:
-            - text: "S7 — Introduction to R"
+            - text: "Introduction to R"
               href: slides/slides_07.qmd
-            - text: "S9 — Programming in R"
+            - text: "Programming in R"
               href: slides/slides_09.qmd
-            - text: "S12 — R on HPC"
+            - text: "R on HPC"
               href: slides/slides_12.qmd
-            - text: "S21 — Graphics in R"
+            - text: "Graphics in R"
               href: slides/slides_21.qmd
-            - text: "S22 — Tidyverse & SQLite"
+            - text: "Tidyverse & SQLite"
               href: slides/slides_22.qmd
-            - text: "S23 — Building R Packages"
+            - text: "Building R Packages"
               href: slides/slides_23.qmd
         - section: "NGS Analysis"
           contents:
-            - text: "S8 — Sequence Alignments"
+            - text: "Sequence Alignments"
               href: slides/slides_08.qmd
-            - text: "S10 — Multiple Alignments"
+            - text: "Multiple Alignments"
               href: slides/slides_10.qmd
-            - text: "S11 — Short Read Alignments"
+            - text: "Short Read Alignments"
               href: slides/slides_11.qmd
-            - text: "S13 — NGS Analysis Basics"
+            - text: "NGS Analysis Basics"
               href: slides/slides_13.qmd
-            - text: "S14 — Gene Expression"
+            - text: "Gene Expression"
               href: slides/slides_14.qmd
-            - text: "S15 — NGS Workflows"
+            - text: "NGS Workflows"
               href: slides/slides_15.qmd
-            - text: "S16 — Cluster Analysis"
+            - text: "Cluster Analysis"
               href: slides/slides_16.qmd
-            - text: "S17 — Enrichment Analysis"
+            - text: "Enrichment Analysis"
               href: slides/slides_17.qmd
-            - text: "S18 — ChIP-Seq"
+            - text: "ChIP-Seq"
               href: slides/slides_18.qmd
-            - text: "S19 — VAR-Seq"
+            - text: "VAR-Seq"
               href: slides/slides_19.qmd
 
     # ── Tutorials ────────────────────────────────────────────────────────────
@@ -135,47 +131,47 @@ website:
           href: tutorials/index.qmd
         - section: "Computing Environment"
           contents:
-            - text: "T1 — GitHub Introduction"
-              href: tutorials/github/github.qmd
-            - text: "T2 — Linux & HPCC Cluster"
+            - text: "Linux & HPCC Cluster"
               href: tutorials/linux/linux.qmd
+            - text: "GitHub Introduction"
+              href: tutorials/github/github.qmd
         - section: "Analysis Programming"
           contents:
-            - text: "T3 — Introduction to R"
+            - text: "Introduction to R"
               href: tutorials/rbasics/rbasics_index.qmd
-            - text: "T4 — Programming in R"
+            - text: "Programming in R"
               href: tutorials/rprogramming/rprogramming_index.qmd
-            - text: "T5 — Parallel R"
+            - text: "Parallel R"
               href: tutorials/rparallel/rparallel_index.qmd
-            - text: "T14 — R Markdown"
+            - text: "R Markdown"
               href: tutorials/rmarkdown/rmarkdown_index.qmd
-            - text: "T16 — Graphics & Visualization"
+            - text: "Graphics & Visualization"
               href: tutorials/rgraphics/rgraphics_index.qmd
-            - text: "T17 — Shiny Apps"
+            - text: "Shiny Apps"
               href: tutorials/shinyapps/shinyapps_index.qmd
-            - text: "T18 — Tidyverse & SQLite"
+            - text: "Tidyverse & SQLite"
               href: tutorials/dplyr/dplyr_index.qmd
-            - text: "T19 — Building R Packages"
+            - text: "Building R Packages"
               href: tutorials/rpackages/rpackages_index.qmd
         - section: "Analysis Applications"
           contents:
-            - text: "T6 — NGS Analysis Basics"
+            - text: "NGS Analysis Basics"
               href: tutorials/rsequences/rsequences_index.qmd
-            - text: "T7 — Workflow Framework"
+            - text: "Workflow Framework"
               href: tutorials/systempiper/systemPipeR_index.qmd
-            - text: "T8 — RNA-Seq Workflow"
+            - text: "RNA-Seq Workflow"
               href: tutorials/sprnaseq/sprnaseq_index.qmd
-            - text: "T9 — Cluster Analysis"
+            - text: "Cluster Analysis"
               href: tutorials/rclustering/rclustering_index.qmd
-            - text: "T10 — Enrichment Analysis"
+            - text: "Enrichment Analysis"
               href: tutorials/rfea/rfea_index.qmd
-            - text: "T11 — ChIP-Seq Workflow"
+            - text: "ChIP-Seq Workflow"
               href: tutorials/spchipseq/spchipseq_index.qmd
-            - text: "T12 — scRNA-Seq Methods"
+            - text: "scRNA-Seq Methods"
               href: tutorials/scrnaseq/scrnaseq_index.qmd
-            - text: "T13 — VAR-Seq Workflow"
+            - text: "VAR-Seq Workflow"
               href: tutorials/spvarseq/spvarseq_index.qmd
-            - text: "T20 — CWL Automation"
+            - text: "CWL Automation"
               href: tutorials/cmdtocwl/cmdtocwl_index.qmd
 
     # ── Assignments ──────────────────────────────────────────────────────────

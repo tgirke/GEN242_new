@@ -94,8 +94,8 @@ It will be finalized during the first week based on student preferences.
 | Time and Date             | Topic                                                       |
 | ------------------------- | ----------------------------------------------------------- |
 | Tue, Mar 31, 2:00–3:20 PM | Course Introduction                                         |
-| Thu, Apr 02, 2:00–3:20 PM | Introduction to GitHub                                      |
-| Thu, Apr 02, 3:30–4:20 PM | Introduction to Linux & HPC                                 |
+| Thu, Apr 02, 2:00–3:20 PM | Introduction to Linux and HPC                                     |
+| Thu, Apr 02, 3:30–4:20 PM | Introduction to GitHub                                 |
 | Tue, Apr 07, 2:00–3:20 PM | Sequencing Technologies for Downstream Data Analysis        |
 | Thu, Apr 09, 2:00–3:20 PM | Introduction to R                                           |
 | Thu, Apr 09, 3:30–4:20 PM | Introduction to R and R Markdown / Quarto                   |
