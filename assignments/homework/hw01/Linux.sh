@@ -38,12 +38,12 @@ blastp -query myseq.fasta -db halobacterium.faa -outfmt 6 -evalue 1e-6 -out blas
 date
 hostname
 
-## More exercises in Linux Manual 
+## More exercises in HPCC Linux Manual 
 ## https://hpcc.ucr.edu/manuals_linux-basics_shell.html
 
 ## Submit job to queuing system of cluster
 
-## (i) Create submission script as outlined here: https://bit.ly/2O9qMJm
+## (i) Create submission script as outlined here: https://girke.bioinformatics.ucr.edu/GEN242/tutorials/linux/linux.html#job-submission-with-sbatch
     
 ## (ii) Submit script to cluster as follows
     ## sbatch script_name.sh
