@@ -54,6 +54,12 @@ For code testing, log into a compute node interactively with `srun` (see later).
 
 ---
 
+## Computer Cluster Overview {.smaller}
+
+![Cluster overview](images/cluster_viz.png){width=100%}
+
+---
+
 ## HPCC Cluster Hardware {.smaller}
 
 ### Computer Nodes
