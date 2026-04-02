@@ -314,7 +314,7 @@ grep pattern nonexistingfile 2 > mystderr
 
 ### Homework Assignment (HW2)
 
-See HW2 page [here](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw02/hw02/).
+See HW2 page [here](https://girke.bioinformatics.ucr.edu/GEN242/assignments/assignments/homework/hw01/).
 
 ### Permissions and ownership
 

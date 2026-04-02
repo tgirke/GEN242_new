@@ -75,11 +75,11 @@ website:
           href: slides/index.qmd
         - section: "Foundations"
           contents:
-            - text: "Course Introduction"
+            - text: "S1: Course Introduction"
               href: slides/course_intro/course_intro_page.qmd
-            - text: "Linux and HPC"
+            - text: "S2: Linux and HPC"
               href: slides/linux_hpc_intro/linux_hpc_intro_page.qmd
-            - text: "Git and GitHub"
+            - text: "S3: Git and GitHub"
               href: slides/github_intro/github_intro_page.qmd
             - text: "DNA Sequencing"
               href: slides/slides_06.qmd
