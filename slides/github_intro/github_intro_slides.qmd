@@ -1,6 +1,6 @@
 ---
 title: "GitHub Introduction"
-subtitle: "T1 — GEN242: Data Analysis in Genome Biology"
+subtitle: "GEN242: Data Analysis in Genome Biology"
 author: "Thomas Girke"
 date: today
 format:
@@ -8,7 +8,7 @@ format:
     theme: [default, revealjs_custom.scss]
     slide-number: true
     progress: true
-    chalkboard: false
+    chalkboard: true
     scrollable: true
     smaller: true
     highlight-style: github

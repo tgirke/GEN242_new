@@ -3,4 +3,4 @@ title: "Slides"
 sidebar: slides
 ---
 
-Select a lecture from the sidebar.
+Select a lecture from the sidebar. Usually, slides will become available the evening before each lecture. 
