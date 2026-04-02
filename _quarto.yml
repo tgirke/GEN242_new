@@ -185,21 +185,19 @@ website:
           href: assignments/index.qmd
         - section: "Homework"
           contents:
-            - text: "HW1 — Intro & GitHub"
-              href: assignments/homework/hw01/index.qmd
-            - text: "HW2 — Linux & HPC"
-              href: assignments/homework/hw02/index.qmd
-            - text: "HW3 — R Basics"
+            - text: "HW1 — Linux & HPC"
+              href: assignments/homework/hw01/hw01.qmd 
+            - text: "HW2 — R Basics"
               href: assignments/homework/hw03/index.qmd
-            - text: "HW4 — Alignments"
+            - text: "HW3 — Alignments"
               href: assignments/homework/hw04/index.qmd
-            - text: "HW5 — R Programming"
+            - text: "HW4 — R Programming"
               href: assignments/homework/hw05/index.qmd
-            - text: "HW6 — NGS Analysis"
+            - text: "HW5 — NGS Analysis"
               href: assignments/homework/hw06/index.qmd
-            - text: "HW7 — RNA-Seq"
+            - text: "HW6 — RNA-Seq"
               href: assignments/homework/hw07/index.qmd
-            - text: "HW8 — R Markdown"
+            - text: "HW7 — R Markdown"
               href: assignments/homework/hw08/index.qmd
         - section: "Projects"
           contents:
