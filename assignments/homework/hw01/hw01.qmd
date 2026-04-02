@@ -73,7 +73,7 @@ date
 hostname
 ```
 
-Additional exercise material in [Linux Manual](https://hpcc.ucr.edu/manuals_linux-basics_shell.html)
+Additional exercise material in [HPCC Linux Manual](https://hpcc.ucr.edu/manuals_linux-basics_shell.html)
 
 ## Homework assignment
 
@@ -82,7 +82,7 @@ Record result from final BLAST command (with `outfmt 6`) in text file named `myr
 
 ## Homework submission
 
-Upload result file (`myresult.txt`) to your private course GitHub repository under `Homework/HW2/HW2.txt`.
+Upload result file (`myresult.txt`) to your private course GitHub repository under `Homework/HW1/HW1.txt`.
 
 ## Due date
 
