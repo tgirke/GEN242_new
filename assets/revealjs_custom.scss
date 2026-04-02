@@ -1,0 +1,184 @@
+/*-- scss:defaults --*/
+
+/*-- scss:rules --*/
+
+/* =============================================================================
+   GEN242 RevealJS Theme Customization
+   File: slides/slides_NN/revealjs_custom.scss
+
+   HOW TO USE:
+   - Change only the values after the colon on each property line
+   - font-size: use em units (1em = base size, 0.8em = 80% of base, 1.2em = 120%)
+   - color: use hex codes (#1B4F72) or names (black, gray, navy)
+   - font-weight: 400 = normal, 600 = semi-bold, 700 = bold
+   - margin-top / margin-bottom: space above/below the element (em units)
+   ============================================================================= */
+
+
+/* =============================================================================
+   HEADINGS
+   Use !important on font-size and font-family to override RevealJS's high-
+   specificity defaults, which otherwise win even when selectors match.
+   ============================================================================= */
+
+/* H1 — appears on the title slide only ---------------------------------------- */
+.reveal .slides h1 {
+  font-size:        1.8em        !important;   /* SIZE  — title slide main title */
+  color:            #1a1a1a      !important;   /* COLOR — near-black */
+  font-weight:      700;
+  font-family:      inherit      !important;
+  text-transform:   none         !important;
+  letter-spacing:   normal       !important;
+}
+
+/* H2 — slide title (the ## line at the top of every slide) -------------------- */
+.reveal .slides h2 {
+  font-size:        1.3em        !important;   /* SIZE  — main slide title */
+  color:            #1a1a1a      !important;   /* COLOR — near-black */
+  font-weight:      700;
+  font-family:      inherit      !important;
+  text-transform:   none         !important;
+  letter-spacing:   normal       !important;
+  margin-bottom:    0.4em;
+}
+
+/* H3 — subheading within a slide (###) ---------------------------------------- */
+.reveal .slides h3 {
+  font-size:        0.78em       !important;   /* SIZE  — same as H4 */
+  color:            #666666      !important;   /* COLOR — medium gray */
+  font-weight:      600;
+  font-family:      inherit      !important;
+  text-transform:   none         !important;
+  letter-spacing:   normal       !important;
+  margin-top:       0.4em;
+  margin-bottom:    0.15em;
+  line-height:      1.2;
+}
+
+/* H4 — minor subheading within a slide (####) --------------------------------- */
+.reveal .slides h4 {
+  font-size:        0.78em       !important;   /* SIZE  — same as H3 */
+  color:            #666666      !important;   /* COLOR — medium gray */
+  font-weight:      600;
+  font-family:      inherit      !important;
+  text-transform:   none         !important;
+  letter-spacing:   normal       !important;
+  margin-top:       0.4em;
+  margin-bottom:    0.15em;
+  line-height:      1.2;
+}
+
+
+/* =============================================================================
+   BODY TEXT (paragraphs — no bullets)
+   ============================================================================= */
+
+.reveal .slides p {
+  font-size:    0.82em;           /* SIZE  — normal paragraph text */
+  color:        #1a1a1a;          /* COLOR — near-black */
+  line-height:  1.55;
+}
+
+
+/* =============================================================================
+   BULLET LISTS (unordered — lines starting with -)
+   ============================================================================= */
+
+/* Level 1 bullets */
+.reveal .slides ul > li {
+  font-size:     0.82em;          /* SIZE  — first-level bullet */
+  color:         #1a1a1a;         /* COLOR — near-black */
+  line-height:   1.5;
+  margin-bottom: 0.2em;
+}
+
+/* Level 2 bullets — indented once */
+.reveal .slides ul > li > ul > li {
+  font-size:    0.95em;           /* SIZE  — relative to parent li */
+  color:        #333333;          /* COLOR */
+}
+
+/* Level 3 bullets — indented twice */
+.reveal .slides ul > li > ul > li > ul > li {
+  font-size:    0.92em;           /* SIZE  — relative to grandparent */
+  color:        #555555;          /* COLOR */
+}
+
+
+/* =============================================================================
+   NUMBERED LISTS (ordered — lines starting with 1.)
+   ============================================================================= */
+
+/* Level 1 numbers */
+.reveal .slides ol > li {
+  font-size:     0.82em;          /* SIZE  — first-level numbered item */
+  color:         #1a1a1a;         /* COLOR — near-black */
+  line-height:   1.5;
+  margin-bottom: 0.2em;
+}
+
+/* Level 2 numbers — indented once */
+.reveal .slides ol > li > ol > li {
+  font-size:    0.95em;           /* SIZE  — relative to parent */
+  color:        #333333;          /* COLOR */
+}
+
+/* Level 3 numbers — indented twice */
+.reveal .slides ol > li > ol > li > ol > li {
+  font-size:    0.92em;           /* SIZE  — relative to grandparent */
+  color:        #555555;          /* COLOR */
+}
+
+
+/* =============================================================================
+   CODE BLOCKS
+   ============================================================================= */
+
+/* Text inside fenced code blocks (```bash ... ```) */
+.reveal .slides pre code {
+  font-size:    0.85em            !important;  /* SIZE  — increase if hard to read */
+  color:        #e8eaf0;          /* COLOR — light text on dark background */
+  line-height:  1.5;
+}
+
+/* Inline code (`like this` in a sentence) */
+.reveal .slides code:not(pre code) {
+  font-size:    0.88em;           /* SIZE  — inline code snippets */
+  color:        #c0392b;          /* COLOR — red tint, distinguishes from body text */
+}
+
+
+/* =============================================================================
+   TABLES
+   ============================================================================= */
+
+.reveal .slides table {
+  font-size:    0.65em;           /* SIZE  — overall table text; reduce to shrink all cells */
+}
+
+.reveal .slides table th {
+  font-size:    1em;              /* SIZE  — header row, relative to table font-size above */
+  font-weight:  600;
+  color:        #1a1a1a;          /* COLOR — header text */
+}
+
+.reveal .slides table td {
+  font-size:    1em;              /* SIZE  — body cells, relative to table font-size above */
+  color:        #1a1a1a;          /* COLOR — cell text */
+}
+
+
+/* =============================================================================
+   CODE OUTPUT BLOCKS
+   Fenced blocks without a language tag (``` ... ```) or tagged as {.output}
+   render as light grey by default — this makes them clearly visible.
+   ============================================================================= */
+
+/* Plain fenced blocks with no language (``` ... ```) */
+.reveal .slides pre:not([class]) code,
+.reveal .slides pre code.text,
+.reveal .slides pre code.default {
+  color:            #1a1a1a      !important;   /* COLOR — dark text on light background */
+  background-color: #f0f0f0      !important;   /* BACKGROUND — light grey box */
+  font-style:       normal;
+}

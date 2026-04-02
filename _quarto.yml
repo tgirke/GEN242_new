@@ -83,8 +83,8 @@ website:
               href: slides/slides_03.qmd
             - text: "S4 — Git and GitHub"
               href: slides/slides_04/slides_04.qmd
-            - text: "S5 — Linux Cluster"
-              href: slides/slides_05.qmd
+            - text: "S5 — Linux and HPC"
+              href: slides/slides_05/slides_05.qmd
             - text: "S6 — DNA Sequencing"
               href: slides/slides_06.qmd
         - section: "R Programming"
