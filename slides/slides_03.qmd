@@ -1,6 +1,7 @@
 ---
 title: "S3 — Databases & Software"
 sidebar: slides
+draft: true
 ---
 
 Slide content goes here.

@@ -5,7 +5,7 @@ sidebar: assignments
 
 ## Topic: Linux Basics
 
-1. Log into your user account on the HPCC cluster, and from there into a compute node with `srun`. Note, the following code is also available in pure text format [here](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/static/custom/scripts/Linux.sh). The following command may return a `DISPLAY` error if X11 is not enabled in a session. If this happens, drop the argument `--x11`in the below command. Users logging in from a macOS computer, need to have XQuartz installed for X11 support (see  [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/linux/linux/#remote-graphics-support)). 
+1. Log into your user account on the HPCC cluster, and from there into a compute node with `srun`. Note, the following code is also available in pure text format [here](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw01/Linux.sh). The following command may return a `DISPLAY` error if X11 is not enabled in a session. If this happens, drop the argument `--x11`in the below command. Users logging in from a macOS computer, need to have XQuartz installed for X11 support (see  [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/linux/linux/#remote-graphics-support)). 
 
 ```sh
 srun --x11 --partition=short --mem=2gb --cpus-per-task 4 --ntasks 1 --time 1:00:00 --pty bash -l
