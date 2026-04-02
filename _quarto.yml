@@ -1,11 +1,12 @@
 project:
   type: website
-  output-dir: docs            # GitHub Pages serves from /docs on main branch
+  output-dir: docs
   render:
-    - "*.qmd"
-    - "*.md"
-    - "!**/*.Rmd" # exclude all .Rmd files from automatic rendering. This way you can keep them in same directory as reference.
-    # - "tutorials/rprogramming/rprogramming.Rmd" # uncomment to render specific .Rmd
+    - "**/*.qmd"        # render all .qmd files everywhere
+    - "**/*.md"         # render all .md files
+    - "!**/*.Rmd"       # exclude .Rmd (keep as reference source)
+    - "!**/*.html"      # exclude pre-rendered HTML decks (RevealJS etc.)
+
 website:
   title: "GEN242"
   description: "Data Analysis in Genome Biology — UC Riverside"
@@ -81,7 +82,7 @@ website:
             - text: "S3 — Databases & Software"
               href: slides/slides_03.qmd
             - text: "S4 — Git and GitHub"
-              href: slides/slides_04.qmd
+              href: slides/slides_04/slides_04.qmd
             - text: "S5 — Linux Cluster"
               href: slides/slides_05.qmd
             - text: "S6 — DNA Sequencing"

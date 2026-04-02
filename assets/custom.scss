@@ -1,11 +1,17 @@
+/*-- scss:defaults --*/
+
+/* No Sass variable overrides needed — cosmo defaults are used as-is */
+
 /*-- scss:rules --*/
 
+/* ── Navbar logo ─────────────────────────────────────────────────────────── */
 .navbar-brand img {
   height: 34px;
   width: auto;
   opacity: 0.92;
 }
 
+/* ── Sidebar section labels ──────────────────────────────────────────────── */
 .sidebar-section > .sidebar-item > .sidebar-item-text {
   font-size: 0.72rem;
   font-weight: 600;
@@ -14,31 +20,39 @@
   color: #6c757d;
 }
 
+/* ── Code blocks ─────────────────────────────────────────────────────────── */
 pre.sourceCode {
   border-left: 3px solid #dee2e6;
   border-radius: 0 4px 4px 0;
 }
 
-/* Scrollable code chunks — use #| classes: scrollable on long chunks */
 div.scrollable {
   max-height: 400px;
   overflow-y: auto !important;
 }
 
 div.scrollable pre.sourceCode {
-  max-height: none !important;  /* let the wrapper control height, not the pre */
+  max-height: none !important;
   overflow-y: visible !important;
 }
 
-/* Line number styling — subtle, not distracting */
 code.sourceCode .ln {
   color: #adb5bd;
   padding-right: 1em;
   user-select: none;
 }
 
-/* Fix navbar icons in dark mode — scoped here because custom.scss
-   is the primary stylesheet loaded for both themes */
+div.cell-output-stdout pre,
+div.cell-output-display pre,
+div.cell-output pre {
+  background-color: #f8f9fa;
+  border-left: 3px solid #c0c0c0;
+  border-radius: 0 4px 4px 0;
+  padding: 0.5em 0.75em;
+  font-size: 0.875em;
+}
+
+/* ── Dark mode navbar icons ──────────────────────────────────────────────── */
 .quarto-dark .navbar .quarto-navigation-tool,
 .quarto-dark .navbar .quarto-navigation-tool i,
 .quarto-dark .navbar .quarto-navigation-tool i.bi {
@@ -50,13 +64,98 @@ code.sourceCode .ln {
   color: #ffffff !important;
 }
 
-/* Code output — same background as code input boxes */
-div.cell-output-stdout pre,
-div.cell-output-display pre,
-div.cell-output pre {
-  background-color: #f8f9fa;
-  border-left: 3px solid #c0c0c0;
-  border-radius: 0 4px 4px 0;
-  padding: 0.5em 0.75em;
-  font-size: 0.875em;
+/* ── Figures ─────────────────────────────────────────────────────────────── */
+figure.figure {
+  text-align: center;
+}
+
+figcaption.figure-caption {
+  text-align: center;
+}
+
+/* ── Slide embed cards (slides/slides_NN/slides_NN.qmd) ─────────────────── */
+.slide-embed-card {
+  margin: 1.5em 0 2em;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.slide-embed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  background: #1B4F72;
+  color: #fff;
+  padding: 0.5em 1em;
+  font-size: 0.88em;
+}
+
+.slide-embed-title {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.slide-embed-actions {
+  display: flex;
+  gap: 0.5em;
+  flex-shrink: 0;
+}
+
+.slide-embed-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.28em 0.75em;
+  border-radius: 4px;
+  font-size: 0.82em;
+  font-weight: 600;
+  text-decoration: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.12);
+  transition: background 0.15s;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.slide-embed-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.slide-embed-btn svg {
+  width: 13px;
+  height: 13px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.slide-embed-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  display: block;
+  background: #f6f8fa;
+}
+
+.slide-embed-footer {
+  background: #f6f8fa;
+  border-top: 1px solid #d0d7de;
+  padding: 0.35em 1em;
+  font-size: 0.76em;
+  color: #57606a;
+}
+
+.slide-embed-footer kbd {
+  background: #eaeef2;
+  border: 1px solid #d0d7de;
+  border-radius: 3px;
+  padding: 0.05em 0.4em;
+  font-family: monospace;
+  font-size: 0.9em;
 }

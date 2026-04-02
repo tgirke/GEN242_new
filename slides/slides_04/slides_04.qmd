@@ -1,0 +1,42 @@
+---
+title: "S4 — Git and GitHub"
+sidebar: slides
+---
+
+```{=html}
+<div class="slide-embed-card">
+
+  <div class="slide-embed-header">
+    <span class="slide-embed-title">📊 GitHub Introduction</span>
+    <div class="slide-embed-actions">
+      <a class="slide-embed-btn"
+         href="github_intro.html"
+         target="_blank" rel="noopener"
+         title="Open slides in new browser tab">
+        <svg viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"/></svg>
+        Open in new tab
+      </a>
+      <button class="slide-embed-btn"
+              onclick="document.getElementById('frame-github-intro').requestFullscreen()"
+              title="Fullscreen">
+        <svg viewBox="0 0 16 16"><path d="M1.75 10a.75.75 0 0 1 .75.75v2.5c0 .138.112.25.25.25h2.5a.75.75 0 0 1 0 1.5h-2.5A1.75 1.75 0 0 1 1 13.25v-2.5a.75.75 0 0 1 .75-.75Zm12.5 0a.75.75 0 0 1 .75.75v2.5A1.75 1.75 0 0 1 13.25 15h-2.5a.75.75 0 0 1 0-1.5h2.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 .75-.75ZM2.75 2.5a.25.25 0 0 0-.25.25v2.5a.75.75 0 0 1-1.5 0v-2.5C1 1.784 1.784 1 2.75 1h2.5a.75.75 0 0 1 0 1.5ZM10 1.75a.75.75 0 0 1 .75-.75h2.5C14.216 1 15 1.784 15 2.75v2.5a.75.75 0 0 1-1.5 0v-2.5a.25.25 0 0 0-.25-.25h-2.5a.75.75 0 0 1-.75-.75Z"/></svg>
+        Fullscreen
+      </button>
+    </div>
+  </div>
+
+  <iframe
+    id="frame-github-intro"
+    class="slide-embed-frame"
+    src="github_intro.html"
+    allowfullscreen
+    loading="lazy"
+    title="GitHub Introduction slides">
+  </iframe>
+
+  <div class="slide-embed-footer">
+    <span>Navigate: <kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> prev &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>Esc</kbd> exit &nbsp;·&nbsp; <kbd>S</kbd> speaker notes</span>
+  </div>
+
+</div>
+```

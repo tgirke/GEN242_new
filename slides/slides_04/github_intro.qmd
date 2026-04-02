@@ -1,0 +1,337 @@
+---
+title: "GitHub Introduction"
+subtitle: "T1 — GEN242: Data Analysis in Genome Biology"
+author: "Thomas Girke"
+date: today
+format:
+  revealjs:
+    theme: [default, revealjs_custom.scss]
+    slide-number: true
+    progress: true
+    chalkboard: false
+    scrollable: true
+    smaller: true
+    highlight-style: github
+    code-block-height: 400px
+    transition: slide
+    footer: "GEN242 · UC Riverside · [Tutorial source](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/github/github.html)"
+    logo: "https://girke.bioinformatics.ucr.edu/GEN242/assets/logo_gen242.png"
+execute:
+  echo: true
+  eval: false
+---
+
+## Overview
+
+Topics covered in this tutorial:
+
+- What are **Git** and **GitHub**?
+- Installing Git
+- Git basics from the command-line
+- GitHub basics from the command-line
+- SSH Key authentication for private repos
+- Using GitHub from **RStudio**
+- Online file upload workflow
+- Viewing static HTML files on GitHub Pages
+
+::: {.callout-note}
+This class makes heavy use of GitHub. Homework and course projects are submitted
+and graded via **GitHub Classroom**.
+:::
+
+---
+
+## GitHub in GEN242
+
+- Homework assignments are submitted and graded on **GitHub Classroom**
+- Course projects use **private GitHub repositories** — one per project, shared within each team
+- Each student needs a **personal GitHub account** → [github.com/personal](https://github.com/personal)
+- GitHub provides **unlimited free public repositories**
+- Via [GitHub Education](https://education.github.com) students can get extended free private repos
+- New to GitHub? Start with the [Hello World quick guide](https://guides.github.com/activities/hello-world/)
+
+---
+
+## What are Git and GitHub?
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### Git — local version control
+- Tracks changes in files over time
+- Works **locally** on your machine
+- Enables branching, merging, full history
+- Free and open source
+:::
+
+::: {.column width="50%"}
+### GitHub — remote collaboration
+- Online hosting service built on Git
+- Stores repositories in the cloud
+- Adds issues, pull requests, forks
+- Enables code sharing and review
+:::
+
+::::
+
+::: {.callout-tip}
+**Git + GitHub together** = local version control synced with a remote shared repository.
+:::
+
+---
+
+## Installing Git
+
+| OS | Command / Method |
+|---|---|
+| **Windows** | Installer from [git-scm.com](https://git-scm.com/book/en/Getting-Started-Installing-Git) |
+| **macOS** | `brew install git` or Xcode Command Line Tools |
+| **Linux (Debian/Ubuntu)** | `sudo apt install git` |
+| **Linux (Fedora/RHEL)** | `sudo dnf install git` |
+
+::: {.callout-note}
+When using Git from **RStudio**, set the path to the Git executable under:  
+`Tools → Global Options → Git/SVN`
+:::
+
+Practice in the browser (no install needed): [try.github.io](https://try.github.io/levels/1/challenges/1)
+
+---
+
+## Git Basics — Core Commands {.scrollable}
+
+### Get help
+
+```bash
+git <command> --help
+```
+
+### Initialize a new repository
+
+```bash
+mkdir my_dir
+cd my_dir
+git init          # creates a hidden .git/ folder to track history
+```
+
+### Stage files for commit
+
+```bash
+git add myfile.txt     # stage a specific file
+git add .              # stage all changes in current directory (recommended for daily use)
+git add -A :/          # stage all changes in entire repo regardless of working directory
+```
+
+| Command | Stages | Best for |
+|---|---|---|
+| `git add myfile.txt` | One file only | Selective, careful commits |
+| `git add .` | All changes under current directory | Daily use — simple and intuitive |
+| `git add -A :/` | All changes in entire repo | Working inside a subdirectory |
+
+For most workflows `git add .` is sufficient. Use `git add -A :/` if you are working
+inside a subdirectory and want to be sure nothing elsewhere in the repo is missed.
+
+::: {.callout-tip}
+List files to **ignore** (temp files, outputs) in a `.gitignore` file at the repository root.
+Regular expressions are supported — see [GitHub docs](https://help.github.com/articles/ignoring-files/).
+:::
+
+### Commit a snapshot
+
+```bash
+git commit -am "describe your changes"
+# -a  stages all tracked modified files
+# -m  sets the commit message inline
+```
+
+---
+
+## GitHub Basics — Remote Workflow {.scrollable}
+
+### 1. Link your local repo to GitHub
+
+Create the repository on GitHub first (leave README/license/`.gitignore` **unchecked**), then:
+
+```bash
+git remote add origin git@github.com:<user_name>/<repos_name>.git
+```
+
+::: {.callout-warning}
+Do **not** initialize the GitHub repo with any files — that causes merge conflicts on the first push.
+:::
+
+### 2. Push local commits to GitHub
+
+```bash
+git push          # first push; after this, just: git push
+```
+
+### 3. Clone an existing repository
+
+```bash
+git clone git@github.com:<user_name>/<repos_name>.git
+```
+
+### 4. Daily workflow
+
+```bash
+git pull                            # sync before you start editing
+# ... make your changes ...
+git commit -am "describe changes"   # commit locally
+git push                            # send to GitHub
+```
+
+---
+
+## SSH Keys for Private Repositories {.scrollable}
+
+Private GitHub repositories (like your GEN242 homework repos) require **SSH Key authentication**.
+Password-based access is no longer supported by GitHub.
+
+### Why SSH Keys?
+
+- Secure, password-less authentication
+- One key pair generated per computer (laptop, HPCC cluster — each needs its own)
+- Public key lives on GitHub; private key stays on your machine
+
+### Setup steps
+
+**Step 1** — Generate a key pair on your machine (or on the HPCC cluster):
+
+```bash
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
+
+**Step 2** — Display the public key and copy it:
+
+```bash
+cat ~/.ssh/id_ed25519.pub
+```
+
+**Step 3** — Add it to GitHub:  
+`Settings → SSH and GPG keys → New SSH key` → paste → Save
+
+::: {.callout-tip}
+For the **HPCC cluster**: generate the key pair *on the cluster* and upload `~/.ssh/id_rsa.pub`
+to GitHub. See [HPCC SSH Key docs](https://hpcc.ucr.edu/manuals/access/login/#ssh-keys).
+:::
+
+---
+
+## SSH Key Authentication Flow
+
+![SSH Key Workflow](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/github/images/SSH_Keys.drawio.png){width=85%}
+
+Each computer that needs to push/pull from a private repo requires its own key pair.
+Upload each computer's **public key** to GitHub separately.
+
+---
+
+## Exercise — Full Git Workflow
+
+Run this after creating your GitHub repository (see HW01 instructions):
+
+```bash
+# Clone the remote repository to your machine
+git clone git@github.com:<user_or_org>/<repo_name>
+cd <repo_name>
+
+# Sync any remote changes
+git pull
+
+# Create a test file, stage, commit, and push
+touch test
+git add .              # or: git add test  to stage only this file
+git commit -am "add test file"
+git push
+
+# Now edit 'test' directly on GitHub online, then pull the change back:
+git pull
+```
+
+---
+
+## Online File Upload
+
+For users not yet comfortable with the command-line, GitHub supports **browser-based uploads**:
+
+1. On your repository page click **`Add file`** → **`Upload files`**
+2. In the file path field, type a subdirectory path and placeholder filename:
+   ```
+   Homework/HW1/dummy.txt
+   ```
+3. Upload your actual file to the newly created directory
+4. Delete `dummy.txt` afterward
+
+::: {.callout-note}
+GitHub does not display empty directories — the placeholder file trick creates the
+folder structure first so your real file has somewhere to land.
+:::
+
+---
+
+## GitHub from RStudio {.scrollable}
+
+### One-time setup
+
+1. Install Git — [git-scm.com](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+2. Tell RStudio where Git is: `Tools → Global Options → Git/SVN`
+3. (Optional) Configure SSH Keys from within RStudio — see [Happy Git with R](https://happygitwithr.com/ssh-keys)
+
+### Clone a repository into RStudio
+
+`File → New Project → Version Control → Git → paste repository URL`
+
+### Commit and push changes
+
+`Tools → Version Control → Commit`
+
+- Check the files you want to stage in the **Staging Area**
+- Write a commit message in the box
+- Click **Commit**, then **Push**
+
+::: {.callout-tip}
+Useful RStudio keyboard shortcuts: [support.rstudio.com](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts)
+:::
+
+---
+
+## Viewing HTML Files on GitHub Pages
+
+By default GitHub renders raw HTML source, not the page. Enable GitHub Pages to serve rendered HTML:
+
+1. Make your repository **public**
+2. Go to `Settings → Pages`
+3. Under **Source** select `Deploy from a branch`
+4. Choose branch `main`, click **Save**
+5. Wait for the URL — then append your HTML file path to view it
+
+::: {.callout-note}
+The GEN242 course site itself is hosted this way via GitHub Pages.  
+Example repo: [github.com/tgirke/View_HTML_on_GitHub](https://github.com/tgirke/View_HTML_on_GitHub/tree/master)
+:::
+
+---
+
+## Summary
+
+| Action | Command |
+|---|---|
+| Initialize repo | `git init` |
+| Stage files | `git add .` or `git add -A :/` |
+| Commit changes | `git commit -am "message"` |
+| Link to remote | `git remote add origin <url>` |
+| Push to GitHub | `git push` |
+| Pull from GitHub | `git pull` |
+| Clone a repo | `git clone <url>` |
+
+### Daily workflow
+
+```bash
+git pull                        # always sync first
+# ... edit your files ...
+git commit -am "your message"   # commit locally
+git push                        # push to GitHub
+```
+
+**Next:** T2 — [Linux & HPCC Cluster](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/linux/linux.html)
