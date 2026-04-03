@@ -182,3 +182,22 @@
   background-color: #f0f0f0      !important;   /* BACKGROUND — light grey box */
   font-style:       normal;
 }
+
+/* =============================================================================
+   Centering horizontal and vertical. Usage:
+   ::: {.center-page}
+   This sentence is horizontally and vertically centered.
+   :::
+   ============================================================================= */
+.reveal .slides .center-text {
+  text-align: center;
+}
+
+.reveal .slides .center-page {
+  text-align:      center;
+  position:        absolute;
+  top:             50%;
+  left:            50%;
+  transform:       translate(-50%, -50%);
+  width:           80%;           /* prevent text running to edges */
+}
