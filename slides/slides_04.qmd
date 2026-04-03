@@ -1,6 +1,0 @@
----
-title: "S4 — Git and GitHub"
-sidebar: slides
----
-
-Slide content goes here.
