@@ -312,9 +312,9 @@ Print `STDERR` to file
 grep pattern nonexistingfile 2 > mystderr 
 ```
 
-### Homework Assignment (HW2)
+### Homework Assignment (HW1)
 
-See HW2 page [here](https://girke.bioinformatics.ucr.edu/GEN242/assignments/assignments/homework/hw01/).
+See HW1 page [here](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw01/hw01.html).
 
 ### Permissions and ownership
 

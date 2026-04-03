@@ -325,6 +325,14 @@ Useful for: avoiding long paths, pointing multiple scripts at shared files.
 
 ---
 
+## Homework HW1: Introduction to Linux and HPC {.smaller}
+
+::: {.center-page}
+See [here](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw01/hw01.html)
+:::
+
+---
+
 ## Software Module System {.smaller .scrollable}
 
 Over **2,000 software tools** are installed on HPCC. The **module system** manages them (including multiple versions of the same tool).
