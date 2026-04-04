@@ -3,6 +3,7 @@ title: Introduction to HPCC Cluster and Linux (T2)
 author: "Thomas Girke"
 date: last-modified
 sidebar: tutorials
+engine: knitr
 ---
 
 <br/>
@@ -28,14 +29,14 @@ The HPCC Cluster (formerly called biocluster) is a shared research computing sys
 
 ### Computer nodes
 
-- Over 12,000 CPU cores
+- Over 15,000 CPU cores
 - 130 Intel, AMD and GPU nodes 
-- 32-128 CPU cores per node
-- 256-4,096 GB of RAM per node
-- 64 GPUs including NVIDIA K80, P100, A100 and H100
+- 32-256 CPU cores per node
+- 1-3 TB of RAM per node
+- 64 GPUs including NVIDIA K80, P100, RTX, A100 and H100
     
 ### Interconnect 
-- HDR IB @200Gbs 
+- NDR IB 100-400Gbs 
 
 ### Storage
 
@@ -311,6 +312,68 @@ grep pattern file | wc
 Print `STDERR` to file
 ```sh
 grep pattern nonexistingfile 2 > mystderr 
+```
+
+### Linux Path Notation and Special Characters
+
+The following code box contains frequently used Linux notations. Use the scroll option of the code box to inspect all of them.  
+
+```{bash}
+#| style: "max-height: 300px; overflow-y: auto;"
+#| eval: false
+
+## ~/  : Tilde - shortcut for the current user's home directory
+##       Expands to /home/<username> on Linux or /Users/<username> on macOS
+echo ~           # prints your home directory path
+ls ~/            # list contents of your home directory
+ls ~/.ssh/       # list contents of the .ssh folder in your home directory
+
+## /   : Forward slash - root of the entire file system (the top level)
+##       All absolute paths start from here
+ls /             # list contents of the root directory
+ls /home/        # list all user home directories on the system
+
+## .   : Single dot - refers to the current working directory
+ls .             # list contents of the current directory (same as just 'ls')
+./script.sh      # execute a script located in the current directory
+##       Without ./ the shell would not find the script unless it is in PATH
+
+## ..  : Double dot - refers to the parent directory (one level up)
+ls ..            # list contents of the parent directory
+cd ..            # move up one directory level
+cd ../..         # move up two directory levels
+
+## ../  : Double dot with slash - parent directory, used to build relative paths
+ls ../data/      # list a 'data' folder that sits one level above current directory
+cp ../data/file.txt .   # copy file.txt from parent's data/ into current directory
+
+## Absolute vs Relative paths
+## Absolute: always starts with / and gives the full path from root
+ls /home/username/project/data/
+
+## Relative: starts from wherever you currently are (no leading /)
+ls project/data/ # works if you are already in /home/username/
+
+## Practical examples combining these notations
+ls -al ~/        # list all files including hidden ones in home directory
+cp ~/.ssh/id_rsa.pub .          # copy your public SSH key into current directory
+mv ./script.sh ../bin/          # move script up one level into a bin/ directory
+cat ../../config/settings.txt   # read a file two levels up in config/ directory
+
+## Additional special notations
+## -   : Single dash - refers to the previous directory you were in
+cd -             # switch back to the last directory you were in
+
+## *   : Wildcard - matches any number of any characters in filenames
+ls *.sh          # list all files ending in .sh in current directory
+ls data_*.txt    # list all .txt files starting with 'data_'
+
+## ?   : Single character wildcard - matches exactly one character
+ls file?.txt     # matches file1.txt, fileA.txt but not file10.txt
+
+## {}  : Brace expansion - generate multiple strings at once
+ls file{1,2,3}.txt        # expands to: ls file1.txt file2.txt file3.txt
+mkdir -p project/{data,code,results}  # create three subdirectories at once
 ```
 
 ### Homework Assignment (HW1)
