@@ -3,4 +3,14 @@ title: "Tutorials"
 sidebar: tutorials
 ---
 
-Select a tutorial from the sidebar.
+::: {style="display: flex; justify-content: center; align-items: center; height: 60vh; flex-direction: column; text-align: center; color: #666;"}
+
+### 👈 Select a tutorial from the sidebar to get started
+
+Tutorials are organized into three sections:
+
+1. Computing Environment
+2. Analysis Programming
+3. Analysis Applications
+
+:::
