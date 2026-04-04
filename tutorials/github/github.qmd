@@ -336,7 +336,7 @@ Replace `<username>` with your GitHub username. All subsequent `git push` and
 
 :::
 
-## Simple Working Routing for Homeworks and Projects
+## Simple Working Routine for Homeworks and Projects
 
 To upload and sync homeworks and projects to GitHub, run the following
 git/GitHub workflow from the command-line after your SSH key is set up (see
