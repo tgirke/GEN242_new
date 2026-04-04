@@ -123,8 +123,8 @@ covers the XQuartz install.
 
 ## Setting Up a Linux Computing Environment on a Laptop 
 
-Since all major operating systems can provide a Linux command-line environment
-with minimal setup, users may want to enable such an environment on their own
+All major operating systems can provide a Linux command-line environment
+with minimal setup. Thus, users may want to enable such an environment on their own
 laptop or desktop computer (optional for this class). 
 For the installation users want to follow the instructions under the tab below 
 that matches their operating system.

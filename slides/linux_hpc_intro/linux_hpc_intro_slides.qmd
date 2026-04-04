@@ -16,6 +16,7 @@ format:
     transition: slide
     footer: "GEN242 · UC Riverside · [Tutorial source](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/linux/linux.html)"
     logo: "https://girke.bioinformatics.ucr.edu/GEN242/assets/logo_gen242.png"
+engine: knitr
 execute:
   echo: true
   eval: false
@@ -131,6 +132,247 @@ New passwords must be ≥ 8 characters with at least 3 of: lowercase, uppercase,
 
 ---
 
+## Setting Up a Linux Computing Environment on a Laptop 
+
+All major operating systems can provide a Linux command-line environment
+with minimal setup. Thus, users may want to enable such an environment on their own
+laptop or desktop computer (optional for this class). 
+For the installation users want to follow the instructions under the tab below 
+that matches their operating system.
+
+::: {.panel-tabset}
+
+## 👆 Select your OS
+
+::: {style="padding: 1em; border: 1px solid #e0e0e0; border-radius: 8px; color: #666;"}
+Select the tab above that matches your operating system:
+
+- **Windows** — use MobaXterm to get a Linux-like terminal environment
+- **macOS** — use the native Terminal or iTerm2 with Homebrew for package management
+- **Linux / ChromeOS** — use your existing terminal and `apt` for package management
+
+With the exception of a terminal app this setup is optional for this class. 
+:::
+
+## Windows (MobaXterm)
+
+MobaXterm is the recommended terminal environment for Windows users. It 
+provides a full Linux-like bash shell, built-in SSH client, file browser, 
+and a package manager — all without requiring a separate Linux installation.
+
+**1. Download and install MobaXterm**
+
+Download the **Installer edition** from 
+[mobaxterm.mobatek.net](https://mobaxterm.mobatek.net/download.html) 
+(green button). If your IT department does not allow software installation, 
+use the Portable edition instead — but make sure to configure a persistent 
+home directory under `Settings` → `General` → `Persistent home directory`.
+
+**2. Open MobaXterm's local terminal**
+
+Click **Start local terminal** in the MobaXterm home screen. This opens a 
+bash shell running locally on your Windows machine.
+
+**3. Verify Git is available**
+
+Git is included in MobaXterm's built-in Unix toolkit and should work 
+immediately:
+```{bash}
+#| eval: false
+git --version
+```
+
+If for any reason Git is not found, install it via MobaXterm's package 
+manager:
+```{bash}
+#| eval: false
+apt-get install git
+```
+
+**4. Install additional Unix tools via MobaXterm's package manager**
+
+MobaXterm includes its own `apt-get` for installing additional command-line 
+tools:
+```{bash}
+#| eval: false
+## Search for a package
+apt-get search <package-name>
+
+## Install a package
+apt-get install <package-name>
+
+## Examples
+apt-get install tree
+apt-get install wget
+```
+
+**5. Configure your Git identity (first time only)**
+```{bash}
+#| eval: false
+git config --global user.name "Your Name"
+git config --global user.email "your_github_email@example.com"
+```
+
+**Note on WSL:** If you have Windows Subsystem for Linux (WSL) installed on 
+your machine, your setup will be identical to the **Linux** tab below and 
+you do not need MobaXterm. WSL provides a full Linux distribution (e.g. 
+Ubuntu) running natively on Windows and is an excellent alternative for 
+more advanced users.
+
+## macOS
+
+macOS is Unix-based, so most tools work natively with minimal setup. The 
+main steps are to install the Xcode command-line tools, Homebrew as a 
+package manager, and optionally a more feature-rich terminal.
+
+**1. Open Terminal**
+
+The built-in Terminal app is located at:
+```
+Applications → Utilities → Terminal
+```
+
+Alternatively, install **iTerm2** from [iterm2.com](https://iterm2.com) for 
+a more feature-rich terminal with better split panes, search, and 
+customization. Both work identically for the purposes of this course.
+
+**2. Install Xcode Command Line Tools**
+
+Xcode provides essential compilers and development tools including Git. 
+Run the following and follow the on-screen prompts:
+```{bash}
+#| eval: false
+xcode-select --install
+```
+
+Verify Git was installed:
+```{bash}
+#| eval: false
+git --version
+```
+
+**3. Install Homebrew**
+
+Homebrew is the standard package manager for macOS and allows easy 
+installation of bioinformatics and command-line tools:
+```{bash}
+#| eval: false
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Verify the installation:
+```{bash}
+#| eval: false
+brew --version
+```
+
+**4. Install software with Homebrew**
+```{bash}
+#| eval: false
+## Search for a package
+brew search <package-name>
+
+## Install a package
+brew install <package-name>
+
+## Examples
+brew install git        # install or update Git via Homebrew
+brew install wget
+brew install tree
+
+## Update all installed packages
+brew upgrade
+```
+
+**5. Install XQuartz (for graphical applications)**
+
+Some bioinformatics tools require an X11 display server to render graphical 
+output over SSH. Install XQuartz from 
+[xquartz.org](https://www.xquartz.org):
+```{bash}
+#| eval: false
+## Or install via Homebrew
+brew install --cask xquartz
+```
+
+After installation, log out and back in for XQuartz to take effect.
+
+**6. Configure your Git identity (first time only)**
+```{bash}
+#| eval: false
+git config --global user.name "Your Name"
+git config --global user.email "your_github_email@example.com"
+```
+
+## Linux / ChromeOS
+
+Linux users already have everything they need. The main steps are to verify 
+the required tools are installed and set up Git.
+
+**1. Open a Terminal**
+
+Most Linux desktop environments provide a terminal via:
+
+- **Ubuntu/Debian:** search for `Terminal` in the application menu, or press `Ctrl+Alt+T`
+- **Fedora/RHEL:** search for `Terminal` or `Konsole`
+- **ChromeOS:** enable Linux (Crostini) under `Settings` → `Advanced` → 
+  `Developers` → `Linux development environment` → **Turn on**. This installs 
+  a Debian-based Linux container with a full terminal.
+
+**2. Verify Git is installed**
+```{bash}
+#| eval: false
+git --version
+```
+
+If not installed:
+```{bash}
+#| eval: false
+## Ubuntu/Debian/ChromeOS
+sudo apt-get update
+sudo apt-get install git
+
+## Fedora/RHEL
+sudo dnf install git
+```
+
+**3. Install additional software with apt-get**
+```{bash}
+#| eval: false
+## Search for a package
+apt-cache search <package-name>
+
+## Install a package
+sudo apt-get install <package-name>
+
+## Examples
+sudo apt-get install wget
+sudo apt-get install tree
+sudo apt-get install build-essential   # installs compilers and dev tools
+
+## Update all installed packages
+sudo apt-get update && sudo apt-get upgrade
+```
+
+**4. Install XQuartz / X11 (for graphical applications over SSH)**
+
+To display graphical applications forwarded from HPCC over SSH:
+```{bash}
+#| eval: false
+sudo apt-get install xorg
+```
+
+**5. Configure your Git identity (first time only)**
+```{bash}
+#| eval: false
+git config --global user.name "Your Name"
+git config --global user.email "your_github_email@example.com"
+```
+
+:::
+
+---
+
 ## Important Linux Commands {.smaller .scrollable}
 
 ### Getting help
@@ -196,6 +438,70 @@ command1 | command2       # Pipe: output of cmd1 → input of cmd2
 command > /dev/null       # Suppress output
 grep pattern file | wc    # Count matches of a pattern in file
 grep pattern badfile 2> mystderr   # Redirect stderr to file
+```
+
+---
+
+## Linux Path Notation and Special Characters
+
+The following code box contains frequently used Linux notations. Use the scroll option of the code box to inspect all of them.  
+
+```{bash}
+#| style: "max-height: 600px; overflow-y: auto;"
+#| eval: false
+
+## ~/  : Tilde - shortcut for the current user's home directory
+##       Expands to /home/<username> on Linux or /Users/<username> on macOS
+echo ~           # prints your home directory path
+ls ~/            # list contents of your home directory
+ls ~/.ssh/       # list contents of the .ssh folder in your home directory
+
+## /   : Forward slash - root of the entire file system (the top level)
+##       All absolute paths start from here
+ls /             # list contents of the root directory
+ls /home/        # list all user home directories on the system
+
+## .   : Single dot - refers to the current working directory
+ls .             # list contents of the current directory (same as just 'ls')
+./script.sh      # execute a script located in the current directory
+##       Without ./ the shell would not find the script unless it is in PATH
+
+## ..  : Double dot - refers to the parent directory (one level up)
+ls ..            # list contents of the parent directory
+cd ..            # move up one directory level
+cd ../..         # move up two directory levels
+
+## ../  : Double dot with slash - parent directory, used to build relative paths
+ls ../data/      # list a 'data' folder that sits one level above current directory
+cp ../data/file.txt .   # copy file.txt from parent's data/ into current directory
+
+## Absolute vs Relative paths
+## Absolute: always starts with / and gives the full path from root
+ls /home/username/project/data/
+
+## Relative: starts from wherever you currently are (no leading /)
+ls project/data/ # works if you are already in /home/username/
+
+## Practical examples combining these notations
+ls -al ~/        # list all files including hidden ones in home directory
+cp ~/.ssh/id_rsa.pub .          # copy your public SSH key into current directory
+mv ./script.sh ../bin/          # move script up one level into a bin/ directory
+cat ../../config/settings.txt   # read a file two levels up in config/ directory
+
+## Additional special notations
+## -   : Single dash - refers to the previous directory you were in
+cd -             # switch back to the last directory you were in
+
+## *   : Wildcard - matches any number of any characters in filenames
+ls *.sh          # list all files ending in .sh in current directory
+ls data_*.txt    # list all .txt files starting with 'data_'
+
+## ?   : Single character wildcard - matches exactly one character
+ls file?.txt     # matches file1.txt, fileA.txt but not file10.txt
+
+## {}  : Brace expansion - generate multiple strings at once
+ls file{1,2,3}.txt        # expands to: ls file1.txt file2.txt file3.txt
+mkdir -p project/{data,code,results}  # create three subdirectories at once
 ```
 
 ---
@@ -658,7 +964,7 @@ tmux attach -t mysession # Reattach later
 nvim myscript.R          # Opens R script
 ```
 
-Press `\rf` to start R console → `\l` to send current line → `\ss` to send selection.
+Press `\rf` to start R console → `enter` to send current line → `\ce` to send chunk.
 
 ---
 
