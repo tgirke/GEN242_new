@@ -3,4 +3,10 @@ title: "Slides"
 sidebar: slides
 ---
 
-Select a lecture from the sidebar. Usually, slides will become available the evening before each lecture. 
+::: {style="display: flex; justify-content: center; align-items: center; height: 60vh; flex-direction: column; text-align: center; color: #666;"}
+
+### 👈 Select a slideshow from the sidebar to get started
+
+Slideshows will be made available the evening before each lecture. 
+
+:::
