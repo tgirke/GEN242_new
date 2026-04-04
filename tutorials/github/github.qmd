@@ -1,5 +1,5 @@
 ---
-title: "GitHub Introduction (T1)"
+title: "GitHub Introduction"
 author: "Thomas Girke"
 date: last-modified
 sidebar: tutorials
