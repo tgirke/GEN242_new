@@ -3,6 +3,7 @@ title: "GitHub Introduction (T1)"
 author: "Thomas Girke"
 date: last-modified
 sidebar: tutorials
+engine: knitr
 ---
 
 <br/>
@@ -114,19 +115,244 @@ pair for each computer one uses and upload the corresponding public keys to GitH
 
 <br></br>
 
-## Exercise
 
-Run the following git/github excercise from the command-line. Do this after creating a GitHub repos according to the instructions above or online as outlined [here](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw01/hw01/#b-homework-submission-to-a-private-github-repository).
+### SSH Key Setup for GitHub Access
 
-```sh 
-git clone git@github.com:<user or org>/<repo name> 
-cd <repo name>
+To push and pull from your private GEN242 GitHub repositories, you need to 
+authenticate with GitHub using an SSH key. The process involves generating an 
+SSH key pair on the computer you want to work from, and then uploading the 
+public key to your GitHub account. Since most students work both on the 
+**HPCC cluster** and on their **local computer**, this setup needs to be 
+completed separately for each machine — each gets its own key pair, and both 
+public keys get uploaded to GitHub.
+
+Select the tab below that matches your working environment and follow the 
+steps in order. If you work from both HPCC and a local computer, complete 
+the HPCC tab first, then return and complete your local computer tab.
+
+::: {.panel-tabset}
+
+## HPCC → GitHub
+
+**Step 1: Generate an SSH key pair on HPCC**
+
+Log into HPCC via MobaXterm (Windows) or Terminal (macOS/Linux) and run the 
+following commands on the HPCC cluster:
+```{bash}
+#| eval: false
+## Create .ssh directory if it does not exist yet
+mkdir -m 700 ${HOME}/.ssh
+
+## Generate SSH key pair
+ssh-keygen -t rsa -f ~/.ssh/id_rsa
+```
+
+Follow the prompts. You may set a passphrase or leave it blank. Once complete 
+you will find two files in your `~/.ssh/` directory:
+
+- `id_rsa` — your **private** key (never share this)
+- `id_rsa.pub` — your **public** key (this gets uploaded to GitHub)
+
+**Step 2: Copy your public key**
+```{bash}
+#| eval: false
+cat ~/.ssh/id_rsa.pub
+```
+
+Select and copy the entire output line.
+
+**Step 3: Upload the public key to GitHub**
+
+1. Go to [github.com](https://github.com) and click your **profile picture** → **Settings**
+2. In the left sidebar click **SSH and GPG keys** → **New SSH key**
+3. Give it the title `HPCC`
+4. Paste the public key and click **Add SSH key**
+
+**Step 4: Test the GitHub SSH connection from HPCC**
+```{bash}
+#| eval: false
+ssh -T git@github.com
+```
+
+A successful setup returns: `Hi <username>! You've successfully authenticated...`
+
+**Step 5: Clone your private GEN242 repo using the SSH URL**
+
+On your repo page on GitHub click **Code → SSH** and copy the URL, then run:
+```{bash}
+#| eval: false
+git clone git@github.com:GEN242-2026/<username>-hw.git
+```
+
+Replace `<username>` with your GitHub username. All subsequent `git push` and 
+`git pull` commands inside that directory will use SSH automatically.
+
+## macOS/Linux → GitHub
+
+**Step 1: Generate an SSH key pair on your local computer**
+
+Open Terminal and run the following commands on your local machine:
+```{bash}
+#| eval: false
+## Create .ssh directory if it does not exist yet
+mkdir -m 700 ${HOME}/.ssh
+
+## Generate SSH key pair
+ssh-keygen -t rsa -f ~/.ssh/id_rsa
+```
+
+Follow the prompts. You may set a passphrase or leave it blank. Once complete 
+you will find two files in your `~/.ssh/` directory:
+
+- `id_rsa` — your **private** key (never share this)
+- `id_rsa.pub` — your **public** key (this gets uploaded to GitHub)
+
+**Step 2: Copy your public key**
+```{bash}
+#| eval: false
+cat ~/.ssh/id_rsa.pub
+```
+
+Select and copy the entire output line.
+
+**Step 3: Upload the public key to GitHub**
+
+1. Go to [github.com](https://github.com) and click your **profile picture** → **Settings**
+2. In the left sidebar click **SSH and GPG keys** → **New SSH key**
+3. Give it the title `macOS laptop` or `Linux desktop` as appropriate
+4. Paste the public key and click **Add SSH key**
+
+**Step 4: Test the GitHub SSH connection**
+```{bash}
+#| eval: false
+ssh -T git@github.com
+```
+
+A successful setup returns: `Hi <username>! You've successfully authenticated...`
+
+**Step 5: Clone your private GEN242 repo using the SSH URL**
+
+On your repo page on GitHub click **Code → SSH** and copy the URL, then run:
+```{bash}
+#| eval: false
+git clone git@github.com:GEN242-2026/<username>-hw.git
+```
+
+Replace `<username>` with your GitHub username. All subsequent `git push` and 
+`git pull` commands inside that directory will use SSH automatically.
+
+## Windows (MobaXterm) → GitHub
+
+**Download and install MobaXterm**
+
+Download the **Installer edition** (green button) from 
+[mobaxterm.mobatek.net](https://mobaxterm.mobatek.net/download.html). 
+If your IT department does not allow software installation, use the 
+Portable edition instead — but note that you will need to configure a 
+persistent home directory under `Settings` → `General` → `Persistent home 
+directory` to avoid losing your SSH keys between sessions.
+
+**Step 1: Open MobaXterm's local terminal**
+
+In MobaXterm click **Start local terminal**. This opens a bash shell running 
+locally on your Windows machine. All commands below are run here — 
+**not** in an HPCC session.
+
+**Step 2: Generate an SSH key pair**
+```{bash}
+#| eval: false
+## Create .ssh directory if it does not exist yet
+mkdir -m 700 ${HOME}/.ssh
+
+## Generate SSH key pair
+ssh-keygen -t rsa -f ~/.ssh/id_rsa
+```
+
+Follow the prompts. You may set a passphrase or leave it blank. The key pair 
+is saved in MobaXterm's local home directory, which on Windows is located at:
+```
+C:\Users\<WindowsUsername>\Documents\MobaXterm\home\.ssh\
+```
+
+The two files created are:
+
+- `id_rsa` — your **private** key (never share this)
+- `id_rsa.pub` — your **public** key (this gets uploaded to GitHub)
+
+**Step 3: Copy your public key**
+```{bash}
+#| eval: false
+cat ~/.ssh/id_rsa.pub
+```
+
+To avoid accidentally copying extra whitespace (which will break the key), 
+you can alternatively use MobaXterm's built-in file browser: open the left 
+sidebar → navigate to `~/.ssh/` → right-click `id_rsa.pub` → open with text 
+editor → select all and copy.
+
+**Step 4: Upload the public key to GitHub**
+
+1. Go to [github.com](https://github.com) and click your **profile picture** → **Settings**
+2. In the left sidebar click **SSH and GPG keys** → **New SSH key**
+3. Give it the title `Windows laptop`
+4. Paste the public key and click **Add SSH key**
+
+**Step 5: Configure Git identity (first time only)**
+
+MobaXterm's local terminal may not have your Git identity set. Run:
+```{bash}
+#| eval: false
+git config --global user.name "Your Name"
+git config --global user.email "your_github_email@example.com"
+```
+
+**Step 6: Test the GitHub SSH connection**
+```{bash}
+#| eval: false
+ssh -T git@github.com
+```
+
+A successful setup returns: `Hi <username>! You've successfully authenticated...`
+
+**Step 7: Clone your private GEN242 repo using the SSH URL**
+
+On your repo page on GitHub click **Code → SSH** and copy the URL, then run:
+```{bash}
+#| eval: false
+git clone git@github.com:GEN242-2026/<username>-hw.git
+```
+
+Replace `<username>` with your GitHub username. All subsequent `git push` and 
+`git pull` commands inside that directory will use SSH automatically.
+
+:::
+
+## Simple Working Routing for Homeworks and Projects
+
+To upload and sync homeworks and projects to GitHub, run the following
+git/GitHub workflow from the command-line after your SSH key is set up (see
+above) and after your private homework or project repository has been shared
+with you via a GitHub invitation email. The workflow is identical whether you
+are on HPCC, a Mac/Linux computer, or MobaXterm's local terminal on Windows.
+
+```{bash}
+#| eval: false
+
+# Clone your repo (first time only, on each machine you use)
+git clone git@github.com:GEN242-2026/<username>-hw.git
+cd <username>-hw
+
+# Always pull first to get the latest changes before starting work
 git pull
-touch test # Creates empty file for testing
-git add test # or use '-A' for all
-git commit -am "some edits"
-git push 
-##-> Edit test file online and then run `git pull` to inspect changes
+
+# Create or edit files, then stage and commit your changes
+touch test                    # creates an empty file for testing
+git add test                  # stage a specific file, or use 'git add -A' for all changes
+git commit -am "some edits"   # commit with a short descriptive message
+git push                      # upload commits to GitHub
+
+# -> Edit the test file directly on GitHub online, then run git pull to sync changes back
+git pull
 ```
 
 ## Online file upload
