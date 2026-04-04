@@ -124,13 +124,22 @@ SSH key pair on the computer you want to work from, and then uploading the
 public key to your GitHub account. Since most students work both on the 
 **HPCC cluster** and on their **local computer**, this setup needs to be 
 completed separately for each machine — each gets its own key pair, and both 
-public keys get uploaded to GitHub.
-
-Select the tab below that matches your working environment and follow the 
-steps in order. If you work from both HPCC and a local computer, complete 
-the HPCC tab first, then return and complete your local computer tab.
+public keys get uploaded to GitHub. 
 
 ::: {.panel-tabset}
+
+## 👆 Select your environment
+
+::: {style="padding: 1em; border: 1px solid #e0e0e0; border-radius: 8px; color: #666;"}
+Select the tab above that matches your working environment:
+
+- **HPCC → GitHub** — working on the HPCC cluster
+- **macOS/Linux → GitHub** — working on a local Mac or Linux computer
+- **Windows (MobaXterm) → GitHub** — working on a local Windows computer
+
+If you work from both HPCC and a local computer, complete the HPCC tab 
+first, then return and complete your local computer tab.
+:::
 
 ## HPCC → GitHub
 
