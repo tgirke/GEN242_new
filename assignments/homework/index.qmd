@@ -3,4 +3,12 @@ title: "Homework"
 sidebar: assignments
 ---
 
-Homework overview goes here.
+::: {style="display: flex; justify-content: center; align-items: center; height: 60vh; flex-direction: column; text-align: center; color: #666;"}
+
+### 👈 Select a homework from the sidebar to get started
+
+Homeworks will be made available the evening before each lecture. Homework
+solutions will be released after their due date, usually one week after they 
+are assigned.
+
+:::
