@@ -7,8 +7,6 @@ sidebar: assignments
 
 ### 👈 Select a homework from the sidebar to get started
 
-Homeworks will be made available the evening before each lecture. Homework
-solutions will be released after their due date, usually one week after they 
-are assigned.
+Homeworks will be made available the evening before each lecture. 
 
 :::
