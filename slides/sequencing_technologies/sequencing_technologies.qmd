@@ -1,0 +1,10 @@
+---
+title: "Sequencing Technologies"
+sidebar: slides
+---
+
+
+[ [Download](https://docs.google.com/presentation/d/1qY7Nc7sEYmkR5uPK1HbDHph6Iu6O_KUG9ADTpMkOz3s/edit?usp=sharing) ]
+
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQXRjosF6_LKyqM9JXr44FUiXje9fBr2i576fhCmS-JD0QmPZIFiedwzxMbZ0XYdKnJ1LWHD_Tq3jZj/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
