@@ -3,4 +3,8 @@ title: "Assignments"
 sidebar: assignments
 ---
 
-Select an assignment from the sidebar.
+::: {style="display: flex; justify-content: center; align-items: center; height: 60vh; flex-direction: column; text-align: center; color: #666;"}
+
+### 👈 Select an assignment from the sidebar to get started
+
+:::
