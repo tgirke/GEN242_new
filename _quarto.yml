@@ -81,8 +81,8 @@ website:
               href: slides/linux_hpc_intro/linux_hpc_intro_page.qmd
             - text: "S3: Git and GitHub"
               href: slides/github_intro/github_intro_page.qmd
-            - text: "DNA Sequencing"
-              href: slides/slides_06.qmd
+            - text: "S4: DNA Sequencing"
+              href: slides/sequencing_technologies/sequencing_technologies.qmd
         - section: "R Programming"
           contents:
             - text: "Introduction to R"
