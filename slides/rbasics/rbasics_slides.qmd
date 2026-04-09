@@ -144,7 +144,23 @@ For detailed Bioconductor install instructions see the [Bioc Install page](http:
 
 ## Working Routine for Tutorials
 
-Always write commands into an **R script** (`.R` file) rather than typing directly into the console — this preserves your work and makes it reproducible.
+When working in R, a good practice is to write all commands directly into an R script, instead of the R console, and then send the commands for execution to the R console with the `Ctrl+Enter` shortcut in RStudio/Posit, or similar shortcuts in other R coding environments, such as [Nvim-R](../linux/index.qmd#nvim-r-tmux-essentials). This way all work is preserved and can be reused in the future. 
+
+The following instructions in this section provide a short overview of the standard working routine users should use to load R-based tutorials into their R IDE.
+
+**Step 1.** Download `*.qmd`, `*.Rmd` or `*.R` file. These so called source files are always linked on the top right corner of each tutorial or slide show. 
+   From within R the file download can be accomplished via `download.file` (see below), `wget` from the command-line or with the save function in a user's web browser. The following downloads the `Rmd` file of this tutorial via `download.file` from the R console.
+
+```{r download_file}
+#| eval: false
+download.file("https://raw.githubusercontent.com/tgirke/GEN242/main/slides/rbasics/rbasics_slides.qmd", "rbasics.qmd") 
+
+```
+
+**Step 2.** Load `*.qmd`, `*.Rmd` or `*.R` file in Neovim (Nvim-R) or RStudio.
+
+**Step 3.** Send code from code editor to R console by pushing `space bar` in Neovim (Nvim-R) or `Ctrl + Enter` in RStudio. In `*.Rmd` files the code lines are in so called [code chunks](../rmarkdown/index.qmd#r-code-chunks) and only those
+   ones can be sent to the console. To obtain in Neovim a connected R session one has to initiate by pressing the `\rf` key combination. For details see [here](https://girke.bioinformatics.ucr.edu/GEN242/custom/slides/R_for_HPC/NvimR.html#11).
 
 ---
 
