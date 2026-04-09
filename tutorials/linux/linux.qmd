@@ -980,12 +980,23 @@ to install nvim-R-Tmux from scratch on your own system (e.g. laptop).
 ```bash
 git clone https://github.com/tgirke/nvim-R-Tmux.git
 cd nvim-R-Tmux
-bash install_nvim_r_tmux.sh
+module load neovim/0.11.4 tmux R && bash install_nvim_r_tmux.sh
+# bash install_nvim_r_tmux.sh # when installing on your local computer, omit the previous line and run this command instead 
 ```
 
-2. Log out and back in to activate the environment.
+2. Install plugins on first launch. This must be done on the **login node**:
 
-3. Follow the usage instructions in the next section.
+```bash
+nvim # wait until plugin install finishes 
+:Lazy sync # run under command mode in nvim 
+:qa # closes nvim
+```
+
+3. Log in to a compute node with `srun` and follow the usage instructions in the next section. 
+
+```bash
+srun --partition=short --mem=2gb --cpus-per-task 4 --ntasks 1 --time 1:00:00 --pty bash -l
+```
 
 ### Basic usage of nvim-R-Tmux
 
@@ -1005,7 +1016,7 @@ HPCC: `skylark` or `bluejay`), since it can only be restarted from the same
 head node.
 
 ```bash
-tmux a                 # starts a new tmux session with default layout or re-attaches to existing session
+tmux a  # starts a new tmux session with default layout or re-attaches to existing session
 ```
 
 The default session opens five named windows that can be changed in a user's `~/.tmux.conf` file. 
@@ -1019,10 +1030,14 @@ viewport in nvim, meaning `Ctrl-w w` followed by `i` and `Esc` is important
 for navigation between panes.
 
 ```bash
-nvim myscript.R        # open an R script (or *.Rmd / *.qmd file)
+nvim myscript.R # open an R script (or *.Rmd / *.qmd file)
 ```
 
-Then inside nvim press `\rf` to start the connected R session.
+Then inside nvim press `\rf` to start the connected R session. The first time 
+an R script is opened it is best to do this on a compute node (log in with `srun`)
+since it will create the omni completion database which can take some time since there
+are over 1,500 R packages installed on the HPCC cluster. Also, if there any messages
+appearing during the first session, just confirm them with `Enter`.
 
 **3. Send R code from nvim to the R pane**
 
@@ -1061,7 +1076,7 @@ be pressed after releasing the combined keys. So `Ctrl-w w` means: press
 | `Enter` | send selection to R (visual mode) |
 | `\aa` | send entire file to R |
 | `\ff` | send current function to R |
-| `\ce` | send current chunk (Rmd/Quarto) |
+| `\cc` | send current chunk (Rmd/Quarto) |
 | `\ch` | send all chunks above cursor |
 | `\rh` | open R help for word under cursor |
 | `\ro` | toggle object browser |
