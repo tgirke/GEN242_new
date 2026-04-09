@@ -36,11 +36,11 @@ table(iris$Species)
 
 ## D-H. Analysis Worflow
 
-The instructions for these homework assignments are [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics/#analysis-routine).
+The instructions for these homework assignments are [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics_index.html#analysis-routine).
 
 ## Homework submission
 
-Assemble the code for solving the homework assignments A-H in a single R script (HW2.R) and upload it to your private GitHub repository under `Homework/HW2/HW2.R`. Note, the preassembled workflow script provided for HW2H ([here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics/#export-results-and-run-entire-exercise-as-script)) does not include the solutions for HW2A-C.
+Assemble the code for solving the homework assignments A-H in a single R script (HW2.R) and upload it to your private GitHub repository under `Homework/HW2/HW2.R`. Note, the preassembled workflow script provided for HW2H ([here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics_index.html#export-results-and-run-entire-exercise-as-script)) does not include the solutions for HW2A-C.
 
 ## Due date
 
