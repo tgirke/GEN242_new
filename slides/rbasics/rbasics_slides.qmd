@@ -53,7 +53,7 @@ All tasks are assembled into a single R script `HW2.R` submitted via GitHub.
 - Efficient functions and data structures for data analysis
 - Powerful, publication-quality graphics
 - Access to a fast-growing number of analysis packages
-- Most widely used language in bioinformatics
+- One of the most widely used languages in bioinformatics
 - Standard for data mining and biostatistical analysis
 - Free, open-source, available for all operating systems
 
@@ -89,9 +89,9 @@ Key shortcuts in RStudio:
 
 Terminal-based environment combining Neovim + R + Tmux. Ideal for working on the HPCC cluster.
 
-- Send line to R console: `Space`
 - Start R session: `\rf`
-- Full instructions: [Nvim-R-Tmux tutorial](../linux/index.qmd#nvim-r-tmux-essentials)
+- Send line to R console: `Enter`
+- Full instructions: [Nvim-R-Tmux tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/linux/linux.html#nvim-r-tmux-essentials)
 
 ### Other editors
 
@@ -146,28 +146,6 @@ For detailed Bioconductor install instructions see the [Bioc Install page](http:
 
 Always write commands into an **R script** (`.R` file) rather than typing directly into the console — this preserves your work and makes it reproducible.
 
-### Step 1 — Download the tutorial source file
-
-```r
-download.file(
-  "https://raw.githubusercontent.com/tgirke/GEN242//main/content/en/tutorials/rbasics/Rbasics.Rmd",
-  "Rbasics.Rmd"
-)
-```
-
-### Step 2 — Open in your IDE
-
-Load the `.Rmd` or `.R` file in RStudio or Neovim.
-
-### Step 3 — Send code to the R console
-
-- **RStudio**: `Ctrl+Enter`
-- **Nvim-R**: `Space` (line), `\rf` to start R session first
-
-::: {.callout-note}
-In `.Rmd` files, code lives in **code chunks** — only those lines can be sent to the console. In `.R` scripts, any line can be sent.
-:::
-
 ---
 
 ## Getting Around {.scrollable}
@@ -215,7 +193,7 @@ assign("x", function(arguments))       # alternative: assign()
 
 ### Pipes
 
-The `%>%` pipe from `dplyr`/`magrittr` chains operations left-to-right:
+The `%>%` pipe from `dplyr`/`magrittr` chains operations left-to-right. New native R pipe is `|>`.
 
 ```r
 x %>% f(y)    # equivalent to f(x, y)
@@ -231,12 +209,16 @@ Makes code readable by avoiding deeply nested calls. Details in the [dplyr tutor
 
 ### Run scripts
 
+Preferred version
+
 ```r
-source("my_script.R")      # execute R script from within R
+Rscript my_script.R        # execute from command-line (preferred)
 ```
 
+Older alternatives
+
 ```bash
-Rscript my_script.R        # execute from command-line (preferred)
+source("my_script.R")      # execute R script from within R
 R CMD BATCH my_script.R    # alternative
 ```
 
@@ -246,7 +228,8 @@ R CMD BATCH my_script.R    # alternative
 
 ### Numeric
 
-```r
+```{r numeric} 
+#| eval: true
 x <- c(1, 2, 3)
 x
 is.numeric(x)
@@ -255,7 +238,8 @@ as.character(x)    # convert to character
 
 ### Character
 
-```r
+```{r character}
+#| eval: true
 x <- c("1", "2", "3")
 x
 is.character(x)
@@ -264,13 +248,15 @@ as.numeric(x)      # convert to numeric
 
 ### Complex (mixed types — coerced to character)
 
-```r
+```{r complex}
+#| eval: true
 c(1, "b", 3)       # numeric values coerced to character
 ```
 
 ### Logical
 
-```r
+```{r logical}
+#| eval: true
 x <- 1:10 < 5
 x                  # TRUE/FALSE vector
 !x                 # negate
@@ -304,7 +290,8 @@ which(x)           # indices of TRUE values
 
 ### Vectors (1D, uniform type)
 
-```r
+```{r vectors}
+#| eval: true
 myVec <- setNames(1:10, letters[1:10])   # named numeric vector
 myVec[1:5]                                # subset by position
 myVec[c(2,4,6,8)]                        # subset by multiple positions
@@ -313,7 +300,8 @@ myVec[c("b", "d", "f")]                  # subset by name
 
 ### Factors (1D, grouping information)
 
-```r
+```{r factors}
+#| eval: true
 factor(c("dog", "cat", "mouse", "dog", "dog", "cat"))
 # Levels: cat dog mouse
 ```
@@ -326,7 +314,8 @@ Factors encode categorical variables with defined levels — essential for stati
 
 ### Matrices (2D, uniform type)
 
-```r
+```{r matrices}
+#| eval: true
 myMA <- matrix(1:30, 3, 10, byrow=TRUE)
 class(myMA)
 myMA[1:2, ]                  # first two rows
@@ -336,7 +325,8 @@ class(as.data.frame(myMA))   # convert to data.frame
 
 ### Data Frames (2D, mixed types)
 
-```r
+```{r dataframes}
+#| eval: true
 myDF <- data.frame(Col1=1:10, Col2=10:1)
 myDF[1:2, ]
 class(as.matrix(myDF))       # convert to matrix
@@ -344,7 +334,8 @@ class(as.matrix(myDF))       # convert to matrix
 
 ### Tibbles — modern data frames
 
-```r
+```{r tibbles}
+#| eval: true
 library(tidyverse)
 as_tibble(iris)              # nicer printing, same structure as data.frame
 ```
@@ -359,7 +350,8 @@ The `iris` dataset is built into R — no import needed. It is used throughout t
 
 ### Lists (containers for any object type)
 
-```r
+```{r lists}
+#| eval: true
 myL <- list(name="Fred", wife="Mary", no.children=3, child.ages=c(4,7,9))
 myL
 myL[[4]][1:2]     # access fourth element, first two values
@@ -381,7 +373,8 @@ myfct <- function(arg1, arg2, ...) {
 
 ### 1. By position
 
-```r
+```{r subsetpos}
+#| eval: true
 myVec <- 1:26; names(myVec) <- LETTERS
 myVec[1:4]          # first four elements
 myVec[-(1:4)]       # everything except first four
@@ -389,26 +382,30 @@ myVec[-(1:4)]       # everything except first four
 
 ### 2. By logical vector
 
-```r
+```{r subsetlog}
+#| eval: true
 myLog <- myVec > 10
 myVec[myLog]        # elements where condition is TRUE
 ```
 
 ### 3. By name
 
-```r
+```{r subsetname}
+#| eval: true
 myVec[c("B", "K", "M")]
 ```
 
 ### 4. By `$` sign (single column or list component)
 
-```r
+```{r subsetdollar}
+#| eval: true
 iris$Species[1:8]
 ```
 
 ### Subsetting 2D objects
 
-```r
+```{r subset2d}
+#| eval: true
 iris[1:4, ]                          # first 4 rows, all columns
 iris[1:4, 1:2]                       # first 4 rows, first 2 columns
 iris[iris$Species=="setosa", ]       # rows matching a condition
@@ -420,7 +417,8 @@ iris[iris$Species=="setosa", ]       # rows matching a condition
 
 ### Combining objects
 
-```r
+```{r combining}
+#| eval: true
 c(1, 2, 3)
 x <- 1:3; y <- 101:103
 c(x, y)                   # concatenate vectors
@@ -430,7 +428,8 @@ rbind(ma, ma)             # bind as rows
 
 ### Dimensions and names
 
-```r
+```{r dimensions}
+#| eval: true
 length(iris$Species)      # number of elements
 dim(iris)                 # rows x columns
 rownames(iris)[1:8]
@@ -440,7 +439,7 @@ names(myL)                # names of list components
 
 ### Sorting
 
-```r
+```{r sorting}
 sort(10:1)
 sortindex <- order(iris[,1], decreasing=FALSE)
 iris[sortindex, ][1:2, ]
@@ -449,7 +448,9 @@ iris[order(iris$Sepal.Length, iris$Sepal.Width), ][1:2, ]  # sort by multiple co
 
 ### Checking identity
 
-```r
+```{r identical}
+#| eval: true
+myma <- iris[1:2,]
 all(myma == iris[1:2,])       # all values equal?
 identical(myma, iris[1:2,])   # strict identity?
 ```
@@ -460,7 +461,8 @@ identical(myma, iris[1:2,])   # strict identity?
 
 ### Comparison operators
 
-```r
+```{r equal}
+#| eval: true
 1 == 1    # equal
 1 != 2    # not equal
 # also: <, >, <=, >=
@@ -468,7 +470,8 @@ identical(myma, iris[1:2,])   # strict identity?
 
 ### Logical operators
 
-```r
+```{r logicoperator}
+#| eval: true
 x <- 1:10; y <- 10:1
 x > y & x > 5    # AND
 x > y | x > 5    # OR
@@ -477,7 +480,8 @@ x > y | x > 5    # OR
 
 ### Basic calculations
 
-```r
+```{r basiccalcul}
+#| eval: true
 x + y
 sum(x)
 mean(x)
@@ -491,9 +495,20 @@ apply(iris[1:6, 1:3], 2, mean)    # column means (margin=2)
 
 ### Import tabular data
 
-```r
-myDF <- read.delim("myData.xls", sep="\t")           # tab-delimited file
+Widely used `read.table` and `read.delim` import functions
+
+```{r importmydf}
+myDF <- read.delim("myData.tsv", sep="\t")           # tab-delimited file
 ```
+
+Better alternative from `readr` package with better default arguments and performance.
+For details see [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/dplyr/dplyr_index.html#import-with-readr).
+
+```r
+myTibble <- readr::read_tsv(myData.tsv") 
+```
+
+Import from Google Sheet directly
 
 ```r
 library(googlesheets4)
@@ -528,17 +543,9 @@ saveRDS(mylist, "mylist.rds")             # save
 mylist <- readRDS("mylist.rds")           # load
 ```
 
-### Copy/paste via clipboard
-
-```r
-read.delim("clipboard")                   # Windows/Linux: paste into R
-read.delim(pipe("pbpaste"))               # macOS: paste into R
-write.table(iris, "clipboard", sep="\t", col.names=NA, quote=FALSE)  # copy from R
-```
-
 ::: {.callout-note}
 **HW02 — Task A:** Sort `iris` by first column, subset first 12 rows, export to file, modify column names in a spreadsheet program, re-import with `read.table`.  
-[→ HW02 instructions](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw02/index.html)
+[→ HW02 instructions](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw02/hw02.html)
 :::
 
 ---
@@ -547,32 +554,36 @@ write.table(iris, "clipboard", sep="\t", col.names=NA, quote=FALSE)  # copy from
 
 ### Unique entries
 
-```r
+```{r uniqueentries}
+#| eval: true
 length(iris$Sepal.Length)          # 150 total entries
 length(unique(iris$Sepal.Length))  # number of unique values
 ```
 
 ### Count occurrences
 
-```r
+```{r countoccurences}
+#| eval: true
 table(iris$Species)    # frequency table per group
 ```
 
 ### Aggregate statistics
 
-```r
+```{r aggregate}
+#| eval: true
 aggregate(iris[,1:4], by=list(iris$Species), FUN=mean, na.rm=TRUE)
 ```
 
 ### Set operations
 
-```r
+```{r intersects}
+#| eval: true
 month.name %in% c("May", "July")    # logical: which elements are in set
 ```
 
 ### Merge data frames
 
-```r
+```{r mergefct}
 frame1 <- iris[sample(1:nrow(iris), 30), ]
 my_result <- merge(frame1, iris, by.x=0, by.y=0, all=TRUE)
 # all=TRUE: outer join (keep all rows)
@@ -597,14 +608,14 @@ my_result <- merge(frame1, iris, by.x=0, by.y=0, all=TRUE)
 | Base R graphics | Low + high | built-in |
 | grid | Low-level | built-in |
 | lattice | High-level | `lattice` |
-| ggplot2 | High-level | `ggplot2` |
+| [ggplot2](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rgraphics/rgraphics_index.html#ggplot2-graphics) | High-level | `ggplot2` |
 
 ### Key base graphics functions
 
 `plot`, `barplot`, `boxplot`, `hist`, `pie`, `pairs`, `image`, `heatmap`
 
 ::: {.callout-tip}
-For new code, **ggplot2** is generally recommended. Base R graphics remain useful for quick exploration and highly customized plots.
+For new code, [**ggplot2**](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rgraphics/rgraphics_index.html#ggplot2-graphics) is generally recommended. Base R graphics remain useful for quick exploration and highly customized plots.
 :::
 
 ---
@@ -613,33 +624,38 @@ For new code, **ggplot2** is generally recommended. Base R graphics remain usefu
 
 ### Sample dataset
 
-```r
+```{r sampledataset}
+#| eval: true
 set.seed(1410)
 y <- matrix(runif(30), ncol=3, dimnames=list(letters[1:10], LETTERS[1:3]))
 ```
 
 ### Basic scatter plot
 
-```r
+```{r scatterplot}
+#| eval: true
 plot(y[,1], y[,2])
 ```
 
 ### All pairs
 
-```r
+```{r pairsplot}
+#| eval: true
 pairs(y)
 ```
 
 ### With color and labels
 
-```r
+```{r addcolor}
+#| eval: true
 plot(y[,1], y[,2], pch=20, col="red", main="Symbols and Labels")
 text(y[,1]+0.03, y[,2], rownames(y))
 ```
 
 ### Add regression line
 
-```r
+```{r regressionline}
+#| eval: true
 plot(y[,1], y[,2])
 myline <- lm(y[,2] ~ y[,1])
 abline(myline, lwd=2)
@@ -659,7 +675,7 @@ summary(myline)
 
 ::: {.callout-note}
 **HW02 — Task B:** Generate a scatter plot of `iris` columns 1 and 2, colored by Species. Use `xlim`/`ylim` to restrict data to the bottom-left quadrant.  
-[→ HW02 instructions](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw02/index.html)
+[→ HW02 instructions](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw02/hw02.html#b.-scatter-plots)
 :::
 
 ---
@@ -668,7 +684,8 @@ summary(myline)
 
 ### Bar plot with legend
 
-```r
+```{r barplotexample}
+#| eval: true
 barplot(y[1:4,], ylim=c(0, max(y[1:4,])+0.3), beside=TRUE, legend=letters[1:4])
 ```
 
@@ -678,7 +695,8 @@ When input is a **matrix**, `barplot` uses column names as group labels and row 
 
 ### Bar plot with error bars
 
-```r
+```{r barwitherror}
+#| eval: true
 bar <- barplot(m <- rowMeans(y) * 10, ylim=c(0, 10))
 stdev <- sd(t(y))
 arrows(bar, m, bar, m + stdev, length=0.15, angle=90)
@@ -686,7 +704,8 @@ arrows(bar, m, bar, m + stdev, length=0.15, angle=90)
 
 ### Histogram and density plot
 
-```r
+```{r histogram}
+#| eval: true
 hist(y, freq=TRUE, breaks=10)
 plot(density(y), col="red")
 ```
@@ -703,14 +722,14 @@ Works the same for `jpeg()`, `png()`, `svg()`, `tiff()`.
 
 ::: {.callout-note}
 **HW02 — Task C:** Calculate mean values per Species for first four `iris` columns. Organize as a matrix. Generate stacked and horizontally arranged bar plots.  
-[→ HW02 instructions](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw02/index.html)
+[→ HW02 instructions](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw02/hw02.html#b.-scatter-plots)
 :::
 
 ---
 
 ## Analysis Routine — Data Import {.scrollable}
 
-A step-by-step workflow using two sample biological datasets.
+A step-by-step workflow using two sample biological datasets. This analysis routine is used by [Homework 2D-H](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics_index.html#analysis-routine).
 
 ### Step 1 — Download sample data
 
@@ -729,9 +748,9 @@ my_target[1:2,]
 Or import directly from the web:
 
 ```r
-my_mw <- read.delim("http://faculty.ucr.edu/~tgirke/Documents/R_BioCond/Samples/MolecularWeight_tair7.xls",
+my_mw <- read.delim("https://faculty.ucr.edu/~tgirke/Documents/R_BioCond/Samples/MolecularWeight_tair7.xls",
                      header=TRUE, sep="\t")
-my_target <- read.delim("http://faculty.ucr.edu/~tgirke/Documents/R_BioCond/Samples/TargetP_analysis_tair7.xls",
+my_target <- read.delim("https://faculty.ucr.edu/~tgirke/Documents/R_BioCond/Samples/TargetP_analysis_tair7.xls",
                           header=TRUE, sep="\t")
 ```
 
@@ -845,31 +864,6 @@ Rscript HW2.R      # from command-line
 ```
 :::
 
----
-
-## Upgrading R and Bioconductor
-
-When upgrading R, **all packages must be reinstalled** — packages are built for specific R versions.
-
-### Step 1 — Export current package list before upgrading
-
-```r
-my_R_pkgs <- rownames(installed.packages())
-writeLines(my_R_pkgs, "my_R_pkgs.txt")
-```
-
-### Step 2 — After installing new R, reinstall all packages
-
-```r
-install.packages(c("devtools", "tidyverse", "BiocManager"))
-BiocManager::install(version="3.19")    # check current version at https://bit.ly/3NADnll
-my_R_pkgs <- readLines("my_R_pkgs.txt")
-BiocManager::install(my_R_pkgs)
-```
-
-::: {.callout-warning}
-Packages from private GitHub repos or custom sources cannot be reinstalled this way — identify them from the install report and reinstall manually.
-:::
 
 ---
 
