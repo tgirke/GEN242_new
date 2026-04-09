@@ -23,20 +23,11 @@ sidebar: slides
       <a class="slide-embed-btn"
          href="rbasics_slides.html"
          download="rbasics_slides.html"
-         title="Download slides as self-contained HTML">
+         title="Download self-contained HTML file">
         <svg viewBox="0 0 16 16"><path d="M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14Zm-1-5.372 3.25 3.22 3.25-3.22a.749.749 0 0 1 1.06.009.749.749 0 0 1 0 1.051l-4 3.96a.75.75 0 0 1-1.06 0l-4-3.96a.749.749 0 0 1 .009-1.06.749.749 0 0 1 1.051 0ZM8 10.5a.75.75 0 0 1-.75-.75v-6.5a.75.75 0 0 1 1.5 0v6.5a.75.75 0 0 1-.75.75Z"/></svg>
         Download HTML
       </a>
-
-      <!-- Download PowerPoint -->
-      <a class="slide-embed-btn"
-         href="rbasics.pptx"
-         download="rbasics.pptx"
-         title="Download slides as PowerPoint (importable into Google Slides)">
-        <svg viewBox="0 0 16 16"><path d="M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14Zm-1-5.372 3.25 3.22 3.25-3.22a.749.749 0 0 1 1.06.009.749.749 0 0 1 0 1.051l-4 3.96a.75.75 0 0 1-1.06 0l-4-3.96a.749.749 0 0 1 .009-1.06.749.749 0 0 1 1.051 0ZM8 10.5a.75.75 0 0 1-.75-.75v-6.5a.75.75 0 0 1 1.5 0v6.5a.75.75 0 0 1-.75.75Z"/></svg>
-        Download PowerPoint
-      </a>
-
+      
     </div>
   </div>
 
@@ -53,7 +44,6 @@ sidebar: slides
     <span>Navigate: <kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> prev &nbsp;·&nbsp;
     <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>Esc</kbd> exit &nbsp;·&nbsp;
     <kbd>S</kbd> speaker notes &nbsp;·&nbsp;
-    PowerPoint can be imported into Google Slides via <strong>File → Import slides</strong></span>
   </div>
 
 </div>

@@ -18,6 +18,7 @@ sidebar: slides
         Open in new tab
       </a>
 
+      <!-- Open HTML -->
       <a class="slide-embed-btn"
          href="github_intro_slides.html"
          download="github_intro_slides.html"

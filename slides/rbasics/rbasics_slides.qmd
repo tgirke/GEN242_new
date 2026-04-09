@@ -1,13 +1,15 @@
 ---
 title: "Introduction to R"
-subtitle: "T3 — GEN242: Data Analysis in Genome Biology"
+subtitle: "GEN242: Data Analysis in Genome Biology"
 author: "Thomas Girke"
 date: today
 format:
   revealjs:
-    theme: [default, ../../assets/revealjs_custom.scss]
+    theme: [default, revealjs_custom.scss]
     slide-number: true
     progress: true
+    chalkboard: false  # true not compatible with full HTML download option specified in next line
+    embed-resources: true        # for HTML download
     scrollable: true
     smaller: true
     highlight-style: github
