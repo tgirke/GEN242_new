@@ -8,7 +8,8 @@ format:
     theme: [default, revealjs_custom.scss]
     slide-number: true
     progress: true
-    chalkboard: true
+    chalkboard: false  # true not compatible with full HTML download option specified in next line
+    embed-resources: true        # for HTML download
     scrollable: true
     smaller: true
     highlight-style: github
