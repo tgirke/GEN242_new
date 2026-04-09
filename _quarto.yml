@@ -86,7 +86,7 @@ website:
         - section: "R Programming"
           contents:
             - text: "Introduction to R"
-              href: slides/slides_07.qmd
+              href: slides/rbasics/rbasics_page.qmd
             - text: "Programming in R"
               href: slides/slides_09.qmd
             - text: "R on HPC"

@@ -1,0 +1,899 @@
+---
+title: "Introduction to R"
+subtitle: "T3 — GEN242: Data Analysis in Genome Biology"
+author: "Thomas Girke"
+date: today
+format:
+  revealjs:
+    theme: [default, ../../assets/revealjs_custom.scss]
+    slide-number: true
+    progress: true
+    scrollable: true
+    smaller: true
+    highlight-style: github
+    code-block-height: 380px
+    transition: slide
+    footer: "GEN242 · UC Riverside · [Tutorial source](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics_index.html)"
+    logo: "https://girke.bioinformatics.ucr.edu/GEN242/assets/logo_gen242.png"
+execute:
+  echo: true
+  eval: false
+---
+
+## Overview
+
+Topics covered in this tutorial:
+
+- What is R and why use it?
+- R working environments (RStudio, Nvim-R-Tmux)
+- Installation of R, RStudio and packages
+- Navigating directories and basic syntax
+- Data types and data objects
+- Subsetting, utilities, and calculations
+- Reading and writing external data
+- Graphics in R (base graphics)
+- Analysis routine: data import, merging, filtering, plotting
+
+::: {.callout-note}
+**Homework:** HW02 tasks are linked throughout these slides at the relevant sections.  
+All tasks are assembled into a single R script `HW2.R` submitted via GitHub.
+:::
+
+---
+
+## What is R?
+
+[R](http://cran.at.r-project.org) is a powerful statistical environment and programming language for data analysis and visualization, widely used in bioinformatics and data science.
+
+### Why use R?
+
+- Complete statistical environment and programming language
+- Efficient functions and data structures for data analysis
+- Powerful, publication-quality graphics
+- Access to a fast-growing number of analysis packages
+- Most widely used language in bioinformatics
+- Standard for data mining and biostatistical analysis
+- Free, open-source, available for all operating systems
+
+### Key package repositories
+
+| Repository | Packages | Focus |
+|---|---|---|
+| [CRAN](http://cran.at.r-project.org/) | >14,000 | General data analysis |
+| [Bioconductor](http://www.bioconductor.org/) | >2,000 | Bioscience data analysis |
+| [Omegahat](https://github.com/omegahat) | >90 | Programming interfaces |
+
+---
+
+## R Working Environments {.scrollable}
+
+Several IDEs support syntax highlighting and sending code to the R console:
+
+### RStudio / Posit (recommended for beginners)
+
+- [RStudio Desktop](https://www.rstudio.com/products/rstudio/features) — local installation
+- [RStudio Server / OnDemand](https://hpcc.ucr.edu/manuals/hpc_cluster/selected_software/ondemand/#rstudio-on-ondemand) — web-based, available at UCR HPCC
+- [Posit Cloud](https://rstudio.cloud/) — cloud-based, no local install needed
+
+Key shortcuts in RStudio:
+
+| Shortcut | Action |
+|---|---|
+| `Ctrl+Enter` | Send code to R console |
+| `Ctrl+Shift+C` | Comment / uncomment |
+| `Ctrl+1` / `Ctrl+2` | Switch between editor and console |
+
+### Nvim-R-Tmux (terminal-based, for HPC users)
+
+Terminal-based environment combining Neovim + R + Tmux. Ideal for working on the HPCC cluster.
+
+- Send line to R console: `Space`
+- Start R session: `\rf`
+- Full instructions: [Nvim-R-Tmux tutorial](../linux/index.qmd#nvim-r-tmux-essentials)
+
+### Other editors
+
+Emacs (ESS), VS Code, gedit, Notepad++, Eclipse — all support R to varying degrees.
+
+---
+
+## Installation of R and Packages {.scrollable}
+
+### Install R and RStudio
+
+1. Install R from [CRAN](http://cran.at.r-project.org/)
+2. Install RStudio from [posit.co](http://www.rstudio.com/ide/download)
+
+### Install CRAN packages
+
+```r
+install.packages(c("pkg1", "pkg2"))
+install.packages("pkg.zip", repos=NULL)   # install from local file
+```
+
+### Install Bioconductor packages
+
+```r
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")        # install BiocManager if not available
+BiocManager::version()                     # check Bioconductor version
+BiocManager::install(c("pkg1", "pkg2"))   # install Bioc packages
+```
+
+### Load packages
+
+```r
+library("my_library")                                          # single package
+lapply(c("lib1", "lib2"), require, character.only=TRUE)       # multiple packages
+```
+
+### Explore a package
+
+```r
+library(help="my_library")    # list functions
+vignette("my_library")        # open manual (PDF or HTML)
+```
+
+::: {.callout-tip}
+For detailed Bioconductor install instructions see the [Bioc Install page](http://www.bioconductor.org/install/) and the [BiocManager vignette](https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html).
+:::
+
+---
+
+## Working Routine for Tutorials
+
+Always write commands into an **R script** (`.R` file) rather than typing directly into the console — this preserves your work and makes it reproducible.
+
+### Step 1 — Download the tutorial source file
+
+```r
+download.file(
+  "https://raw.githubusercontent.com/tgirke/GEN242//main/content/en/tutorials/rbasics/Rbasics.Rmd",
+  "Rbasics.Rmd"
+)
+```
+
+### Step 2 — Open in your IDE
+
+Load the `.Rmd` or `.R` file in RStudio or Neovim.
+
+### Step 3 — Send code to the R console
+
+- **RStudio**: `Ctrl+Enter`
+- **Nvim-R**: `Space` (line), `\rf` to start R session first
+
+::: {.callout-note}
+In `.Rmd` files, code lives in **code chunks** — only those lines can be sent to the console. In `.R` scripts, any line can be sent.
+:::
+
+---
+
+## Getting Around {.scrollable}
+
+### Starting and closing R
+
+```r
+q()                    # quit R
+# Save workspace image? [y/n/c]:
+```
+
+::: {.callout-warning}
+Answer **n** when asked to save the workspace. Saving `.RData` creates large files. Better practice: save your analysis as an R script and re-run it to restore your session.
+:::
+
+### Navigating directories
+
+```r
+ls()                              # list objects in current R session
+dir()                             # list files in current working directory
+getwd()                           # print path of current working directory
+setwd("/home/user")               # change working directory
+```
+
+### File information
+
+```r
+list.files(path="./", pattern="*.txt$", full.names=TRUE)   # list files by pattern
+file.exists(c("file1", "file2"))                            # check if files exist
+file.info(list.files(path="./", pattern=".txt$", full.names=TRUE))  # file details
+```
+
+---
+
+## Basic Syntax
+
+### Assignment and general syntax
+
+```r
+object <- ...                          # assignment operator (preferred over =)
+object <- function_name(arguments)     # call a function
+object <- object[arguments]            # subset an object
+assign("x", function(arguments))       # alternative: assign()
+```
+
+### Pipes
+
+The `%>%` pipe from `dplyr`/`magrittr` chains operations left-to-right:
+
+```r
+x %>% f(y)    # equivalent to f(x, y)
+```
+
+Makes code readable by avoiding deeply nested calls. Details in the [dplyr tutorial](../dplyr/index.qmd).
+
+### Getting help
+
+```r
+?function_name       # open help page for a function
+```
+
+### Run scripts
+
+```r
+source("my_script.R")      # execute R script from within R
+```
+
+```bash
+Rscript my_script.R        # execute from command-line (preferred)
+R CMD BATCH my_script.R    # alternative
+```
+
+---
+
+## Data Types
+
+### Numeric
+
+```r
+x <- c(1, 2, 3)
+x
+is.numeric(x)
+as.character(x)    # convert to character
+```
+
+### Character
+
+```r
+x <- c("1", "2", "3")
+x
+is.character(x)
+as.numeric(x)      # convert to numeric
+```
+
+### Complex (mixed types — coerced to character)
+
+```r
+c(1, "b", 3)       # numeric values coerced to character
+```
+
+### Logical
+
+```r
+x <- 1:10 < 5
+x                  # TRUE/FALSE vector
+!x                 # negate
+which(x)           # indices of TRUE values
+```
+
+---
+
+## Data Objects — Overview
+
+### Common object types
+
+| Type | Dimensions | Data types | Example |
+|---|---|---|---|
+| `vector` | 1D | uniform | `c(1, 2, 3)` |
+| `factor` | 1D | grouping labels | `factor(c("a","b","a"))` |
+| `matrix` | 2D | uniform | `matrix(1:9, 3, 3)` |
+| `data.frame` | 2D | mixed | `data.frame(x=1:3, y=c("a","b","c"))` |
+| `tibble` | 2D | mixed | modern `data.frame` |
+| `list` | any | any | `list(name="Fred", age=30)` |
+| `function` | — | code | `function(x) x^2` |
+
+### Naming rules
+
+- Object names should **not** start with a number
+- Avoid spaces and special characters like `#` in names
+
+---
+
+## Vectors and Factors
+
+### Vectors (1D, uniform type)
+
+```r
+myVec <- setNames(1:10, letters[1:10])   # named numeric vector
+myVec[1:5]                                # subset by position
+myVec[c(2,4,6,8)]                        # subset by multiple positions
+myVec[c("b", "d", "f")]                  # subset by name
+```
+
+### Factors (1D, grouping information)
+
+```r
+factor(c("dog", "cat", "mouse", "dog", "dog", "cat"))
+# Levels: cat dog mouse
+```
+
+Factors encode categorical variables with defined levels — essential for statistical modeling.
+
+---
+
+## Matrices and Data Frames
+
+### Matrices (2D, uniform type)
+
+```r
+myMA <- matrix(1:30, 3, 10, byrow=TRUE)
+class(myMA)
+myMA[1:2, ]                  # first two rows
+myMA[1, , drop=FALSE]        # first row, keep matrix structure
+class(as.data.frame(myMA))   # convert to data.frame
+```
+
+### Data Frames (2D, mixed types)
+
+```r
+myDF <- data.frame(Col1=1:10, Col2=10:1)
+myDF[1:2, ]
+class(as.matrix(myDF))       # convert to matrix
+```
+
+### Tibbles — modern data frames
+
+```r
+library(tidyverse)
+as_tibble(iris)              # nicer printing, same structure as data.frame
+```
+
+::: {.callout-tip}
+The `iris` dataset is built into R — no import needed. It is used throughout these examples.
+:::
+
+---
+
+## Lists and Functions
+
+### Lists (containers for any object type)
+
+```r
+myL <- list(name="Fred", wife="Mary", no.children=3, child.ages=c(4,7,9))
+myL
+myL[[4]][1:2]     # access fourth element, first two values
+```
+
+Lists are the most flexible R object — they can hold vectors, data frames, other lists, and functions all at once.
+
+### Functions (reusable pieces of code)
+
+```r
+myfct <- function(arg1, arg2, ...) {
+    function_body
+}
+```
+
+---
+
+## Subsetting Data Objects {.scrollable}
+
+### 1. By position
+
+```r
+myVec <- 1:26; names(myVec) <- LETTERS
+myVec[1:4]          # first four elements
+myVec[-(1:4)]       # everything except first four
+```
+
+### 2. By logical vector
+
+```r
+myLog <- myVec > 10
+myVec[myLog]        # elements where condition is TRUE
+```
+
+### 3. By name
+
+```r
+myVec[c("B", "K", "M")]
+```
+
+### 4. By `$` sign (single column or list component)
+
+```r
+iris$Species[1:8]
+```
+
+### Subsetting 2D objects
+
+```r
+iris[1:4, ]                          # first 4 rows, all columns
+iris[1:4, 1:2]                       # first 4 rows, first 2 columns
+iris[iris$Species=="setosa", ]       # rows matching a condition
+```
+
+---
+
+## Important Utilities {.scrollable}
+
+### Combining objects
+
+```r
+c(1, 2, 3)
+x <- 1:3; y <- 101:103
+c(x, y)                   # concatenate vectors
+ma <- cbind(x, y)         # bind as columns
+rbind(ma, ma)             # bind as rows
+```
+
+### Dimensions and names
+
+```r
+length(iris$Species)      # number of elements
+dim(iris)                 # rows x columns
+rownames(iris)[1:8]
+colnames(iris)
+names(myL)                # names of list components
+```
+
+### Sorting
+
+```r
+sort(10:1)
+sortindex <- order(iris[,1], decreasing=FALSE)
+iris[sortindex, ][1:2, ]
+iris[order(iris$Sepal.Length, iris$Sepal.Width), ][1:2, ]  # sort by multiple columns
+```
+
+### Checking identity
+
+```r
+all(myma == iris[1:2,])       # all values equal?
+identical(myma, iris[1:2,])   # strict identity?
+```
+
+---
+
+## Operators and Calculations
+
+### Comparison operators
+
+```r
+1 == 1    # equal
+1 != 2    # not equal
+# also: <, >, <=, >=
+```
+
+### Logical operators
+
+```r
+x <- 1:10; y <- 10:1
+x > y & x > 5    # AND
+x > y | x > 5    # OR
+!x                # NOT
+```
+
+### Basic calculations
+
+```r
+x + y
+sum(x)
+mean(x)
+apply(iris[1:6, 1:3], 1, mean)    # row means (margin=1)
+apply(iris[1:6, 1:3], 2, mean)    # column means (margin=2)
+```
+
+---
+
+## Reading and Writing Data {.scrollable}
+
+### Import tabular data
+
+```r
+myDF <- read.delim("myData.xls", sep="\t")           # tab-delimited file
+```
+
+```r
+library(googlesheets4)
+gs4_deauth()                                           # for public sheets
+mysheet <- read_sheet("1U-32UcwZP1k3saKeaH1mbvEAOfZRdNHNkWK2GI1rpPM", skip=4)
+myDF <- as.data.frame(mysheet)
+```
+
+```r
+library(readxl)
+mysheet <- read_excel(targets_path, sheet="Sheet1")   # Excel files
+```
+
+### Export tabular data
+
+```r
+write.table(myDF, file="myfile.xls", sep="\t", quote=FALSE, col.names=NA)
+```
+
+### Line-wise import/export
+
+```r
+myDF <- readLines("myData.txt")           # import line by line
+writeLines(month.name, "myData.txt")      # export line by line
+```
+
+### Save and load R objects
+
+```r
+mylist <- list(C1=iris[,1], C2=iris[,2])
+saveRDS(mylist, "mylist.rds")             # save
+mylist <- readRDS("mylist.rds")           # load
+```
+
+### Copy/paste via clipboard
+
+```r
+read.delim("clipboard")                   # Windows/Linux: paste into R
+read.delim(pipe("pbpaste"))               # macOS: paste into R
+write.table(iris, "clipboard", sep="\t", col.names=NA, quote=FALSE)  # copy from R
+```
+
+::: {.callout-note}
+**HW02 — Task A:** Sort `iris` by first column, subset first 12 rows, export to file, modify column names in a spreadsheet program, re-import with `read.table`.  
+[→ HW02 instructions](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw02/index.html)
+:::
+
+---
+
+## Useful R Functions
+
+### Unique entries
+
+```r
+length(iris$Sepal.Length)          # 150 total entries
+length(unique(iris$Sepal.Length))  # number of unique values
+```
+
+### Count occurrences
+
+```r
+table(iris$Species)    # frequency table per group
+```
+
+### Aggregate statistics
+
+```r
+aggregate(iris[,1:4], by=list(iris$Species), FUN=mean, na.rm=TRUE)
+```
+
+### Set operations
+
+```r
+month.name %in% c("May", "July")    # logical: which elements are in set
+```
+
+### Merge data frames
+
+```r
+frame1 <- iris[sample(1:nrow(iris), 30), ]
+my_result <- merge(frame1, iris, by.x=0, by.y=0, all=TRUE)
+# all=TRUE: outer join (keep all rows)
+# all=FALSE: inner join (keep only common rows)
+```
+
+---
+
+## Graphics in R — Overview
+
+### Why R graphics?
+
+- Powerful environment for scientific visualization
+- Integrated with statistics infrastructure
+- Publication-quality, fully reproducible output
+- Supports LaTeX and Markdown via `knitr`
+
+### Four main graphics systems
+
+| System | Level | Package |
+|---|---|---|
+| Base R graphics | Low + high | built-in |
+| grid | Low-level | built-in |
+| lattice | High-level | `lattice` |
+| ggplot2 | High-level | `ggplot2` |
+
+### Key base graphics functions
+
+`plot`, `barplot`, `boxplot`, `hist`, `pie`, `pairs`, `image`, `heatmap`
+
+::: {.callout-tip}
+For new code, **ggplot2** is generally recommended. Base R graphics remain useful for quick exploration and highly customized plots.
+:::
+
+---
+
+## Scatter Plots {.scrollable}
+
+### Sample dataset
+
+```r
+set.seed(1410)
+y <- matrix(runif(30), ncol=3, dimnames=list(letters[1:10], LETTERS[1:3]))
+```
+
+### Basic scatter plot
+
+```r
+plot(y[,1], y[,2])
+```
+
+### All pairs
+
+```r
+pairs(y)
+```
+
+### With color and labels
+
+```r
+plot(y[,1], y[,2], pch=20, col="red", main="Symbols and Labels")
+text(y[,1]+0.03, y[,2], rownames(y))
+```
+
+### Add regression line
+
+```r
+plot(y[,1], y[,2])
+myline <- lm(y[,2] ~ y[,1])
+abline(myline, lwd=2)
+summary(myline)
+```
+
+### Important plot parameters
+
+| Argument | Description |
+|---|---|
+| `col` | color of symbols |
+| `pch` | symbol type (`example(points)` to see options) |
+| `lwd` | line/symbol width |
+| `cex.*` | font size controls |
+| `mar` | margin sizes `c(bottom, left, top, right)` |
+| `log="xy"` | log scale on both axes |
+
+::: {.callout-note}
+**HW02 — Task B:** Generate a scatter plot of `iris` columns 1 and 2, colored by Species. Use `xlim`/`ylim` to restrict data to the bottom-left quadrant.  
+[→ HW02 instructions](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw02/index.html)
+:::
+
+---
+
+## Bar Plots, Histograms and More {.scrollable}
+
+### Bar plot with legend
+
+```r
+barplot(y[1:4,], ylim=c(0, max(y[1:4,])+0.3), beside=TRUE, legend=letters[1:4])
+```
+
+::: {.callout-tip}
+When input is a **matrix**, `barplot` uses column names as group labels and row names as within-group labels. Convert `data.frame` input with `as.matrix()` first.
+:::
+
+### Bar plot with error bars
+
+```r
+bar <- barplot(m <- rowMeans(y) * 10, ylim=c(0, 10))
+stdev <- sd(t(y))
+arrows(bar, m, bar, m + stdev, length=0.15, angle=90)
+```
+
+### Histogram and density plot
+
+```r
+hist(y, freq=TRUE, breaks=10)
+plot(density(y), col="red")
+```
+
+### Save graphics to file
+
+```r
+pdf("test.pdf")
+plot(1:10, 1:10)
+dev.off()         # always close the device!
+```
+
+Works the same for `jpeg()`, `png()`, `svg()`, `tiff()`.
+
+::: {.callout-note}
+**HW02 — Task C:** Calculate mean values per Species for first four `iris` columns. Organize as a matrix. Generate stacked and horizontally arranged bar plots.  
+[→ HW02 instructions](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw02/index.html)
+:::
+
+---
+
+## Analysis Routine — Data Import {.scrollable}
+
+A step-by-step workflow using two sample biological datasets.
+
+### Step 1 — Download sample data
+
+- [MolecularWeight_tair7.xls](https://cluster.hpcc.ucr.edu/~tgirke/Documents/R_BioCond/Samples/MolecularWeight_tair7.xls)
+- [TargetP_analysis_tair7.xls](https://cluster.hpcc.ucr.edu/~tgirke/Documents/R_BioCond/Samples/TargetP_analysis_tair7.xls)
+
+Open in Excel, save as tab-delimited text, then import:
+
+```r
+my_mw <- read.delim(file="MolecularWeight_tair7.xls", header=TRUE, sep="\t")
+my_mw[1:2,]
+my_target <- read.delim(file="TargetP_analysis_tair7.xls", header=TRUE, sep="\t")
+my_target[1:2,]
+```
+
+Or import directly from the web:
+
+```r
+my_mw <- read.delim("http://faculty.ucr.edu/~tgirke/Documents/R_BioCond/Samples/MolecularWeight_tair7.xls",
+                     header=TRUE, sep="\t")
+my_target <- read.delim("http://faculty.ucr.edu/~tgirke/Documents/R_BioCond/Samples/TargetP_analysis_tair7.xls",
+                          header=TRUE, sep="\t")
+```
+
+---
+
+## Analysis Routine — Merging Data Frames {.scrollable}
+
+### Step 2 — Assign uniform ID column names
+
+```r
+colnames(my_target)[1] <- "ID"
+colnames(my_mw)[1] <- "ID"
+```
+
+### Step 3 — Merge on common ID field (outer join)
+
+```r
+my_mw_target <- merge(my_mw, my_target, by.x="ID", by.y="ID", all.x=TRUE)
+```
+
+### Step 4 — Merge shortened table, then remove non-matching rows
+
+```r
+my_mw_target2a <- merge(my_mw, my_target[1:40,], by.x="ID", by.y="ID", all.x=TRUE)
+my_mw_target2 <- na.omit(my_mw_target2a)    # remove rows with NAs
+```
+
+::: {.callout-note}
+**HW02 — Task D:** Execute `merge` to return only common rows directly (without `na.omit`). Prove both methods return identical results.  
+**HW02 — Task E:** Replace all `NA` values in `my_mw_target2a` with zeros.
+:::
+
+---
+
+## Analysis Routine — Filtering and String Operations {.scrollable}
+
+### Step 5 — Filter rows by conditions
+
+```r
+# Proteins with MW > 100,000 AND targeted to chloroplast (Loc == "C")
+query <- my_mw_target[my_mw_target[,2] > 100000 & my_mw_target[,4] == "C", ]
+query[1:4, ]
+dim(query)
+```
+
+::: {.callout-note}
+**HW02 — Task F:** How many proteins have MW > 4,000 and < 5,000? Subset and sort by MW to verify.
+:::
+
+### Step 6 — Remove gene model extensions with regex
+
+```r
+# AT1G01010.1 → AT1G01010  (remove everything from . onward)
+my_mw_target3 <- data.frame(
+    loci = gsub("\\..*", "", as.character(my_mw_target[,1]), perl=TRUE),
+    my_mw_target
+)
+my_mw_target3[1:3, 1:8]
+```
+
+::: {.callout-note}
+**HW02 — Task G:** Retrieve rows where second column contains specific IDs using `%in%`. Also use the second column as a row index and repeat. Explain the difference between the two approaches.
+:::
+
+---
+
+## Analysis Routine — Calculations and Export {.scrollable}
+
+### Step 7 — Count duplicates
+
+```r
+mycounts <- table(my_mw_target3[,1])[my_mw_target3[,1]]
+my_mw_target4 <- cbind(my_mw_target3, Freq=mycounts[as.character(my_mw_target3[,1])])
+```
+
+### Step 8 — Vectorized calculation (average AA weight)
+
+```r
+data.frame(my_mw_target4, avg_AA_WT=(my_mw_target4[,3] / my_mw_target4[,4]))[1:2,]
+```
+
+### Step 9 — Row-wise mean and standard deviation
+
+```r
+mymean  <- apply(my_mw_target4[,6:9], 1, mean)
+mystdev <- apply(my_mw_target4[,6:9], 1, sd, na.rm=TRUE)
+data.frame(my_mw_target4, mean=mymean, stdev=mystdev)[1:2, 5:12]
+```
+
+### Step 10 — Scatter plot
+
+```r
+plot(my_mw_target4[1:500, 3:4], col="red")
+```
+
+### Step 11 — Export results
+
+```r
+write.table(my_mw_target4, file="my_file.xls", quote=FALSE, sep="\t", col.names=NA)
+```
+
+::: {.callout-note}
+**HW02 — Task H:** Assemble all commands from this exercise into `HW2.R` and run it:
+
+```r
+source("HW2.R")    # from within R
+```
+
+```bash
+Rscript HW2.R      # from command-line
+```
+:::
+
+---
+
+## Upgrading R and Bioconductor
+
+When upgrading R, **all packages must be reinstalled** — packages are built for specific R versions.
+
+### Step 1 — Export current package list before upgrading
+
+```r
+my_R_pkgs <- rownames(installed.packages())
+writeLines(my_R_pkgs, "my_R_pkgs.txt")
+```
+
+### Step 2 — After installing new R, reinstall all packages
+
+```r
+install.packages(c("devtools", "tidyverse", "BiocManager"))
+BiocManager::install(version="3.19")    # check current version at https://bit.ly/3NADnll
+my_R_pkgs <- readLines("my_R_pkgs.txt")
+BiocManager::install(my_R_pkgs)
+```
+
+::: {.callout-warning}
+Packages from private GitHub repos or custom sources cannot be reinstalled this way — identify them from the install report and reinstall manually.
+:::
+
+---
+
+## HW02 Summary
+
+Assemble all solutions into a single R script `HW2.R` and submit via GitHub.
+
+| Task | Topic | Key functions |
+|---|---|---|
+| **A** | Sort `iris`, export, modify columns, re-import | `order`, `write.table`, `read.table` |
+| **B** | Scatter plot `iris` col 1-2, colored by Species | `plot`, `xlim`, `ylim` |
+| **C** | Mean matrix by Species, stacked & horizontal bars | `aggregate`, `barplot` |
+| **D** | Merge returning only common rows; prove equivalence | `merge(all=FALSE)`, `all()` |
+| **E** | Replace NAs with zeros | `is.na`, indexing |
+| **F** | Filter proteins by MW range 4,000–5,000 | boolean indexing |
+| **G** | Subset rows by ID using `%in%` and row index | `%in%`, `rownames` |
+| **H** | Assemble all code into `HW2.R`, run with `source()` | `source`, `Rscript` |
+
+### Submission path
+
+```
+Homework/HW2/HW2.R
+```
+
+**Due: Thu, April 16th at 6:00 PM**
+
+::: {.callout-note}
+The preassembled workflow script for Task H is available [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics/#export-results-and-run-entire-exercise-as-script) — it does **not** include solutions for Tasks A–C.
+:::
