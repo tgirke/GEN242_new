@@ -189,16 +189,16 @@ website:
               href: assignments/homework/hw01/hw01.qmd 
             - text: "HW2 — R Basics"
               href: assignments/homework/hw02/hw02.qmd
-            - text: "HW3 — Alignments"
-              href: assignments/homework/hw04/index.qmd
-            - text: "HW4 — R Programming"
-              href: assignments/homework/hw05/index.qmd
-            - text: "HW5 — NGS Analysis"
-              href: assignments/homework/hw06/index.qmd
-            - text: "HW6 — RNA-Seq"
-              href: assignments/homework/hw07/index.qmd
-            - text: "HW7 — R Markdown"
-              href: assignments/homework/hw08/index.qmd
+            #- text: "HW3 — Alignments"
+            #  href: assignments/homework/hw04/index.qmd
+            #- text: "HW4 — R Programming"
+            #  href: assignments/homework/hw05/index.qmd
+            #- text: "HW5 — NGS Analysis"
+            #  href: assignments/homework/hw06/index.qmd
+            #- text: "HW6 — RNA-Seq"
+            #  href: assignments/homework/hw07/index.qmd
+            #- text: "HW7 — R Markdown"
+            #  href: assignments/homework/hw08/index.qmd
         - section: "Projects"
           contents:
             - text: "Project Overview"
