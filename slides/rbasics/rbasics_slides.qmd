@@ -157,9 +157,9 @@ download.file("https://raw.githubusercontent.com/tgirke/GEN242/main/slides/rbasi
 
 ```
 
-**Step 2.** Load `*.qmd`, `*.Rmd` or `*.R` file in Neovim (Nvim-R) or RStudio.
+**Step 2.** Load `*.qmd`, `*.Rmd` or `*.R` file in Nvim-R or RStudio.
 
-**Step 3.** Send code from code editor to R console by pushing `space bar` in Neovim (Nvim-R) or `Ctrl + Enter` in RStudio. In `*.Rmd` files the code lines are in so called [code chunks](../rmarkdown/index.qmd#r-code-chunks) and only those
+**Step 3.** Send code from code editor to R console by pushing `Ctrl + Enter` in RStudio or `Enter` in Nvim-R. In `*.Rmd` files the code lines are in so called [code chunks](../rmarkdown/index.qmd#r-code-chunks) and only those
    ones can be sent to the console. To obtain in Neovim a connected R session one has to initiate by pressing the `\rf` key combination. For details see [here](https://girke.bioinformatics.ucr.edu/GEN242/custom/slides/R_for_HPC/NvimR.html#11).
 
 ---
