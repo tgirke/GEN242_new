@@ -10,21 +10,39 @@ sidebar: slides
     <span class="slide-embed-title">📊 GitHub Introduction</span>
     <div class="slide-embed-actions">
 
+      <!-- Open slideshow -->
       <a class="slide-embed-btn"
          href="github_intro_slides.html"
          target="_blank" rel="noopener"
          title="Open slides in new browser tab">
         <svg viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"/></svg>
-        Open in new tab
+        Open slideshow
+      </a>
+      
+      <!-- Corresponding Tutorial -->
+      <a class="slide-embed-btn"
+        href="https://girke.bioinformatics.ucr.edu/GEN242/tutorials/github/github.html"
+        target="_blank" 
+        title="Go to corresponding tutorial">
+        <svg viewBox="0 0 16 16"><path d="M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14Zm-1-5.372 3.25 3.22 3.25-3.22a.749.749 0 0 1 1.06.009.749.749 0 0 1 0 1.051l-4 3.96a.75.75 0 0 1-1.06 0l-4-3.96a.749.749 0 0 1 .009-1.06.749.749 0 0 1 1.051 0ZM8 10.5a.75.75 0 0 1-.75-.75v-6.5a.75.75 0 0 1 1.5 0v6.5a.75.75 0 0 1-.75.75Z"/></svg>
+        Open tutorial
       </a>
 
-      <!-- Open HTML -->
+      <!-- Download HTML -->
       <a class="slide-embed-btn"
          href="github_intro_slides.html"
          download="github_intro_slides.html"
          title="Download self-contained HTML file">
         <svg viewBox="0 0 16 16"><path d="M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14Zm-1-5.372 3.25 3.22 3.25-3.22a.749.749 0 0 1 1.06.009.749.749 0 0 1 0 1.051l-4 3.96a.75.75 0 0 1-1.06 0l-4-3.96a.749.749 0 0 1 .009-1.06.749.749 0 0 1 1.051 0ZM8 10.5a.75.75 0 0 1-.75-.75v-6.5a.75.75 0 0 1 1.5 0v6.5a.75.75 0 0 1-.75.75Z"/></svg>
         Download HTML
+      </a>
+      
+      <!-- Download QMD -->
+      <a class="slide-embed-btn"
+         href="https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/slides/github_intro/github_intro_slides.qmd"
+         title="Download slide source .qmd file">
+        <svg viewBox="0 0 16 16"><path d="M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14Zm-1-5.372 3.25 3.22 3.25-3.22a.749.749 0 0 1 1.06.009.749.749 0 0 1 0 1.051l-4 3.96a.75.75 0 0 1-1.06 0l-4-3.96a.749.749 0 0 1 .009-1.06.749.749 0 0 1 1.051 0ZM8 10.5a.75.75 0 0 1-.75-.75v-6.5a.75.75 0 0 1 1.5 0v6.5a.75.75 0 0 1-.75.75Z"/></svg>
+        Download .qmd
       </a>
 
     </div>
