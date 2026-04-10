@@ -108,14 +108,14 @@ Emacs (ESS), VS Code, gedit, Notepad++, Eclipse — all support R to varying deg
 
 ### Install CRAN packages
 
-```r
+```{r rinstall}
 install.packages(c("pkg1", "pkg2"))
 install.packages("pkg.zip", repos=NULL)   # install from local file
 ```
 
 ### Install Bioconductor packages
 
-```r
+```{r installbioc}
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")        # install BiocManager if not available
 BiocManager::version()                     # check Bioconductor version
@@ -124,14 +124,14 @@ BiocManager::install(c("pkg1", "pkg2"))   # install Bioc packages
 
 ### Load packages
 
-```r
+```{r loadpackages}
 library("my_library")                                          # single package
 lapply(c("lib1", "lib2"), require, character.only=TRUE)       # multiple packages
 ```
 
 ### Explore a package
 
-```r
+```{r packagehelp}
 library(help="my_library")    # list functions
 vignette("my_library")        # open manual (PDF or HTML)
 ```
@@ -168,7 +168,7 @@ download.file("https://raw.githubusercontent.com/tgirke/GEN242/main/slides/rbasi
 
 ### Starting and closing R
 
-```r
+```{r quitr}
 q()                    # quit R
 # Save workspace image? [y/n/c]:
 ```
@@ -179,7 +179,7 @@ Answer **n** when asked to save the workspace. Saving `.RData` creates large fil
 
 ### Navigating directories
 
-```r
+```{r navigatedirs}
 ls()                              # list objects in current R session
 dir()                             # list files in current working directory
 getwd()                           # print path of current working directory
@@ -188,7 +188,7 @@ setwd("/home/user")               # change working directory
 
 ### File information
 
-```r
+```{r fileinfo}
 list.files(path="./", pattern="*.txt$", full.names=TRUE)   # list files by pattern
 file.exists(c("file1", "file2"))                            # check if files exist
 file.info(list.files(path="./", pattern=".txt$", full.names=TRUE))  # file details
@@ -200,7 +200,7 @@ file.info(list.files(path="./", pattern=".txt$", full.names=TRUE))  # file detai
 
 ### Assignment and general syntax
 
-```r
+```{r objects}
 object <- ...                          # assignment operator (preferred over =)
 object <- function_name(arguments)     # call a function
 object <- object[arguments]            # subset an object
@@ -211,7 +211,7 @@ assign("x", function(arguments))       # alternative: assign()
 
 The `%>%` pipe from `dplyr`/`magrittr` chains operations left-to-right. New native R pipe is `|>`.
 
-```r
+```{r rpipes}
 x %>% f(y)    # equivalent to f(x, y)
 ```
 
@@ -219,7 +219,7 @@ Makes code readable by avoiding deeply nested calls. Details in the [dplyr tutor
 
 ### Getting help
 
-```r
+```{r functionhelp}
 ?function_name       # open help page for a function
 ```
 
@@ -227,7 +227,7 @@ Makes code readable by avoiding deeply nested calls. Details in the [dplyr tutor
 
 Preferred version
 
-```r
+```{r rscriptrun}
 Rscript my_script.R        # execute from command-line (preferred)
 ```
 
@@ -377,7 +377,7 @@ Lists are the most flexible R object — they can hold vectors, data frames, oth
 
 ### Functions (reusable pieces of code)
 
-```r
+```{r fctsyntax}
 myfct <- function(arg1, arg2, ...) {
     function_body
 }
@@ -520,40 +520,40 @@ myDF <- read.delim("myData.tsv", sep="\t")           # tab-delimited file
 Better alternative from `readr` package with better default arguments and performance.
 For details see [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/dplyr/dplyr_index.html#import-with-readr).
 
-```r
+```{r readrimport}
 myTibble <- readr::read_tsv(myData.tsv") 
 ```
 
 Import from Google Sheet directly
 
-```r
+```{r googlesheetimport}
 library(googlesheets4)
 gs4_deauth()                                           # for public sheets
 mysheet <- read_sheet("1U-32UcwZP1k3saKeaH1mbvEAOfZRdNHNkWK2GI1rpPM", skip=4)
 myDF <- as.data.frame(mysheet)
 ```
 
-```r
+```{r importexcel}
 library(readxl)
 mysheet <- read_excel(targets_path, sheet="Sheet1")   # Excel files
 ```
 
 ### Export tabular data
 
-```r
+```{r exporttable}
 write.table(myDF, file="myfile.xls", sep="\t", quote=FALSE, col.names=NA)
 ```
 
 ### Line-wise import/export
 
-```r
+```{r linewiseimport}
 myDF <- readLines("myData.txt")           # import line by line
 writeLines(month.name, "myData.txt")      # export line by line
 ```
 
 ### Save and load R objects
 
-```r
+```{r saveobject}
 mylist <- list(C1=iris[,1], C2=iris[,2])
 saveRDS(mylist, "mylist.rds")             # save
 mylist <- readRDS("mylist.rds")           # load
@@ -728,7 +728,7 @@ plot(density(y), col="red")
 
 ### Save graphics to file
 
-```r
+```{r savegraphics}
 pdf("test.pdf")
 plot(1:10, 1:10)
 dev.off()         # always close the device!
@@ -754,7 +754,7 @@ A step-by-step workflow using two sample biological datasets. This analysis rout
 
 Open in Excel, save as tab-delimited text, then import:
 
-```r
+```{r importsampletable}
 my_mw <- read.delim(file="MolecularWeight_tair7.xls", header=TRUE, sep="\t")
 my_mw[1:2,]
 my_target <- read.delim(file="TargetP_analysis_tair7.xls", header=TRUE, sep="\t")
@@ -763,7 +763,7 @@ my_target[1:2,]
 
 Or import directly from the web:
 
-```r
+```{r readfromurl}
 my_mw <- read.delim("https://faculty.ucr.edu/~tgirke/Documents/R_BioCond/Samples/MolecularWeight_tair7.xls",
                      header=TRUE, sep="\t")
 my_target <- read.delim("https://faculty.ucr.edu/~tgirke/Documents/R_BioCond/Samples/TargetP_analysis_tair7.xls",
@@ -776,20 +776,20 @@ my_target <- read.delim("https://faculty.ucr.edu/~tgirke/Documents/R_BioCond/Sam
 
 ### Step 2 — Assign uniform ID column names
 
-```r
+```{r changecoltitle}
 colnames(my_target)[1] <- "ID"
 colnames(my_mw)[1] <- "ID"
 ```
 
 ### Step 3 — Merge on common ID field (outer join)
 
-```r
+```{r merge1}
 my_mw_target <- merge(my_mw, my_target, by.x="ID", by.y="ID", all.x=TRUE)
 ```
 
 ### Step 4 — Merge shortened table, then remove non-matching rows
 
-```r
+```{r merge2}
 my_mw_target2a <- merge(my_mw, my_target[1:40,], by.x="ID", by.y="ID", all.x=TRUE)
 my_mw_target2 <- na.omit(my_mw_target2a)    # remove rows with NAs
 ```
@@ -805,7 +805,7 @@ my_mw_target2 <- na.omit(my_mw_target2a)    # remove rows with NAs
 
 ### Step 5 — Filter rows by conditions
 
-```r
+```{r filterdf}
 # Proteins with MW > 100,000 AND targeted to chloroplast (Loc == "C")
 query <- my_mw_target[my_mw_target[,2] > 100000 & my_mw_target[,4] == "C", ]
 query[1:4, ]
@@ -818,7 +818,7 @@ dim(query)
 
 ### Step 6 — Remove gene model extensions with regex
 
-```r
+```{r regexpr}
 # AT1G01010.1 → AT1G01010  (remove everything from . onward)
 my_mw_target3 <- data.frame(
     loci = gsub("\\..*", "", as.character(my_mw_target[,1]), perl=TRUE),
@@ -837,20 +837,20 @@ my_mw_target3[1:3, 1:8]
 
 ### Step 7 — Count duplicates
 
-```r
+```{r counttxs}
 mycounts <- table(my_mw_target3[,1])[my_mw_target3[,1]]
 my_mw_target4 <- cbind(my_mw_target3, Freq=mycounts[as.character(my_mw_target3[,1])])
 ```
 
 ### Step 8 — Vectorized calculation (average AA weight)
 
-```r
+```{r vectorizedcal}
 data.frame(my_mw_target4, avg_AA_WT=(my_mw_target4[,3] / my_mw_target4[,4]))[1:2,]
 ```
 
 ### Step 9 — Row-wise mean and standard deviation
 
-```r
+```{r meansddev}
 mymean  <- apply(my_mw_target4[,6:9], 1, mean)
 mystdev <- apply(my_mw_target4[,6:9], 1, sd, na.rm=TRUE)
 data.frame(my_mw_target4, mean=mymean, stdev=mystdev)[1:2, 5:12]
@@ -858,20 +858,20 @@ data.frame(my_mw_target4, mean=mymean, stdev=mystdev)[1:2, 5:12]
 
 ### Step 10 — Scatter plot
 
-```r
+```{r scatterplot2}
 plot(my_mw_target4[1:500, 3:4], col="red")
 ```
 
 ### Step 11 — Export results
 
-```r
+```{r exportresults}
 write.table(my_mw_target4, file="my_file.xls", quote=FALSE, sep="\t", col.names=NA)
 ```
 
 ::: {.callout-note}
 **HW02 — Task H:** Assemble all commands from this exercise into `HW2.R` and run it:
 
-```r
+```{r runwithsource}
 source("HW2.R")    # from within R
 ```
 
