@@ -11,6 +11,9 @@ engine: knitr
   <a href="https://girke.bioinformatics.ucr.edu/GEN242/slides/linux_hpc_intro/linux_hpc_intro_page.html" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
     <img src="https://img.shields.io/badge/Slideshow-blue?style=for-the-badge" alt="Slideshow">
   </a>
+  <a href="https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/tutorials/linux/linux.qmd" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
+    <img src="https://img.shields.io/badge/.QMD-blue?style=for-the-badge" alt="Download qmd">
+  </a>
 </p>
 
 <br/>

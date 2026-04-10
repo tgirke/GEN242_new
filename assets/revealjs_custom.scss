@@ -74,7 +74,7 @@
    ============================================================================= */
 
 .reveal .slides p {
-  font-size:    0.82em;           /* SIZE  — normal paragraph text */
+  font-size:    0.72em;           /* SIZE  — normal paragraph text */
   color:        #1a1a1a;          /* COLOR — near-black */
   line-height:  1.55;
 }
@@ -86,7 +86,7 @@
 
 /* Level 1 bullets */
 .reveal .slides ul > li {
-  font-size:     0.82em;          /* SIZE  — first-level bullet */
+  font-size:     0.72em;          /* SIZE  — first-level bullet */
   color:         #1a1a1a;         /* COLOR — near-black */
   line-height:   1.5;
   margin-bottom: 0.2em;
@@ -94,13 +94,13 @@
 
 /* Level 2 bullets — indented once */
 .reveal .slides ul > li > ul > li {
-  font-size:    0.95em;           /* SIZE  — relative to parent li */
+  font-size:    0.72em;           /* SIZE  — relative to parent li */
   color:        #333333;          /* COLOR */
 }
 
 /* Level 3 bullets — indented twice */
 .reveal .slides ul > li > ul > li > ul > li {
-  font-size:    0.92em;           /* SIZE  — relative to grandparent */
+  font-size:    0.72em;           /* SIZE  — relative to grandparent */
   color:        #555555;          /* COLOR */
 }
 
@@ -111,7 +111,7 @@
 
 /* Level 1 numbers */
 .reveal .slides ol > li {
-  font-size:     0.82em;          /* SIZE  — first-level numbered item */
+  font-size:     0.72em;          /* SIZE  — first-level numbered item */
   color:         #1a1a1a;         /* COLOR — near-black */
   line-height:   1.5;
   margin-bottom: 0.2em;
@@ -119,13 +119,13 @@
 
 /* Level 2 numbers — indented once */
 .reveal .slides ol > li > ol > li {
-  font-size:    0.95em;           /* SIZE  — relative to parent */
+  font-size:    0.72em;           /* SIZE  — relative to parent */
   color:        #333333;          /* COLOR */
 }
 
 /* Level 3 numbers — indented twice */
 .reveal .slides ol > li > ol > li > ol > li {
-  font-size:    0.92em;           /* SIZE  — relative to grandparent */
+  font-size:    0.72em;           /* SIZE  — relative to grandparent */
   color:        #555555;          /* COLOR */
 }
 
@@ -136,14 +136,14 @@
 
 /* Text inside fenced code blocks (```bash ... ```) */
 .reveal .slides pre code {
-  font-size:    0.85em            !important;  /* SIZE  — increase if hard to read */
+  font-size:    0.98em            !important;  /* SIZE  — increase if hard to read */
   color:        #e8eaf0;          /* COLOR — light text on dark background */
   line-height:  1.5;
 }
 
 /* Inline code (`like this` in a sentence) */
 .reveal .slides code:not(pre code) {
-  font-size:    0.88em;           /* SIZE  — inline code snippets */
+  font-size:    0.72em;           /* SIZE  — inline code snippets */
   color:        #c0392b;          /* COLOR — red tint, distinguishes from body text */
 }
 
@@ -201,3 +201,5 @@
   transform:       translate(-50%, -50%);
   width:           80%;           /* prevent text running to edges */
 }
+
+
