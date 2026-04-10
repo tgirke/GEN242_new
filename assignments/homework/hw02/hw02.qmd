@@ -46,10 +46,10 @@ What to submit for D–H: The code (expressions) solving the assigned problems g
 
 ## Homework Submission
 
-Assemble all code for assignments B–H into a single R script named HW2.R and
+Assemble all code for assignments A–H into a single R script named HW2.R and
 upload it to your private GitHub repository under Homework/HW2/HW2.R. Note that
 the preassembled workflow script provided for HW2H ([here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics_index.html#export-results-and-run-entire-exercise-as-script)) 
-does not include solutions for HW2A-C; those must be written by you.
+does not include solutions for HW2A-H; those must be written by you.
 
 ## Due Date
 
