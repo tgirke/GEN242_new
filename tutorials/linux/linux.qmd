@@ -910,17 +910,16 @@ serve different purposes and are often used together in the same workflow:
 | | nvim-R-Tmux | OnDemand (RStudio, VS Code, Jupyter) |
 |---|---|---|
 | Access | Any SSH terminal | Browser (available anywhere) |
-| Availability | Any Linux system | Only where OnDemand is deployed |
-| Resource needed | Login node (no Slurm required) | Slurm compute node allocation |
-| Languages | R, Python, Bash, and more | Tool-specific (RStudio=R, Jupyter=Python/R) |
+| Availability | Any Linux system | Only where OnDemand (or alternative web instance) is deployed |
+| Resource needed | Login node (no Slurm required) or compute node | Slurm compute node allocation usually required |
+| Languages | R, Python, Bash, and more | Tool-specific (RStudio=R, Jupyter=Python/R, MATLAB) |
 | Install overhead | Minimal (config files only) | Server-side setup required |
 | Bandwidth | Minimal (text only) | Higher (browser-based) |
 
 A typical HPC workflow combines both: use nvim-R-Tmux as the persistent
 backbone for writing code, submitting and monitoring Slurm jobs, and quick
 interactive R/Python work on the login node; switch to OnDemand RStudio or
-JupyterHub when you need interactive visualization or resource-intensive
-exploration on a compute node.
+JupyterHub when you need interactive visualization on a compute node.
 
 The core advantage of nvim-R-Tmux for HPC work is robustness — a tmux
 session on the login node persists indefinitely regardless of network
@@ -928,7 +927,7 @@ interruptions, VPN drops, or closing your laptop. Your R session, open
 files, and command history are exactly where you left them when you
 reconnect.
 
-### Vim overview
+### Basic usage of nvim (vim) 
 
 The following opens a file (here `myfile`) with nvim (or vim)
 
@@ -936,7 +935,7 @@ The following opens a file (here `myfile`) with nvim (or vim)
 nvim myfile.txt # for neovim (or 'vim myfile.txt' for vim)
 ```
 
-Once you are in Nvim, there are three main modes: normal, insert and command mode. The most important commands for switching between the three modes are:
+Once you are in Nvim, there are three main modes: normal, insert and command mode (visual mode included here). The most important commands for switching between the three modes are:
 
 * `i`: The `i` key brings you from the normal mode to the insert mode. The latter is used for typing. 
 * `Esc`: The `Esc` key brings you from the insert mode back to the normal mode.
@@ -956,7 +955,7 @@ Important modifier keys to control vim/nvim
 ### Useful resources for learning vim/nvim
 
 * [Interactive Vim Tutorial](http://www.openvim.com)
-* [Official Vim Documentation](http://vimdoc.sourceforge.net/)
+* [Official Neovim Documentation](https://neovim.io/doc/)
 * [HPCC Vim/Nvim Overview](https://hpcc.ucr.edu/manuals/hpc_cluster/terminalide/#vimnvim-overview)
 * [HPCC Linux Manual (old)](http://hpcc.ucr.edu/manuals_linux-basics_vim.html)
 
@@ -1017,7 +1016,7 @@ srun --partition=short --mem=2gb --cpus-per-task 4 --ntasks 1 --time 1:00:00 --p
 The official and much more detailed user manual for R.nvim is available
 [here](https://github.com/R-nvim/R.nvim/blob/main/doc/R.nvim.txt). The
 following gives a short introduction into the basic usage of nvim-R-Tmux.
-A short overview is on this [slide](https://docs.google.com/presentation/d/1AYVON1pS-vBe5NLp89L2HMBZZjr6L-Z20zN6ZG9r7L0/edit#slide=id.p):
+A short overview of the typical usage routine on an HPC system is on this [slide](https://docs.google.com/presentation/d/1AYVON1pS-vBe5NLp89L2HMBZZjr6L-Z20zN6ZG9r7L0/edit#slide=id.p):
 
 <center><iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTdNORZZ6y3qBt5SMqW1owr3xdtczf9UeK88eFtLbZtatfW3H1XztX_VvQaeOZ5kDcce8qVodPgbAmI/embed?start=false&loop=false&delayms=3000" frameborder="0" width="416" height="256" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></center>
 
@@ -1038,10 +1037,11 @@ Switch between windows with `Ctrl-a 1` through `Ctrl-a 5`.
 
 **2. Open nvim-connected R session**
 
-Open a `*.R` or `*.Rmd` file with `nvim` and initialize a connected R session
+Open an `*.R`, `*.Rmd` or `*.qmd` file with `nvim` and initialize a connected R session
 with `\rf`. The resulting split window between Nvim and R behaves like a split
 viewport in nvim, meaning `Ctrl-w w` followed by `i` and `Esc` is important
-for navigation between panes.
+for navigation between panes. The same can be achieved with mouse clicks if 
+mouse support is enabled. 
 
 ```bash
 nvim myscript.R # open an R script (or *.Rmd / *.qmd file)
@@ -1049,29 +1049,26 @@ nvim myscript.R # open an R script (or *.Rmd / *.qmd file)
 
 Then inside nvim press `\rf` to start the connected R session. The first time 
 an R script is opened it is best to do this on a compute node (log in with `srun`)
-since it will create the omni completion database which can take some time since there
-are over 1,500 R packages installed on the HPCC cluster. Also, if there any messages
+since it will create the omni completion database which can take some time on a compute
+system with hundreds of installed packages (over 1,500 on HPCC cluster). Also, if there any messages
 appearing during the first session, just confirm them with `Enter`.
 
 **3. Send R code from nvim to the R pane**
 
 Single lines of code can be sent from nvim to the R console by pressing
-`Enter` in normal mode. To send several lines at once, select them in nvim's
+`Enter` in normal mode. Entire code chunks from `Rmd` and `qmd` can be sent with 
+`\cc`. To send a custom selection of several lines at once, select them in nvim's
 visual mode (press `v` to start selection) and then press `Enter`. The default
 keybinding for sending code in R.nvim is `\l` — this has been remapped in the
 provided `init.lua` to `Enter` for consistency with other editors.
 
 ### Important keybindings for nvim
 
-The main advantages of Neovim compared to Vim are its better performance and
-its built-in terminal emulator facilitating communication between Neovim and
-interactive programming environments such as R. The usage of Neovim is almost
-identical to Vim.
-
-In the following keybinding syntax, keys connected with `-` need to be pressed
-simultaneously, e.g. `Ctrl-w`. Any key after that (space separated) needs to
-be pressed after releasing the combined keys. So `Ctrl-w w` means: press
-`Ctrl` and `w` simultaneously, release both, then press `w`.
+The following lists important keybindings. It uses the
+following syntax: Keys connected with `-` need to be pressed simultaneously,
+e.g. `Ctrl-w`. Any key after that (space separated) needs to be pressed after
+releasing the combined keys. So `Ctrl-w w` means: press `Ctrl` and `w`
+simultaneously, release both, then press `w`.
 
 **Modes**
 
@@ -1088,15 +1085,12 @@ be pressed after releasing the combined keys. So `Ctrl-w w` means: press
 | `\rf` | open connected R session |
 | `Enter` | send current line to R (normal mode) |
 | `Enter` | send selection to R (visual mode) |
-| `\aa` | send entire file to R |
-| `\ff` | send current function to R |
+| `\fc` | send current function to R |
 | `\cc` | send current chunk (Rmd/Quarto) |
 | `\ch` | send all chunks above cursor |
 | `\rh` | open R help for word under cursor |
 | `\ro` | toggle object browser |
-| `\rv` | view data frame under cursor |
-| `Alt -` | insert `<-` |
-| `Alt ,` | insert `\|>` |
+| `\rv` | view data frame under cursor with [VisiData](https://www.visidata.org/) |
 | `:RMapsDesc` | list all R.nvim keybindings |
 | `:RConfigShow` | show current R.nvim config |
 
@@ -1111,10 +1105,11 @@ be pressed after releasing the combined keys. So `Ctrl-w w` means: press
 | `Ctrl-w =` | resize splits to equal size |
 | `Ctrl-w H` or `Ctrl-w K` | toggle between horizontal/vertical split |
 | `Ctrl-h/j/k/l` | jump to split in that direction |
-| `:terminal` | open terminal in current window |
 | `Esc` | exit terminal insert mode |
 | `Space-m` | quick toggle mouse on/off |
 | `:set mouse=a` or `n` | alternative mouse on/off with `-n` or `-n` |
+| `Space-i` | toggle indent lines on/off |
+| `Space-md` | toggle markdown view on/off |
 
 **Search and edit**
 
@@ -1145,18 +1140,18 @@ be pressed after releasing the combined keys. So `Ctrl-w w` means: press
 
 [neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim) provides file
 browser functionality for Neovim, replacing the older NERDTree plugin. To
-open or close the file browser, press `zz` in normal mode.
+open the file browser, press `zz` in normal mode, and to close it, press `q`.
 
 | Key | Action |
 |-----|--------|
-| `zz` | toggle file browser open/close |
+| `zz` | open file browser |
+| `q` | close file browser |
 | `Enter` | open selected file |
 | `a` | create new file or directory |
-| `d` | delete file or directory |
-| `r` | rename file |
+| `s` | open file with vertical split |
+| `S` | open file with horizontal split |
 | `H` | toggle hidden files on/off |
 | `?` | open neo-tree help |
-| `q` | close file browser |
 | `Ctrl-w w` | jump cursor back to editor |
 
 Hidden files (dotfiles) are not shown by default. Press `H` to toggle them.
