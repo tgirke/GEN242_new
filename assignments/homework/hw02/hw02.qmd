@@ -17,6 +17,7 @@ class(iris)
 dim(iris)
 colnames(iris)
 ```
+What to submit: Three R expressions - (1) the sort/subset command(s) applied to the `iris` object, (2) the `write.table()` call saving the modified `iris` object, and (3) the `read.delim()` call re-importing the modified file.
 
 ## B. Scatter Plots
        
@@ -28,21 +29,29 @@ Again before you start, evaluate the structure of iris data set. The following c
 iris[1:4,]
 table(iris$Species)
 ```
+What to submit: Two `plot()` calls - the first producing a basic colored scatter plot, the second adding axis limits via `xlim` and `ylim`.
 
 ## C. Bar Plots
         
 - __Task 1__: Calculate the mean values for the `Species` components of the first four columns in the `iris` data frame. Organize the results in a matrix where the row names are the unique values from the `iris Species` column and the column names are the names of the first four `iris` columns. 
 - __Task 2__: Generate two bar plots for the matrix generated in the previous step: one with stacked bars and one with horizontally arranged bars. 
 
+What to submit: The `aggregate()` expression (or `sapply/tapply` alternative) for obtaining the mean value summary as instructed, followed by two barplot() calls.
+
 ## D-H. Analysis Worflow
 
-The instructions for these homework assignments are [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics_index.html#analysis-routine).
+The instructions for these homework assignments are [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics_index.html#analysis-routine-data-import).
 
-## Homework submission
+What to submit for D–H: The code (expressions) solving the assigned problems given under items D-H of the analysis routine. 
 
-Assemble the code for solving the homework assignments A-H in a single R script (HW2.R) and upload it to your private GitHub repository under `Homework/HW2/HW2.R`. Note, the preassembled workflow script provided for HW2H ([here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics_index.html#export-results-and-run-entire-exercise-as-script)) does not include the solutions for HW2A-C.
+## Homework Submission
 
-## Due date
+Assemble all code for assignments B–H into a single R script named HW2.R and
+upload it to your private GitHub repository under Homework/HW2/HW2.R. Note that
+the preassembled workflow script provided for HW2H ([here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics_index.html#export-results-and-run-entire-exercise-as-script)) 
+does not include solutions for HW2A-C; those must be written by you.
+
+## Due Date
 
 Most homeworks will be due one week after they are assigned. This one is due on Thu, April 16th at 6:00 PM.
 
