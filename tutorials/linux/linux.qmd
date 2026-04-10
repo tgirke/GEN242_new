@@ -958,15 +958,19 @@ Terminal-based Working Environment for R, Python and Bash:
 
 ### Basics
 
-[Tmux](https://github.com/tmux/tmux) is a terminal multiplexer that allows
-splitting terminal windows and detaching/reattaching to existing terminal
-sessions. Combined with the [R.nvim](https://github.com/R-nvim/R.nvim) plugin
-it provides a powerful command-line working environment for R where users can
-send code from a script to the R console. The
-[hlterm](https://github.com/jalvesaq/hlterm) plugin provides the same
-functionality for Python and Bash scripts. All three tools need to be installed
-on a system. On HPCC Cluster they can be configured in each user account by
-following the instructions below.
+[Tmux](https://github.com/tmux/tmux) is a terminal multiplexer that allows splitting a single terminal window
+into multiple panes and detaching/reattaching to existing terminal sessions —
+making it possible to run an interactive R or Python console alongside your
+script editor without needing a graphical interface. Combined with the [R.nvim](https://github.com/R-nvim/R.nvim)
+plugin, it provides a powerful command-line working environment for R where
+users can send code directly from a script to a live R console. The [hlterm](https://github.com/jalvesaq/hlterm)
+plugin provides the same functionality for Python and Bash scripts. Together,
+these tools replicate the interactive "script + console" workflow found in
+desktop IDEs like RStudio, but entirely within the terminal — which is
+especially useful on remote systems like HPCC Cluster where graphical
+applications may be unavailable or impractical. All three tools need to be
+installed on a system. On HPCC Cluster they can be configured in each user
+account by following the instructions below.
 
 ### Quick configuration on UCR's HPCC
 
