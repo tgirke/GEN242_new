@@ -38,83 +38,82 @@ suppressPackageStartupMessages({
 
 ## What is R?
 
-[R](http://cran.at.r-project.org) is a powerful statistical environment and
-programming language for the analysis and visualization of data.  The
-associated [Bioconductor](http://bioconductor.org/) and CRAN package
-repositories provide many additional R packages for statistical data analysis
-for a wide array of research areas. The R software is free and runs on all
-common operating systems. 
+[R](http://cran.at.r-project.org) is a statistical environment and programming language for the analysis and visualization of data.
+The associated [Bioconductor](http://bioconductor.org/) and CRAN package repositories provide many additional R packages for statistical data analysis across a wide array of research areas.
+The R software is free and runs on all common operating systems.
+
 
 ## Why Using R?
 
-* Complete statistical environment and programming language
-* Efficient functions and data structures for data analysis
-* Powerful graphics
-* Access to fast growing number of analysis packages
-* Most widely used language in bioinformatics
-* Is standard for data mining and biostatistical analysis
-* Technical advantages: free, open-source, available for all OSs
++ Provides a comprehensive programming language and statistical environment
++ Utilizes high-performance data structures and functions optimized for data analysis
++ Delivers robust and versatile graphical capabilities
++ Integrates with a large ecosystem of analysis packages
++ Serves as the leading language for bioinformatics and the industry standard for biostatistics and data mining
++ Offers key technical benefits: open-source, free to use, and compatible across all operating systems
 
 ## Books and Documentation
-* simpleR - Using R for Introductory Statistics (John Verzani, 2004) - [URL](http://cran.r-project.org/doc/contrib/Verzani-SimpleR.pdf)
-* Bioinformatics and Computational Biology Solutions Using R and Bioconductor (Gentleman et al., 2005) - [URL](http://www.bioconductor.org/help/publications/books/bioinformatics-and-computational-biology-solutions/)
-* More on this see "Finding Help" section in UCR Manual - [URL](http://manuals.bioinformatics.ucr.edu/home/R\_BioCondManual\#TOC-Finding-Help)
+
+* **Bioinformatics and Computational Biology Solutions Using R and Bioconductor** (Gentleman et al., 2005) - [URL](http://www.bioconductor.org/help/publications/books/bioinformatics-and-computational-biology-solutions/)
+* **R for Data Science, 2nd ed.** (Wickham, Çetinkaya-Rundel & Grolemund, 2023) — The gold standard for learning R with the tidyverse. Covers data import, wrangling, visualization, and modeling. Free to read online and always will be, licensed under CC BY-NC-ND 3.0. [URL](https://r4ds.hadley.nz/)
+* **Hands-On Programming with R** (Garrett Grolemund) — A friendly introduction to R for non-programmers, covering how to load data, write functions, and use R's programming tools, with practical data science problems throughout. Free online. [URL](https://rstudio-education.github.io/hopr/)
+* **Advanced R, 2nd ed.** (Hadley Wickham) — The go-to resource for understanding R deeply: environments, functional programming, metaprogramming, and performance. Free online. [URL](https://adv-r.hadley.nz/)
+* **R Programming for Data Science** (Roger D. Peng) — Covers R fundamentals with a data science focus, guiding readers through data manipulation, cleaning, and visualization. Suitable for beginners and intermediate users. [URL](https://leanpub.com/rprogramming)
+* **Tidy Modeling with R** (Kuhn & Silge, 2022) — Covers building, tuning, and evaluating models using the `tidymodels` framework. Free online. [URL](https://www.tmwr.org/)
+* **Big Book of R** (Oscar Baruffa) — A curated directory of 300+ free R books organized by topic (bioinformatics, spatial analysis, machine learning, etc.). Excellent for finding specialized resources. [URL](https://www.bigbookofr.com/)
+
 
 ## R Working Environments
 
-![R_Interfaces](images/rinterface.png){fig-align="center"}Some R working environments with support for syntax highlighting and utilities to send code 
-to the R console: 
+Examples of R working environments and IDEs with support for syntax highlighting and utilities to send code to the R console: 
 
 * [RStudio/Posit Desktop](https://www.rstudio.com/products/rstudio/features): excellent choice for beginners ([Cheat Sheets](https://posit.co/resources/cheatsheets/?type=posit-cheatsheets/))
 * [RStudio/Posit Server](https://posit.co/download/rstudio-server/): web-based UI for RStudio. Available at UCR via [onDemand](https://hpcc.ucr.edu/manuals/hpc_cluster/selected_software/ondemand/#rstudio-on-ondemand) (old standalone [web instance]() will be discontinued).
 * [RStudio/Posit Cloud](https://rstudio.cloud/): cloud-based RStudio Server 
-* [Vim-R-Tmux](../linux/index.qmd#nvim-r-tmux-essentials): R working environment based on vim and tmux. 
+* [Nvim-R-Tmux](../linux/linux.html#nvim-r-tmux-essentials): R working environment based on vim and tmux. 
 * [Emacs](http://www.xemacs.org/Download/index.html) ([ESS add-on package](http://ess.r-project.org/))
 * [gedit](https://wiki.gnome.org/Apps/Gedit), [Rgedit](http://rgedit.sourceforge.net/), [RKWard](https://rkward.kde.org/), [Eclipse](http://www.walware.de/goto/statet), [Tinn-R](http://www.sciviews.org/Tinn-R/), [Notepad++](https://notepad-plus-plus.org/), [NppToR](http://sourceforge.net/projects/npptor/)
 	
 ### Example: RStudio 
 
-New integrated development environment (IDE) for [R](http://www.rstudio.com/ide/download/). Highly functional for both beginners and 
-advanced.
+Integrated development environment (IDE) for [R](http://www.rstudio.com/ide/download/). Highly functional for both beginners and advanced users.
 
-![RStudio](images/rstudio.png){fig-align="center"}Some userful shortcuts: `Ctrl+Enter` (send code), `Ctrl+Shift+C` (comment/uncomment), `Ctrl+1/2` (switch window focus)
+![RStudio](images/rstudio.png){fig-align="center"}
+
+Some userful shortcuts: `Ctrl+Enter` (send code line), `Ctrl+Shift+Enter` (send code chunk), `Ctrl+Shift+C` (comment/uncomment), `Ctrl+1/2` (switch window focus)
 
 ### Example: Nvim-R-Tmux
 
-Terminal-based Working Environment for R: [Nvim-R-Tmux](https://girke.bioinformatics.ucr.edu/GEN242/custom/slides/R_for_HPC/NvimR.html#1). 
+Terminal-based Working Environment for R: [Nvim-R-Tmux](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/linux/linux.html#nvim-r-tmux-essentials). 
 
-![Nvim-R-Tmux](images/Nvim-R.gif){fig-align="center"}Install and usage instructions for Nvim-R are provided in this [slide show](https://girke.bioinformatics.ucr.edu/GEN242/custom/slides/R_for_HPC/NvimR.html#11) and 
-[this tutorial](../linux/index.qmd#quick-configuration-in-user-accounts-of-ucrs-hpcc). The most detailed instructions
-can be found on the [Nvim-R_Tmux](https://github.com/tgirke/Nvim-R_Tmux) GitHub repos.
+![Nvim-R-Tmux](images/Nvim-R.gif){width=60% fig-align="center"}
 
 ## R Package Repositories
 
-* CRAN (>14,000 packages) general data analysis - [URL](http://cran.at.r-project.org/)
-* Bioconductor (>2,000 packages) bioscience data analysis - [URL](http://www.bioconductor.org/)
-* Omegahat (>90 packages) programming interfaces - [URL](https://github.com/omegahat?tab=repositories)
+* CRAN (>23,000 packages) general data analysis - [URL](http://cran.at.r-project.org/)
+* Bioconductor (>2,300 packages) bioscience data analysis - [URL](http://www.bioconductor.org/)
+* Omegahat (>50 packages) programming interfaces - [URL](https://github.com/omegahat?tab=repositories)
 * RStudio packages - [URL](https://www.rstudio.com/products/rpackages/)
 
 ## Working routine for tutorials
 
-When working in R, a good practice is to write all commands directly into an [R script](../rprogramming/index.qmd#r-scripts), instead of the R console, and then send the commands for execution to the R console with the `Ctrl+Enter` shortcut in RStudio/Posit, or similar shortcuts in other R coding environments, such as [Nvim-R](../linux/index.qmd#nvim-r-tmux-essentials). This way all work is preserved and can be reused in the future. 
+When working in R, a good practice is to write all commands directly into an R script (`qmd` or `Rmd` script), instead of the R console, and then send the commands for execution to the R console with the `Ctrl+Enter` shortcut in RStudio/Posit, or similar shortcuts in other R coding environments, such as Nvim-R-Tmux. This way all work is preserved and can be reused in the future. 
 
-The following instructions in this section provide a short overview of the standard working routine users should use to load R-based tutorials of this website into an R IDE (Nvim-R or RStudio).
-For Nvim-R on HPCC users can visit the Quick Demo slide [here](https://girke.bioinformatics.ucr.edu/GEN242/custom/slides/R_for_HPC/NvimR.html#11).
+The following instructions in this section provide a short overview of the standard working routine users should use to load R-based tutorials of this website into an R IDE (Nvim-R-Tmux or RStudio). For Nvim-R-Tmux on HPCC users use this [install and usage tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/linux/linux.html#nvim-r-tmux-essentials).  
 
 
-**Step 1.** Download `*.Rmd` or `*.R` file. These so called source files are always linked on the top right corner of each tutorial. The ones for this tutorial are [here](../rbasics/rbasics_index.qmd).
-   The file download can be accomplished via `download.file` from within R (see below), `wget` from the command-line or with the save function in a user's web browser. The following downloads the `Rmd` file of this tutorial via `download.file` from the R console.
+**Step 1.** Download `*.Rmd`, `qmd` or `*.R` file. These so called source files are always linked on the top right corner of each tutorial. The ones for this tutorial are [here](../rbasics/rbasics_index.qmd).
+   The file download can be accomplished via `download.file` from within R (see below), `wget` from the command-line or with the save function in a user's web browser. The following downloads the `qmd` file of this tutorial via `download.file` from the R console.
 
 ```{r download_file}
 #| eval: false
-download.file("https://raw.githubusercontent.com/tgirke/GEN242/main/slides/rbasics/rbasics_slides.qmd", "rbasics.qmd") 
+download.file("https://raw.githubusercontent.com/tgirke/GEN242/main/tutorials/rbasics/rbasics_index.qmd", "rbasics.qmd") 
 
 ```
 
-2. Load `*.qmd`, `*.Rmd` or `*.R` file in Neovim (Nvim-R) or RStudio.
+2. Load `*.qmd`, `*.Rmd` or `*.R` file in Nvim-R-Tmux or RStudio.
 
-3. Send code from code editor to R console by pressing `Enter` in Neovim (Nvim-R) or `Ctrl + Enter` in RStudio. In `*.Rmd` files the code lines are in so called [code chunks](../rmarkdown/index.qmd#r-code-chunks) and only those
-   ones can be sent to the console. To obtain in Neovim a connected R session one has to initiate by pressing the `\rf` key combination. For details see [here](https://girke.bioinformatics.ucr.edu/GEN242/custom/slides/R_for_HPC/NvimR.html#11).
+3. Send code from code editor to R console by pressing `Enter` in Nvim-R or `Ctrl + Enter` in RStudio. In `*.Rmd` and `qmd` files the code lines are in so called [code chunks](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rmarkdown/rmarkdown_index.html#metadata-section) and only those ones can be sent to the console. To obtain in Nvim-R-Tmux a connected R session one has to initiate it by pressing the `\rf` key combination. For details see [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/linux/linux.html#nvim-r-tmux-essentials).
 
 
 ## Installation of R, RStudio and R Packages
@@ -146,7 +145,7 @@ BiocManager::install(c("pkg1", "pkg2")) # Installs packages specified under "pkg
 5. For more details consult the [Bioc Install page](http://www.bioconductor.org/install/)
    and [BiocManager](https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html) package.
 
-6. Instructions for upgrading R and packages to newer versions are given at the end of this tutorial [here](#upgrading-to-new-rbioc-versions).
+6. Instructions for upgrading R and packages to newer versions are given at the end of this tutorial [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics_index.html#miscellaneous-topics).
 
 ## Getting Around
 
@@ -164,10 +163,13 @@ The R environment is controlled by hidden files in the startup directory:
 
 * __Closing R__:
 
-```
-q()  
+```{r quitr}
+#| eval: false
+q()
 
 ```
+
+
 ```
 Save workspace image? [y/n/c]:
 
@@ -432,7 +434,7 @@ class(as.matrix(myDF)) # convert data.frame to matrix
 
 `Tibbles` are a more modern version of `data.frames`. Among many other advantages, one can see
 here that `tibbles` have a nicer printing bahavior. Much more detailed information on this object
-class is provided in the [`dplyr/tidyverse`](../dplyr/index.qmd) manual section.
+class is provided in the [`dplyr/tidyverse`](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/dplyr/dplyr_index.html#construct-a-tibble-tibble) manual section.
 
 ```{r r_tibble_object}
 library(tidyverse)
@@ -736,9 +738,9 @@ close(zz)
 
 ```
 
-### Homework 3A 
+### Homework 2A 
 
-Homework 3A: [Object Subsetting Routines and Import/Export](../../assignments/homework/hw03/index.qmd)
+Homework 3A: [Object Subsetting Routines and Import/Export](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw02/hw02.html)
 
 ## Useful R Functions
 
@@ -957,9 +959,9 @@ plot(y[,1], y[,2]); text(y[1,1], y[1,2], expression(sum(frac(1,sqrt(x^2*pi)))), 
 
 ```
 
-### Homework 3B 
+### Homework 2B 
 
-Homework 3B: [Scatter Plots](../../assignments/homework/hw03/index.qmd)
+Homework 2B: [Scatter Plots](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw02/hw02.html)
 
 
 ### Line Plots
@@ -1084,9 +1086,9 @@ dev.off()
 
 
 
-### Homework 3C
+### Homework 2C
 
-Homework 3C: [Bar Plots](../../assignments/homework/hw03/index.qmd)
+Homework 2C: [Bar Plots](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw02/hw02.html)
 
 ## Analysis Routine
 
@@ -1124,7 +1126,7 @@ my_target[1:2,]
 Online import of molecular weight table
 
 ```{r import_data1b}
-my_mw <- read.delim(file="http://faculty.ucr.edu/~tgirke/Documents/R_BioCond/Samples/MolecularWeight_tair7.xls", header=TRUE, sep="\t") 
+my_mw <- read.delim(file="https://faculty.ucr.edu/~tgirke/Documents/R_BioCond/Samples/MolecularWeight_tair7.xls", header=TRUE, sep="\t") 
 my_mw[1:2,]
 
 ``` 
@@ -1132,7 +1134,7 @@ my_mw[1:2,]
 Online import of subcelluar targeting table
 
 ```{r import_data2b}
-my_target <- read.delim(file="http://faculty.ucr.edu/~tgirke/Documents/R_BioCond/Samples/TargetP_analysis_tair7.xls", header=TRUE, sep="\t") 
+my_target <- read.delim(file="https://faculty.ucr.edu/~tgirke/Documents/R_BioCond/Samples/TargetP_analysis_tair7.xls", header=TRUE, sep="\t") 
 my_target[1:2,]
 
 ```
@@ -1256,7 +1258,8 @@ source("exerciseRbasics.R")
 
 Or run it from the command-line (not from R!) with `Rscript` like this:
 
-```
+```{r Rscriptrun}
+#| eval: false
 Rscript exerciseRbasics.R
 
 ```
@@ -1305,7 +1308,7 @@ BiocManager::install(my_R_pkgs)
 
 ## Session Info
 
-```
+```{r sessioninfo}
 sessionInfo()
 
 ```
