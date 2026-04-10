@@ -71,7 +71,7 @@ All tasks are assembled into a single R script `HW2.R` submitted via GitHub.
 
 Several IDEs support syntax highlighting and sending code to the R console:
 
-### RStudio / Posit (recommended for beginners)
+### RStudio / Posit 
 
 - [RStudio Desktop](https://www.rstudio.com/products/rstudio/features) — local installation
 - [RStudio Server / OnDemand](https://hpcc.ucr.edu/manuals/hpc_cluster/selected_software/ondemand/#rstudio-on-ondemand) — web-based, available at UCR HPCC
@@ -85,7 +85,7 @@ Key shortcuts in RStudio:
 | `Ctrl+Shift+C` | Comment / uncomment |
 | `Ctrl+1` / `Ctrl+2` | Switch between editor and console |
 
-### Nvim-R-Tmux (terminal-based, for HPC users)
+### Nvim-R-Tmux 
 
 Terminal-based environment combining Neovim + R + Tmux. Ideal for working on the HPCC cluster.
 
