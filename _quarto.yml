@@ -189,8 +189,8 @@ website:
               href: assignments/homework/hw01/hw01.qmd 
             - text: "HW2 — R Basics"
               href: assignments/homework/hw02/hw02.qmd
-            #- text: "HW3 — Alignments"
-            #  href: assignments/homework/hw04/index.qmd
+            - text: "HW3 — Alignments"
+              href: assignments/homework/hw03/hw03.qmd
             #- text: "HW4 — R Programming"
             #  href: assignments/homework/hw05/index.qmd
             #- text: "HW5 — NGS Analysis"
