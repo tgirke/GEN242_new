@@ -97,10 +97,10 @@ website:
               href: slides/slides_22.qmd
             - text: "Building R Packages"
               href: slides/slides_23.qmd
-        - section: "NGS Analysis"
+        - section: "Data Analysis"
           contents:
             - text: "Sequence Alignments"
-              href: slides/slides_08.qmd
+              href: slides/sequence_alignments/sequence_alignments.qmd
             - text: "Multiple Alignments"
               href: slides/slides_10.qmd
             - text: "Short Read Alignments"
