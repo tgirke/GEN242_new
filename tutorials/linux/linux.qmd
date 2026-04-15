@@ -1036,7 +1036,7 @@ This is done from one of the tmux windows. It does't matter which one.
 srun --partition=short --mem=2gb --cpus-per-task 4 --ntasks 1 --time 1:00:00 --pty bash -l
 ```
 
-**2. Open nvim-connected R session**
+**3. Open nvim-connected R session**
 
 Open an `*.R`, `*.Rmd` or `*.qmd` file with `nvim` and initialize a connected R session
 with `\rf`. The resulting split window between Nvim and R behaves like a split
@@ -1054,7 +1054,7 @@ since it will create the omni completion database which can take some time on a 
 system with hundreds of installed packages (over 1,500 on HPCC cluster). Also, if there any messages
 appearing during the first session, just confirm them with `Enter`.
 
-**3. Send R code from nvim to the R pane**
+**4. Send R code from nvim to the R pane**
 
 Single lines of code can be sent from nvim to the R console by pressing
 `Enter` in normal mode. Entire code chunks from `Rmd` and `qmd` can be sent with 
