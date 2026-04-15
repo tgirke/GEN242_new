@@ -52,7 +52,7 @@ website:
       - text: "Assignments"
         href: assignments/index.qmd
       - text: "Links"
-        href: links/index.qmd
+        href: links/links.qmd
     right:
       - icon: github
         href: https://github.com/tgirke/GEN242
