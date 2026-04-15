@@ -1,0 +1,1243 @@
+---
+title: "Public Links"
+sidebar: links
+toc: true
+toc-depth: 2
+toc-location: right
+page-layout: article
+---
+
+<style>
+.link-section {
+  margin-top: 2rem;
+}
+
+.link-section h2 {
+  margin-bottom: 0.35rem;
+  font-size: 1.25rem;
+}
+
+.link-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.link-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.75rem 0.85rem;
+  background: #fff;
+  height: 100%;
+}
+
+.link-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.3rem;
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+
+.link-card p {
+  margin-bottom: 0;
+  color: #555;
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+.link-card a {
+  text-decoration: none;
+}
+
+.link-card a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 700px) {
+  .link-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+## Protein Sequence and Function
+
+::: {.link-grid}
+
+::: {.link-card}
+### [UniProt](https://www.uniprot.org/)
+Comprehensive resource for protein sequence, function, annotation, and proteome information.
+:::
+
+::: {.link-card}
+### [InterPro](https://www.ebi.ac.uk/interpro/)
+Protein family, domain, and functional site annotation resource with InterProScan support.
+:::
+
+::: {.link-card}
+### [NCBI Gene](https://www.ncbi.nlm.nih.gov/gene/)
+Gene-centered portal linking sequence records, annotation, variation, and related resources.
+:::
+
+::: {.link-card}
+### [UniProt BLAST](https://www.uniprot.org/blast)
+Sequence similarity search against UniProt protein datasets.
+:::
+
+:::
+
+## Protein Structure Resources
+
+::: {.link-grid}
+
+::: {.link-card}
+### [RCSB PDB](https://www.rcsb.org/)
+Primary portal for experimentally determined macromolecular 3D structures.
+:::
+
+::: {.link-card}
+### [AlphaFold Protein Structure Database](https://alphafold.ebi.ac.uk/)
+Large-scale resource of predicted protein structures from AlphaFold.
+:::
+
+::: {.link-card}
+### [RCSB Mol* 3D Viewer](https://www.rcsb.org/3d-view)
+Interactive web viewer for exploring and comparing 3D molecular structures.
+:::
+
+:::
+
+## Genome and Annotation Databases
+
+::: {.link-grid}
+
+::: {.link-card}
+### [NCBI Genomes](https://www.ncbi.nlm.nih.gov/home/genomes/)
+Genome portal for assemblies, annotation, and large-scale genomics resources.
+:::
+
+::: {.link-card}
+### [NCBI Datasets](https://www.ncbi.nlm.nih.gov/datasets/)
+Download portal for genomes and related sequence data across the tree of life.
+:::
+
+::: {.link-card}
+### [Ensembl](https://www.ensembl.org/)
+Genome browser and annotation resource for vertebrates and other eukaryotes.
+:::
+
+::: {.link-card}
+### [Ensembl Plants](https://plants.ensembl.org/index.html)
+Plant-focused genome browser and comparative genomics resource.
+:::
+
+::: {.link-card}
+### [GenBank](https://www.ncbi.nlm.nih.gov/genbank/)
+NIH nucleotide sequence archive and part of the INSDC data exchange network.
+:::
+
+::: {.link-card}
+### [NCBI Genome Data Viewer](https://www.ncbi.nlm.nih.gov/gdv/)
+Interactive genome browser for browsing assemblies and annotations.
+:::
+
+:::
+
+## Pathways, Systems Biology, and Functional Context
+
+::: {.link-grid}
+
+::: {.link-card}
+### [KEGG](https://www.genome.jp/kegg/)
+Integrated resource for pathways, genes, compounds, drugs, and biological systems.
+:::
+
+::: {.link-card}
+### [KEGG PATHWAY](https://www.genome.jp/kegg/pathway.html)
+Manually curated pathway maps for metabolism, signaling, and cellular processes.
+:::
+
+::: {.link-card}
+### [KEGG GENES](https://www.genome.jp/kegg/genes.html)
+Gene and protein collection linked to KEGG orthology and pathway systems.
+:::
+
+::: {.link-card}
+### [KEGG DRUG](https://www.genome.jp/kegg/drug/)
+Drug knowledgebase linked to therapeutic targets and molecular interaction context.
+:::
+
+:::
+
+## Small Molecules and Drug Discovery
+
+::: {.link-grid}
+
+::: {.link-card}
+### [PubChem](https://pubchem.ncbi.nlm.nih.gov/)
+Large open NIH resource for chemical structures, properties, and associated bioactivity information.
+:::
+
+::: {.link-card}
+### [PubChem Structure Search](https://pubchem.ncbi.nlm.nih.gov/docs/structure-search)
+Chemical structure and substructure search entry point for PubChem.
+:::
+
+::: {.link-card}
+### [ChEMBL](https://www.ebi.ac.uk/chembl/)
+Curated chemogenomics database linking compounds, bioactivity, and targets.
+:::
+
+::: {.link-card}
+### [ChEMBL Compounds](https://www.ebi.ac.uk/chembl/explore/compounds/)
+Browse compound records and chemistry-focused entries in ChEMBL.
+:::
+
+::: {.link-card}
+### [ChEMBL Drugs](https://www.ebi.ac.uk/chembl/explore/drugs/)
+Browse drug entries and related annotations in ChEMBL.
+:::
+
+::: {.link-card}
+### [DrugBank](https://go.drugbank.com/)
+Drug and target knowledgebase spanning drugs, targets, interactions, and clinical context.
+:::
+
+:::
+
+## Programming, Open Source, and Community Resources
+
+::: {.link-grid}
+
+::: {.link-card}
+### [Bioconductor](https://www.bioconductor.org/)
+Major open-source ecosystem for reproducible analysis of biological data in R.
+:::
+
+::: {.link-card}
+### [Bioconductor Books](https://bioconductor.org/books/release/)
+Online books and workflows for modern genomic and transcriptomic data analysis.
+:::
+
+::: {.link-card}
+### [GitHub](https://github.com/)
+Software hosting and collaboration platform widely used for open-source scientific software.
+:::
+
+::: {.link-card}
+### [GitHub Community](https://github.com/community)
+Community discussions, learning resources, and support for GitHub users.
+:::
+
+::: {.link-card}
+### [GitHub Open Source](https://github.com/open-source)
+Open-source maintainer and contributor resources hosted by GitHub.
+:::
+
+:::
+
+## Useful Search and Download Entry Points
+
+::: {.link-grid}
+
+::: {.link-card}
+### [NCBI Search](https://www.ncbi.nlm.nih.gov/search/)
+Unified search across NCBI biomedical and genomic databases.
+:::
+
+::: {.link-card}
+### [UniProt Downloads](https://www.uniprot.org/help/downloads)
+Download help and dataset access for UniProt resources.
+:::
+
+::: {.link-card}
+### [RCSB PDB Downloads](https://www.rcsb.org/downloads)
+Bulk download access for structures and related archive files.
+:::
+
+::: {.link-card}
+### [InterPro Downloads](https://www.ebi.ac.uk/interpro/download/)
+Download portal for InterPro, InterProScan, and related signature databases.
+:::
+
+::: {.link-card}
+### [Ensembl Downloads](https://www.ensembl.org/downloads.html)
+Download access for Ensembl data, software, and FTP resources.
+:::
+
+:::
+
+## Plant and Crop Genomics
+
+::: {.link-grid}
+
+::: {.link-card}
+### [TAIR](https://www.arabidopsis.org/)
+Primary community resource for *Arabidopsis thaliana* genetics, genomics, and molecular biology.
+:::
+
+::: {.link-card}
+### [TAIR Search](https://www.arabidopsis.org/search/overview)
+Entry point for gene, genome position, polymorphism, and functional searches in TAIR.
+:::
+
+::: {.link-card}
+### [Ensembl Plants](https://plants.ensembl.org/index.html)
+Genome browser and annotation resource for plant species of scientific and agricultural interest.
+:::
+
+::: {.link-card}
+### [Ensembl Plants Tools](https://plants.ensembl.org/tools.html)
+Access BLAST, BioMart, VEP, and related analysis tools for plant genomes.
+:::
+
+::: {.link-card}
+### [Gramene](https://www.gramene.org/)
+Comparative plant genomics resource covering crops and model plant species.
+:::
+
+::: {.link-card}
+### [Plant Reactome](https://www.gramene.org/pathway)
+Curated pathway knowledgebase for crops and model plants within the Gramene ecosystem.
+:::
+
+:::
+
+## Aging and Longevity Resources
+
+::: {.link-grid}
+
+::: {.link-card}
+### [Aging Atlas](https://ngdc.cncb.ac.cn/aging/index)
+Multi-omics resource for aging-related transcriptomic, epigenomic, proteomic, and pharmacogenomic datasets.
+:::
+
+::: {.link-card}
+### [Aging Atlas Gene Sets](https://ngdc.cncb.ac.cn/aging/age_related_genes)
+Curated aging-related gene sets collected from the literature and organized by category.
+:::
+
+::: {.link-card}
+### [Aging Atlas Help](https://ngdc.cncb.ac.cn/aging/help)
+Documentation and usage guidance for the Aging Atlas resource.
+:::
+
+::: {.link-card}
+### [PubMed](https://pubmed.ncbi.nlm.nih.gov/)
+Primary literature search resource for aging biology, geroscience, and translational biomedicine.
+:::
+
+:::
+
+## AI for Computational Biology
+
+::: {.link-grid}
+
+::: {.link-card}
+### [AlphaFold Protein Structure Database](https://alphafold.ebi.ac.uk/)
+Open access database of large-scale predicted protein structures for biological discovery.
+:::
+
+::: {.link-card}
+### [AlphaFold DB Downloads](https://alphafold.ebi.ac.uk/download)
+Bulk download access for AlphaFold DB predictions and associated resources.
+:::
+
+::: {.link-card}
+### [OpenFold](https://github.com/aqlaboratory/openfold)
+Trainable and memory-efficient open-source PyTorch reproduction of AlphaFold-style structure prediction.
+:::
+
+::: {.link-card}
+### [Hugging Face](https://huggingface.co/)
+Major platform for sharing and discovering AI models, datasets, and applications.
+:::
+
+::: {.link-card}
+### [Hugging Face Models](https://huggingface.co/models)
+Searchable index of public models, including biological and biomedical foundation models.
+:::
+
+::: {.link-card}
+### [Hugging Face Datasets](https://huggingface.co/datasets)
+Repository of datasets useful for ML, LLM, multimodal, and bioinformatics workflows.
+:::
+
+::: {.link-card}
+### [scGPT](https://github.com/bowang-lab/scGPT)
+Foundation-model framework for single-cell and multi-omics analysis using generative AI.
+:::
+
+::: {.link-card}
+### [scGPT-spatial](https://github.com/bowang-lab/scGPT-spatial)
+Spatial transcriptomics extension of scGPT for large-scale spatial omics modeling.
+:::
+
+::: {.link-card}
+### [scGenePT](https://github.com/czi-ai/scGenePT)
+Single-cell perturbation modeling framework integrating foundation-model ideas with gene-level embeddings.
+:::
+
+:::
+
+## Expression, Perturbation, and Single-Cell Resources
+
+::: {.link-grid}
+
+::: {.link-card}
+### [NCBI GEO](https://www.ncbi.nlm.nih.gov/geo/)
+Major public repository for functional genomics data, including array- and sequence-based studies with search and download tools.
+:::
+
+::: {.link-card}
+### [GEO DataSets](https://www.ncbi.nlm.nih.gov/gds)
+Curated GEO study records for browsing experiments, metadata, and downloadable expression datasets.
+:::
+
+::: {.link-card}
+### [GEO Profiles](https://www.ncbi.nlm.nih.gov/geoprofiles/)
+Gene-centered view of curated expression profiles derived from GEO datasets.
+:::
+
+::: {.link-card}
+### [GEO2R](https://www.ncbi.nlm.nih.gov/geo/geo2r/)
+Browser-based differential expression tool for rapid comparisons within GEO studies.
+:::
+
+::: {.link-card}
+### [ArrayExpress](https://www.ebi.ac.uk/arrayexpress)
+EMBL-EBI functional genomics collection for expression and other high-throughput studies, with links to associated sequence archives.
+:::
+
+::: {.link-card}
+### [ArrayExpress in BioStudies](https://www.ebi.ac.uk/biostudies/arrayexpress-in-biostudies)
+Overview of ArrayExpress content integration with BioStudies at EMBL-EBI.
+:::
+
+::: {.link-card}
+### [ArrayExpress Studies](https://www.ebi.ac.uk/biostudies/arrayexpress/studies)
+Browse released ArrayExpress studies through the BioStudies interface.
+:::
+
+::: {.link-card}
+### [NIH LINCS Program](https://lincsproject.org/)
+NIH resource for large-scale perturbational datasets spanning small molecules, ligands, genetic perturbations, and multiple assay types.
+:::
+
+::: {.link-card}
+### [LINCS L1000 Access Guide](https://lincsproject.org/LINCS/tools/workflows/find-the-best-place-to-obtain-the-lincs-l1000-data)
+Practical entry point for finding and downloading LINCS L1000 perturbation data.
+:::
+
+::: {.link-card}
+### [iLINCS Workflows](https://lincsproject.org/LINCS/tools/workflows/analyze-lincs-transcriptomic-and-proteomic-datasets)
+Analysis entry point for LINCS transcriptomic and proteomic signatures through iLINCS workflows.
+:::
+
+::: {.link-card}
+### [CZ CELLxGENE Discover](https://cellxgene.cziscience.com/)
+Curated platform for finding, downloading, and visually exploring standardized single-cell biology datasets.
+:::
+
+::: {.link-card}
+### [CELLxGENE Collections](https://cellxgene.cziscience.com/collections)
+Browse dataset collections organized for discovery and reuse across tissues, diseases, and organisms.
+:::
+
+::: {.link-card}
+### [CELLxGENE Datasets](https://cellxgene.cziscience.com/datasets)
+Searchable dataset index for published single-cell studies in CELLxGENE Discover.
+:::
+
+::: {.link-card}
+### [CELLxGENE Gene Expression](https://cellxgene.cziscience.com/gene-expression)
+Gene-centric exploration view across curated single-cell datasets.
+:::
+
+:::
+
+## Literature and Preprints
+
+::: {.link-grid}
+
+::: {.link-card}
+### [PubMed](https://pubmed.ncbi.nlm.nih.gov/)
+Primary literature search resource for biomedical, genomics, and life science research.
+:::
+
+::: {.link-card}
+### [PubMed Advanced Search](https://pubmed.ncbi.nlm.nih.gov/advanced/)
+Fielded query builder for more precise literature searches in PubMed.
+:::
+
+::: {.link-card}
+### [PubMed Central (PMC)](https://pmc.ncbi.nlm.nih.gov/)
+Free full-text archive of biomedical and life sciences journal literature.
+:::
+
+::: {.link-card}
+### [Europe PMC](https://europepmc.org/)
+Broad life sciences literature platform with abstracts, full text, citations, and linked research outputs.
+:::
+
+::: {.link-card}
+### [Europe PMC Advanced Search](https://europepmc.org/advancesearch)
+Advanced query interface for literature, grants, preprints, and full-text content in Europe PMC.
+:::
+
+::: {.link-card}
+### [Europe PMC Downloads](https://europepmc.org/downloads)
+Download access for open-access full text and metadata from Europe PMC.
+:::
+
+::: {.link-card}
+### [bioRxiv](https://www.biorxiv.org/)
+Major preprint server for life sciences research prior to peer review.
+:::
+
+::: {.link-card}
+### [bioRxiv Latest Articles](https://www.biorxiv.org/content/early/recent)
+Browse recently posted life science preprints on bioRxiv.
+:::
+
+::: {.link-card}
+### [bioRxiv Subject Collections](https://www.biorxiv.org/collection)
+Browse preprints by topic area across the life sciences.
+:::
+
+::: {.link-card}
+### [medRxiv](https://www.medrxiv.org/)
+Major preprint server for health sciences and translational biomedical research prior to peer review.
+:::
+
+::: {.link-card}
+### [medRxiv Latest Articles](https://www.medrxiv.org/content/early/recent)
+Browse recently posted health science preprints on medRxiv.
+:::
+
+::: {.link-card}
+### [medRxiv Subject Areas](https://www.medrxiv.org/subject-areas)
+Browse medRxiv preprints by clinical and biomedical topic area.
+:::
+
+:::
+
+## Analysis Tools and Portals
+
+::: {.link-grid}
+
+::: {.link-card}
+### [UCSC Genome Browser](https://genome.ucsc.edu/)
+Major genome browser for viewing assemblies, annotations, tracks, and comparative genomics data.
+:::
+
+::: {.link-card}
+### [UCSC Genome Browser Gateway](https://genome.ucsc.edu/cgi-bin/hgGateway)
+Direct entry point for selecting assemblies and navigating genomic regions of interest.
+:::
+
+::: {.link-card}
+### [UCSC Genome Browser Training](https://genome.ucsc.edu/training/)
+Tutorials, workshops, and teaching materials for effective use of the UCSC Genome Browser.
+:::
+
+::: {.link-card}
+### [UCSC Genome Browser User's Guide](https://genome.ucsc.edu/goldenpath/help/hgTracksHelp.html)
+Documentation for browser navigation, track configuration, and genomic data visualization.
+:::
+
+::: {.link-card}
+### [IGV](https://igv.org/)
+High-performance interactive viewer for genomic alignments, variants, annotations, and other omics tracks.
+:::
+
+::: {.link-card}
+### [IGV Web App](https://igv.org/app/)
+Browser-based version of IGV for quick interactive data exploration and sharable sessions.
+:::
+
+::: {.link-card}
+### [IGV Desktop Documentation](https://igv.org/doc/desktop/)
+Documentation and usage guidance for the desktop Integrative Genomics Viewer.
+:::
+
+::: {.link-card}
+### [STRING](https://string-db.org/)
+Protein association network resource for functional interactions, evidence channels, and enrichment analysis.
+:::
+
+::: {.link-card}
+### [STRING API](https://string-db.org/help/api/)
+Programmatic access to STRING interaction networks and supporting evidence.
+:::
+
+::: {.link-card}
+### [Reactome](https://reactome.org/)
+Open, curated, and peer-reviewed pathway database for pathway browsing, analysis, and systems biology context.
+:::
+
+::: {.link-card}
+### [Reactome Pathway Browser](https://reactome.org/userguide/pathway-browser)
+Interactive pathway exploration interface for navigating curated biological pathways.
+:::
+
+::: {.link-card}
+### [Reactome Analysis Tools](https://reactome.org/userguide/analysis)
+Pathway analysis entry point for gene lists, expression results, and other molecular datasets.
+:::
+
+::: {.link-card}
+### [Reactome Downloads](https://reactome.org/download-data)
+Download access for pathway data and standard export formats.
+:::
+
+::: {.link-card}
+### [cBioPortal](https://www.cbioportal.org/)
+Cancer genomics portal for exploring mutations, copy number changes, expression, and clinical associations across studies.
+:::
+
+::: {.link-card}
+### [cBioPortal Studies](https://www.cbioportal.org/datasets)
+Browsable collection of cancer genomics studies and cohorts available in cBioPortal.
+:::
+
+:::
+
+## Sequence Search and Alignment
+
+::: {.link-grid}
+
+::: {.link-card}
+### [NCBI BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi)
+Standard sequence similarity search tool for comparing nucleotide or protein sequences against major public databases.
+:::
+
+::: {.link-card}
+### [NCBI Nucleotide BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn)
+BLAST entry point for nucleotide-versus-nucleotide sequence searches.
+:::
+
+::: {.link-card}
+### [NCBI Protein BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastp)
+BLAST entry point for protein-versus-protein sequence similarity searches.
+:::
+
+::: {.link-card}
+### [EMBL-EBI NCBI BLAST](https://www.ebi.ac.uk/jdispatcher/sss/ncbiblast)
+Alternative BLAST interface through the EMBL-EBI job dispatcher framework.
+:::
+
+::: {.link-card}
+### [HMMER](https://www.ebi.ac.uk/Tools/hmmer/)
+Sensitive homology search tools for sequence and profile-based searches against protein databases.
+:::
+
+::: {.link-card}
+### [EMBL-EBI Job Dispatcher](https://www.ebi.ac.uk/jdispatcher/)
+Portal for sequence search and alignment tools provided by EMBL-EBI through web and programmatic interfaces.
+:::
+
+::: {.link-card}
+### [Clustal Omega](https://www.ebi.ac.uk/jdispatcher/msa/clustalo)
+Widely used multiple sequence alignment tool for protein and nucleotide sequences.
+:::
+
+::: {.link-card}
+### [UniProt Align Tool](https://www.uniprot.org/help/sequence-alignments)
+Convenient sequence alignment entry point integrated with UniProt and powered by Clustal Omega.
+:::
+
+::: {.link-card}
+### [MAFFT](https://mafft.cbrc.jp/alignment/software/)
+High-quality multiple sequence alignment software with options ranging from fast large-scale alignment to more accurate modes.
+:::
+
+::: {.link-card}
+### [MAFFT Documentation](https://mafft.cbrc.jp/alignment/software/manual/manual.html)
+Manual and usage guide for running MAFFT with different alignment strategies and parameters.
+:::
+
+:::
+
+## Variants and Clinical Interpretation
+
+::: {.link-grid}
+
+::: {.link-card}
+### [ClinVar](https://www.ncbi.nlm.nih.gov/clinvar/)
+Public archive of human variants with disease and drug-response interpretations and supporting evidence.
+:::
+
+::: {.link-card}
+### [ClinVar Introduction](https://www.ncbi.nlm.nih.gov/clinvar/intro/)
+Overview of ClinVar content, submission model, and interpretation framework.
+:::
+
+::: {.link-card}
+### [ClinVar Search Help](https://www.ncbi.nlm.nih.gov/clinvar/docs/help/)
+Guide for searching ClinVar by gene, HGVS notation, genomic region, and related fields.
+:::
+
+::: {.link-card}
+### [ClinVar Advanced Search](https://www.ncbi.nlm.nih.gov/clinvar/advanced)
+Fielded search builder for more precise variant and phenotype queries.
+:::
+
+::: {.link-card}
+### [gnomAD](https://gnomad.broadinstitute.org/)
+Large population reference database for human genetic variation and allele frequencies.
+:::
+
+::: {.link-card}
+### [gnomAD News and Releases](https://gnomad.broadinstitute.org/news/)
+Release notes and updates for new datasets, browser features, and frequency resources.
+:::
+
+::: {.link-card}
+### [dbSNP](https://www.ncbi.nlm.nih.gov/snp/)
+NCBI archive for single nucleotide polymorphisms and related small genetic variants.
+:::
+
+::: {.link-card}
+### [dbSNP Release Updates](https://ncbiinsights.ncbi.nlm.nih.gov/2025/03/18/dbsnp-release-157/)
+Recent NCBI update page for dbSNP build releases and expanded variant content.
+:::
+
+::: {.link-card}
+### [Ensembl VEP](https://www.ensembl.org/vep)
+Variant Effect Predictor for annotating SNPs, indels, CNVs, and structural variants against genes, transcripts, proteins, and regulatory regions.
+:::
+
+::: {.link-card}
+### [Ensembl VEP Web Interface](https://www.ensembl.org/info/docs/tools/vep/online/index.html)
+Browser-based VEP workflow for interactive variant annotation and filtering.
+:::
+
+::: {.link-card}
+### [Ensembl VEP Command Line](https://www.ensembl.org/info/docs/tools/vep/script/index.html)
+Command-line documentation for scalable variant annotation and plugin-based workflows.
+:::
+
+:::
+
+## Expression and Pathway Enrichment Tools
+
+::: {.link-grid}
+
+::: {.link-card}
+### [GSEA / MSigDB](https://www.gsea-msigdb.org/)
+Gene set enrichment analysis platform and home of the Molecular Signatures Database for enrichment-based interpretation of expression results.
+:::
+
+::: {.link-card}
+### [MSigDB](https://www.gsea-msigdb.org/gsea/msigdb)
+Curated collection of human and mouse gene sets for pathway, perturbation, ontology, and cell-state enrichment analyses.
+:::
+
+::: {.link-card}
+### [MSigDB Human Collections](https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp)
+Browse hallmark, pathway, perturbation, ontology, and regulatory gene-set collections for human analyses.
+:::
+
+::: {.link-card}
+### [GSEA Downloads](https://www.gsea-msigdb.org/gsea/downloads.jsp)
+Download the GSEA desktop software and related resources for enrichment analysis workflows.
+:::
+
+::: {.link-card}
+### [GSEA Documentation](https://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideFrame.html)
+User guide and documentation for running and interpreting GSEA analyses.
+:::
+
+::: {.link-card}
+### [DAVID](https://david.ncifcrf.gov/)
+Widely used functional annotation and enrichment resource for interpreting gene lists with biological context.
+:::
+
+::: {.link-card}
+### [DAVID Functional Annotation](https://david.ncifcrf.gov/tools.jsp)
+Entry point for annotation, clustering, and enrichment-oriented analysis tools in DAVID.
+:::
+
+::: {.link-card}
+### [Enrichr](https://maayanlab.cloud/Enrichr/)
+Interactive web tool for gene-list enrichment analysis across many pathway, ontology, and perturbation libraries.
+:::
+
+::: {.link-card}
+### [Enrichr Libraries](https://maayanlab.cloud/Enrichr/#libraries)
+Overview of available enrichment libraries, including pathways, ontologies, transcription factors, and perturbation signatures.
+:::
+
+::: {.link-card}
+### [clusterProfiler](https://bioconductor.org/packages/clusterProfiler/)
+Bioconductor package for statistical enrichment analysis and visualization of functional profiles for genes and gene clusters.
+:::
+
+::: {.link-card}
+### [clusterProfiler Documentation](https://bioconductor.org/packages/release/bioc/html/clusterProfiler.html)
+Package landing page with vignettes, reference manual, and installation details.
+:::
+
+::: {.link-card}
+### [DOSE](https://bioconductor.org/packages/DOSE/)
+Bioconductor package for disease ontology semantic analysis and enrichment workflows that often complement clusterProfiler.
+:::
+
+:::
+
+## Single-Cell and Spatial Analysis Tools
+
+::: {.link-grid}
+
+::: {.link-card}
+### [Scanpy](https://scanpy.readthedocs.io/)
+Scalable Python toolkit for preprocessing, visualization, clustering, and downstream analysis of single-cell gene expression data.
+:::
+
+::: {.link-card}
+### [Scanpy Tutorials](https://scanpy.readthedocs.io/en/stable/tutorials/index.html)
+Curated tutorials covering core workflows, visualization, trajectory analysis, and spatial data analysis with Scanpy.
+:::
+
+::: {.link-card}
+### [Seurat](https://satijalab.org/seurat/)
+Widely used R toolkit for QC, analysis, integration, and exploration of single-cell transcriptomic data.
+:::
+
+::: {.link-card}
+### [Seurat Getting Started](https://satijalab.org/seurat/articles/get_started_v5_new)
+Introductory tutorials and walkthroughs for building standard Seurat-based single-cell workflows.
+:::
+
+::: {.link-card}
+### [Seurat Guided Clustering Tutorial](https://satijalab.org/seurat/articles/pbmc3k_tutorial.html)
+Classic end-to-end tutorial for preprocessing, clustering, and visualizing single-cell RNA-seq data in Seurat.
+:::
+
+::: {.link-card}
+### [OSCA: Orchestrating Single-Cell Analysis with Bioconductor](https://bioconductor.org/books/release/OSCA/)
+Comprehensive Bioconductor book for processing, analyzing, visualizing, and exploring single-cell RNA-seq data.
+:::
+
+::: {.link-card}
+### [SingleCellExperiment](https://bioconductor.org/books/3.13/OSCA.intro/the-singlecellexperiment-class.html)
+Core Bioconductor data structure for storing expression matrices, cell metadata, and feature annotation in synchronized form.
+:::
+
+::: {.link-card}
+### [Bioconductor Single-Cell Installation Guide](https://bioconductor.org/books/3.13/OSCA.intro/installation.html)
+Practical setup guide for getting started with single-cell analysis in R and Bioconductor.
+:::
+
+::: {.link-card}
+### [Squidpy](https://squidpy.readthedocs.io/)
+Python toolkit for the analysis and visualization of spatial molecular data built on top of Scanpy and AnnData.
+:::
+
+::: {.link-card}
+### [Squidpy Tutorials](https://squidpy.readthedocs.io/en/latest/notebooks/tutorials/)
+Tutorial collection demonstrating core Squidpy workflows on diverse spatial datasets.
+:::
+
+::: {.link-card}
+### [Squidpy API](https://squidpy.readthedocs.io/en/latest/api.html)
+Reference documentation for graph, image, and spatial analysis functions in Squidpy.
+:::
+
+::: {.link-card}
+### [Visium Analysis with Squidpy](https://squidpy.readthedocs.io/en/stable/notebooks/tutorials/tutorial_visium_hne.html)
+Worked example for analyzing 10x Visium spatial transcriptomics data with tissue-image context.
+:::
+
+:::
+
+## Cloud and Workflow Platforms
+
+::: {.link-grid}
+
+::: {.link-card}
+### [Galaxy Project](https://galaxyproject.org/)
+Open, web-based platform for accessible, reproducible, and transparent computational biomedical research.
+:::
+
+::: {.link-card}
+### [UseGalaxy Servers](https://galaxyproject.org/usegalaxy/)
+Public Galaxy servers with synchronized tools and reference resources for broad community use.
+:::
+
+::: {.link-card}
+### [Galaxy Training Network](https://galaxyproject.org/learn/)
+Extensive tutorials and training materials for learning Galaxy-based workflows and analyses.
+:::
+
+::: {.link-card}
+### [Terra](https://terra.bio/)
+Cloud-native platform for biomedical data access, analysis, and collaboration at scale.
+:::
+
+::: {.link-card}
+### [Terra Overview](https://support.terra.bio/hc/en-us/articles/360022714931-Overview-Research-in-the-cloud-on-Terra)
+Getting-started overview of Terra’s data, analysis, and collaborative workflow model.
+:::
+
+::: {.link-card}
+### [Terra Interactive Analysis](https://support.terra.bio/hc/en-us/sections/360004143932-Interactive-Analysis)
+Entry point for notebooks, cloud environments, and interactive analysis workflows on Terra.
+:::
+
+::: {.link-card}
+### [Dockstore](https://dockstore.org/)
+Free and open-source platform for sharing reusable and scalable analytical tools and workflows.
+:::
+
+::: {.link-card}
+### [Dockstore Quick Start](https://dockstore.org/quick-start)
+Practical introduction to finding, launching, and developing tools and workflows on Dockstore.
+:::
+
+::: {.link-card}
+### [Dockstore API / Swagger](https://dockstore.org/api/static/swagger-ui/index.html)
+Programmatic access to Dockstore resources for integration and workflow automation.
+:::
+
+::: {.link-card}
+### [nf-core](https://nf-co.re/)
+Community framework for high-quality open-source Nextflow components and pipelines.
+:::
+
+::: {.link-card}
+### [nf-core Pipelines](https://nf-co.re/pipelines)
+Browse currently available nf-core pipelines across many common genomics and bioinformatics applications.
+:::
+
+::: {.link-card}
+### [nf-core Configs](https://nf-co.re/configs/)
+Collection of institutional and platform-specific configuration profiles for running nf-core workflows.
+:::
+
+::: {.link-card}
+### [Snakemake](https://snakemake.github.io/)
+Widely used workflow system for reproducible and scalable data analysis.
+:::
+
+::: {.link-card}
+### [Snakemake Documentation](https://snakemake.readthedocs.io/)
+Documentation for building, scaling, and deploying Snakemake workflows.
+:::
+
+:::
+
+## ML and AI Toolkits
+
+::: {.link-grid}
+
+::: {.link-card}
+### [PyTorch](https://pytorch.org/)
+Widely used open-source deep learning framework for tensor computation, neural networks, and research-oriented model development.
+:::
+
+::: {.link-card}
+### [PyTorch Tutorials](https://pytorch.org/tutorials/)
+Official tutorials for tensors, neural networks, training workflows, and model deployment in PyTorch.
+:::
+
+::: {.link-card}
+### [PyTorch Ecosystem](https://pytorch.org/ecosystem/)
+Overview of libraries, tools, and projects built around the PyTorch framework.
+:::
+
+::: {.link-card}
+### [TensorFlow](https://www.tensorflow.org/)
+End-to-end machine learning platform for model development, training, and deployment across research and production settings.
+:::
+
+::: {.link-card}
+### [TensorFlow Tutorials](https://www.tensorflow.org/tutorials)
+Official tutorials covering neural networks, structured data, time series, images, and text.
+:::
+
+::: {.link-card}
+### [Keras](https://keras.io/)
+High-level deep learning API for building and training neural networks with a streamlined interface.
+:::
+
+::: {.link-card}
+### [Keras Examples](https://keras.io/examples/)
+Collection of practical examples for deep learning workflows across images, text, timeseries, graphs, and generative models.
+:::
+
+::: {.link-card}
+### [XGBoost](https://xgboost.readthedocs.io/)
+High-performance gradient boosting framework widely used for classification, regression, ranking, and feature-rich tabular data.
+:::
+
+::: {.link-card}
+### [XGBoost Python Package](https://xgboost.readthedocs.io/en/stable/python/index.html)
+Documentation for building, training, and tuning XGBoost models in Python.
+:::
+
+::: {.link-card}
+### [XGBoost R Package](https://xgboost.readthedocs.io/en/stable/R-package/index.html)
+R interface for gradient boosting workflows with XGBoost.
+:::
+
+::: {.link-card}
+### [LightGBM](https://lightgbm.readthedocs.io/)
+Gradient boosting framework optimized for speed and efficiency on large-scale tabular datasets.
+:::
+
+::: {.link-card}
+### [CatBoost](https://catboost.ai/)
+Gradient boosting toolkit designed for strong performance on tabular data, including categorical features.
+:::
+
+::: {.link-card}
+### [scikit-learn](https://scikit-learn.org/)
+Core Python machine learning library for classification, regression, clustering, preprocessing, and model selection.
+:::
+
+::: {.link-card}
+### [scikit-learn User Guide](https://scikit-learn.org/stable/user_guide.html)
+Comprehensive guide to estimators, preprocessing pipelines, evaluation, and common ML workflows.
+:::
+
+::: {.link-card}
+### [Hugging Face](https://huggingface.co/)
+Major platform for sharing AI models, datasets, inference tools, and application workflows.
+:::
+
+::: {.link-card}
+### [Hugging Face Models](https://huggingface.co/models)
+Searchable model hub including language, vision, multimodal, and biology-relevant foundation models.
+:::
+
+::: {.link-card}
+### [Hugging Face Datasets](https://huggingface.co/datasets)
+Repository of datasets for machine learning, LLM, multimodal, and computational biology workflows.
+:::
+
+::: {.link-card}
+### [Weights & Biases](https://wandb.ai/site)
+Experiment tracking, model evaluation, and collaboration platform for machine learning workflows.
+:::
+
+::: {.link-card}
+### [MLflow](https://mlflow.org/)
+Open-source platform for experiment tracking, model packaging, and ML workflow management.
+:::
+
+::: {.link-card}
+### [ONNX](https://onnx.ai/)
+Open format and ecosystem for interoperable machine learning models across frameworks and runtimes.
+:::
+
+::: {.link-card}
+### [tidymodels](https://www.tidymodels.org/)
+R ecosystem for modeling, preprocessing, tuning, workflows, and reproducible machine learning pipelines.
+:::
+
+::: {.link-card}
+### [caret](https://topepo.github.io/caret/)
+Classic R toolkit for streamlined model training and evaluation across many machine learning methods.
+:::
+
+::: {.link-card}
+### [torch for R](https://torch.mlverse.org/)
+Native R interface for tensors, autodiff, neural networks, and deep learning workflows inspired by PyTorch.
+:::
+
+::: {.link-card}
+### [torch for R - Get Started](https://torch.mlverse.org/start/)
+Introductory documentation and installation guide for deep learning in R with torch.
+:::
+
+::: {.link-card}
+### [keras3 for R](https://keras3.posit.co/)
+R interface for Keras workflows, including deep learning model construction and training.
+:::
+
+::: {.link-card}
+### [tensorflow for R](https://tensorflow.rstudio.com/)
+R interface and guides for TensorFlow-based machine learning workflows.
+:::
+
+:::
+
+## LLMs and Agent Frameworks
+
+::: {.link-grid}
+
+::: {.link-card}
+### [LangChain](https://docs.langchain.com/oss/python/langchain/overview)
+Framework for building LLM-powered applications and agents with model integrations, memory, tools, and orchestration components.
+:::
+
+::: {.link-card}
+### [LangChain Quickstart](https://docs.langchain.com/oss/python/langchain/quickstart)
+Fast entry point for building a first LangChain-based application or agent.
+:::
+
+::: {.link-card}
+### [LangChain Learn](https://docs.langchain.com/oss/python/learn)
+Tutorials, conceptual guides, and learning resources for LangChain and LangGraph workflows.
+:::
+
+::: {.link-card}
+### [LlamaIndex](https://developers.llamaindex.ai/python/framework/)
+Framework for building LLM-powered agents and retrieval workflows over external documents, databases, and private data.
+:::
+
+::: {.link-card}
+### [LlamaIndex Quickstart](https://developers.llamaindex.ai/)
+Getting-started entry point for building LlamaIndex applications in Python or TypeScript.
+:::
+
+::: {.link-card}
+### [LlamaIndex Workflows](https://developers.llamaindex.ai/python/llamaagents/workflows/)
+Guide to building multi-step agent workflows and retrieval pipelines with LlamaIndex.
+:::
+
+::: {.link-card}
+### [Ollama](https://ollama.com/)
+Platform for running and managing open models locally for chat, embeddings, coding, and multimodal workflows.
+:::
+
+::: {.link-card}
+### [Ollama Download](https://ollama.com/download)
+Installation entry point for macOS, Linux, and Windows.
+:::
+
+::: {.link-card}
+### [Ollama Model Library](https://ollama.com/library)
+Browsable catalog of open models available through Ollama.
+:::
+
+::: {.link-card}
+### [vLLM](https://docs.vllm.ai/en/stable/)
+High-performance inference and serving engine for large language models.
+:::
+
+::: {.link-card}
+### [vLLM Quickstart](https://docs.vllm.ai/en/stable/getting_started/quickstart/)
+Quickstart guide for installing and running vLLM for inference and serving.
+:::
+
+::: {.link-card}
+### [vLLM Supported Models](https://docs.vllm.ai/en/latest/models/supported_models/)
+Reference list of model architectures supported by vLLM.
+:::
+
+:::
+
+## Data Science and Visualization
+
+::: {.link-grid}
+
+::: {.link-card}
+### [pandas](https://pandas.pydata.org/)
+Core Python library for tabular data manipulation, analysis, and data-frame workflows.
+:::
+
+::: {.link-card}
+### [pandas Getting Started](https://pandas.pydata.org/docs/getting_started/index.html)
+Introductory guides, tutorials, and quickstart material for learning pandas.
+:::
+
+::: {.link-card}
+### [pandas User Guide](https://pandas.pydata.org/docs/user_guide/index.html)
+Topic-based documentation for data wrangling, missing values, joins, time series, and more.
+:::
+
+::: {.link-card}
+### [NumPy](https://numpy.org/doc/stable/)
+Foundational numerical computing library for Python centered on efficient multidimensional arrays.
+:::
+
+::: {.link-card}
+### [NumPy User Guide](https://numpy.org/doc/stable/user/index.html)
+Overview of core array concepts, indexing, broadcasting, and numerical workflows in NumPy.
+:::
+
+::: {.link-card}
+### [NumPy Absolute Beginners Guide](https://numpy.org/doc/stable/user/absolute_beginners.html)
+Beginner-friendly introduction to NumPy arrays and basic numerical operations.
+:::
+
+::: {.link-card}
+### [SciPy](https://scipy.org/)
+Scientific computing library for Python with tools for optimization, integration, interpolation, signal processing, and statistics.
+:::
+
+::: {.link-card}
+### [SciPy User Guide](https://docs.scipy.org/doc/scipy/tutorial/)
+Guide to key SciPy concepts and common scientific computing workflows.
+:::
+
+::: {.link-card}
+### [SciPy API Reference](https://docs.scipy.org/doc/scipy/reference/)
+Reference documentation for SciPy modules and public functions.
+:::
+
+::: {.link-card}
+### [matplotlib](https://matplotlib.org/)
+Comprehensive visualization library for static, animated, and interactive plotting in Python.
+:::
+
+::: {.link-card}
+### [matplotlib Tutorials](https://matplotlib.org/stable/tutorials/index.html)
+Tutorial collection for plotting fundamentals, figures, axes, and customization workflows.
+:::
+
+::: {.link-card}
+### [matplotlib Quick Start](https://matplotlib.org/stable/users/explain/quick_start.html)
+Fast introduction to common plotting patterns and recommended usage.
+:::
+
+::: {.link-card}
+### [seaborn](https://seaborn.pydata.org/)
+High-level statistical data visualization library built on top of matplotlib.
+:::
+
+::: {.link-card}
+### [seaborn Tutorial](https://seaborn.pydata.org/tutorial.html)
+Guided introduction to seaborn plotting functions and statistical graphics workflows.
+:::
+
+::: {.link-card}
+### [seaborn Example Gallery](https://seaborn.pydata.org/examples/index.html)
+Browsable gallery of common seaborn visualization patterns and examples.
+:::
+
+::: {.link-card}
+### [Plotly for Python](https://plotly.com/python/)
+Interactive graphing library for building publication-quality figures and dashboards in Python.
+:::
+
+::: {.link-card}
+### [Plotly Getting Started](https://plotly.com/python/getting-started/)
+Setup and introductory material for creating interactive figures with Plotly.
+:::
+
+::: {.link-card}
+### [Dash](https://dash.plotly.com/)
+Python framework for building interactive analytical web apps around Plotly-based visualizations.
+:::
+
+::: {.link-card}
+### [Altair](https://altair-viz.github.io/)
+Declarative visualization library for Python built on the Vega-Lite grammar.
+:::
+
+::: {.link-card}
+### [Altair Getting Started](https://altair-viz.github.io/getting_started/overview.html)
+Introductory documentation for building chart specifications and visual analytics workflows in Altair.
+:::
+
+::: {.link-card}
+### [Altair Example Gallery](https://altair-viz.github.io/gallery/index.html)
+Collection of example charts illustrating Altair’s declarative plotting model.
+:::
+
+:::
