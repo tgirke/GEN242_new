@@ -988,28 +988,21 @@ follow the [detailed step-wise install
 instructions](https://github.com/tgirke/nvim-R-Tmux#step-wise-install)
 to install nvim-R-Tmux from scratch on your own system (e.g. laptop).
 
-1. Log in to your user account on HPCC and clone the repository:
+Log in to your user account on HPCC, clone the repository and run the install script.
 
 ```bash
 git clone https://github.com/tgirke/nvim-R-Tmux.git
 cd nvim-R-Tmux
 module load neovim/0.11.4 tmux R && bash install_nvim_r_tmux.sh
-# bash install_nvim_r_tmux.sh # when installing on your local computer, omit the previous line and run this command instead 
+# bash install_nvim_r_tmux.sh # when installing on your local computer, omit the previous module load line and run this command instead 
 ```
 
-2. Install plugins on first launch. This must be done on the **login node**:
+The installer will take 2–3 minutes on first run. It handles everything
+automatically, including headless install of neovim plugins (via Lazy sync),
+and if necessary configuration of `~/.bashrc`, `~/.bash_profile`, and
+`~/.Rprofile`, while creating backup of the original files. After the install 
+log out and in of your account. 
 
-```bash
-nvim # wait until plugin install finishes 
-:Lazy sync # run under command mode in nvim 
-:qa # closes nvim
-```
-
-3. Log in to a compute node with `srun` and follow the usage instructions in the next section. 
-
-```bash
-srun --partition=short --mem=2gb --cpus-per-task 4 --ntasks 1 --time 1:00:00 --pty bash -l
-```
 
 ### Basic usage of nvim-R-Tmux
 
@@ -1034,6 +1027,14 @@ tmux a  # starts a new tmux session with default layout or re-attaches to existi
 
 The default session opens five named windows that can be changed in a user's `~/.tmux.conf` file. 
 Switch between windows with `Ctrl-a 1` through `Ctrl-a 5`.
+
+**2. Log in to a compute node with `srun`**
+
+This is done from one of the tmux windows. It does't matter which one. 
+
+```bash
+srun --partition=short --mem=2gb --cpus-per-task 4 --ntasks 1 --time 1:00:00 --pty bash -l
+```
 
 **2. Open nvim-connected R session**
 

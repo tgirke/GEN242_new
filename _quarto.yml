@@ -97,10 +97,10 @@ website:
               href: slides/slides_22.qmd
             - text: "Building R Packages"
               href: slides/slides_23.qmd
-        - section: "NGS Analysis"
+        - section: "Data Analysis"
           contents:
             - text: "Sequence Alignments"
-              href: slides/slides_08.qmd
+              href: slides/sequence_alignments/sequence_alignments.qmd
             - text: "Multiple Alignments"
               href: slides/slides_10.qmd
             - text: "Short Read Alignments"
@@ -189,8 +189,8 @@ website:
               href: assignments/homework/hw01/hw01.qmd 
             - text: "HW2 — R Basics"
               href: assignments/homework/hw02/hw02.qmd
-            #- text: "HW3 — Alignments"
-            #  href: assignments/homework/hw04/index.qmd
+            - text: "HW3 — Alignments"
+              href: assignments/homework/hw03/hw03.qmd
             #- text: "HW4 — R Programming"
             #  href: assignments/homework/hw05/index.qmd
             #- text: "HW5 — NGS Analysis"

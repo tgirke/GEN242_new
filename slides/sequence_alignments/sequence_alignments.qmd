@@ -1,0 +1,10 @@
+---
+title: "Sequence Alignments"
+sidebar: slides
+---
+
+
+[ [Download](https://docs.google.com/presentation/d/1-MFITRBnIBB1VKx05I5TSUaqKovl2JS3LWunja5Vgb8/edit?usp=sharing) ]
+
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSuf_GtpVF7__JD6fRVlBCZnwggJ2mF71gE44W2mGACX6HXpUsS7gl9y26R1v4zk8WGiTfVPbRoojwh/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
