@@ -4,7 +4,8 @@ sidebar: assignments
 ---
 
 <div style="text-align: right"> 
-Source code downloads: &nbsp; <a href="https://raw.githubusercontent.com/tgirke/GEN242//main/content/en/assignments/Homework/HW04/hw04.R" target="_blank">[ .R ]</a>
+Source code downloads: &nbsp; <a href="https://github.com/tgirke/GEN242/edit/main/assignments/homework/hw04/hw04.R" target="_blank">[ .R ]</a>
+
 </div>
 
 ## A. Reverse and complement of DNA

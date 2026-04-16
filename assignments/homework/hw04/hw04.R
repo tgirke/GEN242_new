@@ -1,5 +1,5 @@
 ########################
-## HW5: R Programming ##
+## HW4: R Programming ##
 ########################
 
 ## A. Reverse and complement of DNA
