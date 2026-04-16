@@ -88,7 +88,7 @@ website:
             - text: "Introduction to R"
               href: slides/rbasics/rbasics_page.qmd
             - text: "Programming in R"
-              href: slides/slides_09.qmd
+              href: slides/rprogramming/rprogramming_page.qmd
             - text: "R on HPC"
               href: slides/slides_12.qmd
             - text: "Graphics in R"

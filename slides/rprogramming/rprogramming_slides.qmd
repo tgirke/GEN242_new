@@ -1,0 +1,859 @@
+---
+title: "Programming in R"
+subtitle: "GEN242: Data Analysis in Genome Biology"
+author: "Thomas Girke"
+date: today
+format:
+  revealjs:
+    theme: [default, ../../assets/revealjs_custom.scss]
+    slide-number: true
+    progress: true
+    scrollable: true
+    smaller: true
+    highlight-style: github
+    code-block-height: 380px
+    transition: slide
+    embed-resources: true
+    footer: "GEN242 · UC Riverside · [Tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rprogramming/rprogramming_index.html) · [HW05](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw05/hw05/)"
+    logo: "https://girke.bioinformatics.ucr.edu/GEN242/assets/logo_gen242.png"
+execute:
+  echo: true
+  eval: false
+---
+
+## Overview
+
+One of the main attractions of R is how easy it is to write custom functions
+and programs — even for users with no prior programming experience. Once the
+basic control structures are understood, R becomes a powerful environment for
+complex custom analyses of almost any type of data.
+
+Topics covered in this tutorial:
+
+- Why programming in R?
+- R scripts — structure and execution
+- Control structures: `if`, `ifelse`
+- Loops: `for`, `while`, `apply` family
+- Speed performance of loops
+- Writing custom functions
+- Useful utilities: regex, string operations, debugging
+- Executing R scripts from console and command-line
+- Programming exercises (HW05)
+
+::: {.callout-note}
+**Prerequisite:** The [R Basics tutorial (T3)](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics_index.html)
+provides the foundational R knowledge assumed here.
+:::
+
+---
+
+## Why Programming in R?
+
+- Powerful statistical environment and programming language
+- Facilitates **reproducible research** — analyses are scripts, not clicks
+- Efficient data structures make programming very easy
+- Easy to implement custom functions for any analysis
+- Powerful, publication-quality graphics
+- Access to a rapidly growing ecosystem of packages
+- Most widely used language in bioinformatics
+- Standard for data mining and biostatistical analysis
+- Free, open-source, available for all operating systems
+
+---
+
+## R Scripts {.scrollable}
+
+An **R script** is a plain text file (`.R`) containing R code and comments.
+It is the primary way to write reproducible analyses.
+
+### Structure of a well-organized R script
+
+```{r}
+#!/usr/bin/env Rscript
+# -----------------------------------------------
+# Script: my_analysis.R
+# Author: Thomas Girke
+# Description: Example analysis workflow
+# -----------------------------------------------
+
+## Section 1 — Load libraries
+library(ggplot2)
+library(dplyr)
+
+## Section 2 — Import data
+myDF <- read.delim("mydata.txt", sep="\t")
+
+## Section 3 — Analysis
+result <- myDF |> filter(value > 10) |> summarize(mean=mean(value))
+
+## Section 4 — Export
+write.table(result, "result.txt", sep="\t", quote=FALSE)
+```
+
+### Style guidelines
+
+- Use `#` for comments — explain *why*, not just *what*
+- Organize code into labeled sections with `## Section name`
+- Keep functions in a separate file and load with `source()`
+- Follow the [Tidyverse style guide](http://adv-r.had.co.nz/Style.html)
+- Use the [formatR](https://yihui.org/formatr/) package to auto-format scripts
+
+### Rmd and Quarto scripts
+
+`.Rmd` and `.qmd` files extend R scripts with narrative text, results, and
+formatted output. They render to HTML, PDF, and other formats.
+Details in the [R Markdown tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rmarkdown/rmarkdown_index.html).
+
+---
+
+## Control Structures — Operators
+
+### Comparison operators
+
+| Operator | Meaning |
+|---|---|
+| `==` | equal |
+| `!=` | not equal |
+| `>` / `>=` | greater than / or equal |
+| `<` / `<=` | less than / or equal |
+
+### Logical operators
+
+| Operator | Meaning | Scope |
+|---|---|---|
+| `&` | AND | element-wise on vectors |
+| `&&` | AND | first element only — use in `if` statements |
+| `\|` | OR | element-wise on vectors |
+| `\|\|` | OR | first element only — use in `if` statements |
+| `!` | NOT | |
+
+::: {.callout-tip}
+Use `&&` and `||` in `if` statements (they evaluate only the first element and
+short-circuit). Use `&` and `|` for element-wise operations on vectors.
+:::
+
+---
+
+## Conditional Execution — `if` and `ifelse` {.scrollable}
+
+### `if` statement — operates on a single logical value
+
+```{r}
+if (TRUE) {
+    statements_1
+} else {
+    statements_2
+}
+```
+
+::: {.callout-warning}
+Keep `} else {` on the same line — avoid a newline before `else` or R will
+misparse the statement.
+:::
+
+### Examples
+
+```{r}
+# Basic if / else
+if (1 == 0) {
+    print(1)
+} else {
+    print(2)     # runs this branch
+}
+
+# if / else if / else chain
+if (1 == 0) {
+    print(1)
+} else if (1 == 2) {
+    print(2)
+} else {
+    print(3)     # runs this branch
+}
+```
+
+### `ifelse` — vectorized conditional, operates on entire vectors
+
+```{r}
+ifelse(test, true_value, false_value)   # syntax
+```
+
+```{r}
+x <- 1:10
+ifelse(x < 5, sqrt(x), 0)   # sqrt for values < 5, else 0
+```
+
+`ifelse` is much more efficient than a `for` loop with an `if` inside when
+operating on vectors.
+
+---
+
+## `for` Loops {.scrollable}
+
+Iterate over elements of a sequence:
+
+```{r}
+for (variable in sequence) {
+    statements
+}
+```
+
+### Example — compute row means (append approach)
+
+```{r}
+mydf <- iris
+myve <- NULL
+for (i in seq(along=mydf[,1])) {
+    myve <- c(myve, mean(as.numeric(mydf[i, 1:3])))  # appends result each iteration
+}
+myve[1:8]
+```
+
+::: {.callout-warning}
+**The append approach (`c()`) is slow for large objects** — each iteration
+creates a new copy of the entire vector. Use the inject approach instead.
+:::
+
+### Inject approach — pre-allocate the result vector (much faster)
+
+```{r}
+myve <- numeric(length(mydf[,1]))   # pre-allocate vector of correct length
+for (i in seq(along=myve)) {
+    myve[i] <- mean(as.numeric(mydf[i, 1:3]))   # assign result by index
+}
+myve[1:8]
+```
+
+### Conditional stop inside a loop
+
+Use `stop()` to break out of a loop with an error message when a condition is met:
+
+```{r}
+x <- 1:10
+z <- NULL
+for (i in seq(along=x)) {
+    if (x[i] < 5) {
+        z <- c(z, x[i]-1)
+        print(z)
+    } else {
+        stop("values need to be < 5")   # breaks loop and prints error
+    }
+}
+```
+
+---
+
+## `while` Loop
+
+Iterates as long as a condition remains `TRUE`:
+
+```{r}
+while (condition) {
+    statements
+}
+```
+
+### Example
+
+```{r}
+z <- 0
+while (z < 5) {
+    z <- z + 2    # increment z each iteration
+    print(z)      # prints: 2, 4, 6  (stops when z >= 5)
+}
+```
+
+::: {.callout-tip}
+Use `while` when the number of iterations is not known in advance.
+Use `for` when iterating over a known sequence or vector.
+:::
+
+---
+
+## The `apply` Function Family {.scrollable}
+
+Apply functions avoid explicit loops and are often more readable and faster.
+
+### `apply` — apply a function over rows or columns of a matrix/data.frame
+
+```{r}
+apply(X, MARGIN, FUN, ...)
+# X:      matrix, array, or data.frame
+# MARGIN: 1 = rows, 2 = columns
+# FUN:    function to apply
+```
+
+```{r}
+apply(iris[1:8, 1:3], 1, mean)    # row-wise mean for first 8 rows, cols 1-3
+apply(iris[, 1:4], 2, mean)       # column-wise mean for all numeric columns
+```
+
+### `tapply` — apply a function to groups defined by a factor
+
+```{r}
+tapply(vector, factor, FUN)
+```
+
+```{r}
+tapply(iris$Sepal.Length, iris$Species, mean)   # mean Sepal.Length per species
+```
+
+### `lapply` and `sapply` — apply a function to each element of a list or vector
+
+```{r}
+l <- list(a=1:10, beta=exp(-3:3), logic=c(TRUE,FALSE,FALSE,TRUE))
+
+lapply(l, mean)    # returns a list
+sapply(l, mean)    # returns a vector or matrix when possible
+vapply(l, mean, FUN.VALUE=numeric(1))   # safer: enforces output type
+```
+
+Often used with an inline anonymous function:
+
+```{r}
+sapply(names(l), function(x) mean(l[[x]]))    # same result, explicit element access
+```
+
+### Choosing between `lapply`, `sapply`, `vapply`
+
+| Function | Returns | Best for |
+|---|---|---|
+| `lapply` | always a list | when output types may vary |
+| `sapply` | vector/matrix if possible, else list | interactive use |
+| `vapply` | vector/array of specified type | scripts — safer, faster |
+
+---
+
+## Loop Speed Performance {.scrollable}
+
+Looping over large data sets can be slow. The key principle: **avoid growing
+objects inside loops** and prefer **vectorized operations** over loops entirely.
+
+### Test matrix used in all benchmarks
+
+```{r}
+myMA <- matrix(rnorm(1000000), 100000, 10,
+               dimnames=list(1:100000, paste("C", 1:10, sep="")))
+```
+
+### 1. `for` loop: append vs inject
+
+```{r}
+# SLOW — append approach: c() creates a new copy each iteration
+results <- NULL
+system.time(for(i in seq(along=myMA[,1])) results <- c(results, mean(myMA[i,])))
+#  user: 39.2s   elapsed: 45.6s
+
+# FAST — inject approach: pre-allocate, assign by index
+results <- numeric(length(myMA[,1]))
+system.time(for(i in seq(along=myMA[,1])) results[i] <- mean(myMA[i,]))
+#  user: 1.6s    elapsed: 1.6s   → ~25× faster
+```
+
+### 2. `apply` vs `rowMeans`
+
+```{r}
+system.time(myMAmean <- apply(myMA, 1, mean))     # user: 1.5s
+system.time(myMAmean <- rowMeans(myMA))            # user: 0.005s  → ~300× faster
+```
+
+### 3. `apply` vs vectorized calculation
+
+```{r}
+# apply loop for row-wise standard deviation
+system.time(myMAsd <- apply(myMA, 1, sd))                               # user: 3.7s
+
+# vectorized equivalent — same result, dramatically faster
+system.time(myMAsd <- sqrt((rowSums((myMA - rowMeans(myMA))^2)) /
+                            (length(myMA[1,]) - 1)))                    # user: 0.02s
+```
+
+### Key takeaways
+
+- Use `rowMeans`, `rowSums`, `colMeans`, `colSums` instead of `apply` where possible
+- Pre-allocate result objects before loops — never grow with `c()`, `cbind()`, `rbind()`
+- Design data structures for **matrix-to-matrix** operations — eliminates loops entirely
+
+---
+
+## Fast Querying with Matrix Operations {.scrollable}
+
+A practical example: filtering differentially expressed genes (DEGs) across
+multiple contrasts using matrix-to-matrix logic — no looping required.
+
+### Create a test DEG matrix (LFCs and p-values)
+
+```{r}
+lfcPvalMA <- function(Nrow=200, Ncol=4, stats_labels=c("lfc", "pval")) {
+    set.seed(1410)
+    assign(stats_labels[1], runif(n=Nrow*Ncol, min=-4, max=4))
+    assign(stats_labels[2], runif(n=Nrow*Ncol, min=0,  max=1))
+    lfc_ma  <- matrix(lfc,  Nrow, Ncol, dimnames=list(paste("g",1:Nrow,sep=""),
+                      paste("t",1:Ncol,"_",stats_labels[1],sep="")))
+    pval_ma <- matrix(pval, Nrow, Ncol, dimnames=list(paste("g",1:Nrow,sep=""),
+                      paste("t",1:Ncol,"_",stats_labels[2],sep="")))
+    statsMA <- cbind(lfc_ma, pval_ma)
+    return(statsMA[, order(colnames(statsMA))])
+}
+degMA <- lfcPvalMA(Nrow=200, Ncol=4)
+degMA[1:4,]
+```
+
+### Separate LFC and p-value matrices into a list
+
+```{r}
+degList <- list(
+    lfc  = degMA[, grepl("lfc",  colnames(degMA))],
+    pval = degMA[, grepl("pval", colnames(degMA))]
+)
+sapply(degList, dim)   # confirm dimensions match
+```
+
+### Apply combinatorial filter (|LFC| >= 1 AND pval <= 0.5)
+
+```{r}
+queryResult <- (degList$lfc >= 1 | degList$lfc <= -1) & degList$pval <= 0.5
+colnames(queryResult) <- gsub("_.*", "", colnames(queryResult))
+queryResult[1:4,]
+```
+
+### Extract matching gene IDs
+
+```{r}
+# Per-column: genes passing filter in each contrast
+matchingIDlist <- sapply(colnames(queryResult),
+                         function(x) names(queryResult[queryResult[,x], x]),
+                         simplify=FALSE)
+
+# Across columns: genes passing filter in > 2 contrasts
+matchingID <- rowSums(queryResult) > 2
+names(matchingID[matchingID])    # gene names meeting the threshold
+```
+
+::: {.callout-tip}
+Storing LFC and p-value as two parallel matrices in a list enables
+flexible, fast, zero-loop combinatorial filtering — a pattern worth
+reusing in any multi-contrast analysis.
+:::
+
+---
+
+## Functions — Overview and Syntax {.scrollable}
+
+Functions are the primary way to organize and reuse code in R.
+Almost everything in R is a function.
+
+### Define a function
+
+```{r}
+myfct <- function(arg1, arg2, ...) {
+    # function body — operations on the arguments
+    result <- arg1 + arg2
+    return(result)    # return value explicitly, or just: result
+}
+```
+
+### Call a function
+
+```{r}
+myfct(arg1=3, arg2=4)   # with argument names (recommended)
+myfct(3, 4)              # positional — order must match definition
+```
+
+### Key rules
+
+| Concept | Rule |
+|---|---|
+| **Naming** | Avoid names of existing functions (e.g. don't name a function `mean`) |
+| **Default args** | Provide defaults with `arg=value` — caller can then omit them |
+| **Empty args** | `function() { ... }` — valid for functions that always return the same value |
+| **`...`** | Pass unknown arguments through to another function |
+| **Return value** | Last unassigned expression, or explicit `return()` |
+| **Scope** | Variables inside a function are local — invisible outside |
+| **Global assign** | Use `<<-` to force a variable to exist in the global environment |
+
+---
+
+## Functions — Examples {.scrollable}
+
+### Define a function with a default argument
+
+```{r}
+myfct <- function(x1, x2=5) {   # x2 has default value 5
+    z1 <- x1 / x1
+    z2 <- x2 * x2
+    myvec <- c(z1, z2)
+    return(myvec)
+}
+```
+
+### Call with and without the default argument
+
+```{r}
+myfct(x1=2, x2=5)   # explicit: returns c(1, 25)
+myfct(2, 5)          # positional: same result
+myfct(x1=2)          # uses default x2=5: same result
+myfct                 # without () prints the function definition
+```
+
+### Scope — variables inside functions are local
+
+```{r}
+x <- 10                     # global x
+myfct2 <- function() {
+    x <- 99                 # local x — does not affect global x
+    cat("inside:", x, "\n")
+}
+myfct2()                    # prints: inside: 99
+cat("outside:", x, "\n")    # prints: outside: 10
+
+# Force global assignment with <<-
+myfct3 <- function() {
+    x <<- 99                # modifies global x
+}
+myfct3()
+cat("outside:", x, "\n")    # prints: outside: 99
+```
+
+::: {.callout-tip}
+Avoid `<<-` in general — it makes code harder to reason about. Prefer
+returning values explicitly with `return()` and assigning outside the function.
+:::
+
+---
+
+## Useful Utilities — Debugging {.scrollable}
+
+R provides several tools for finding and fixing errors in code:
+
+| Function | Purpose |
+|---|---|
+| `traceback()` | Shows the call stack after an error |
+| `browser()` | Insert a breakpoint — pauses execution and opens interactive prompt |
+| `debug(myfct)` | Step through `myfct` line by line |
+| `undebug(myfct)` | Remove debug mode from a function |
+| `options(error=recover)` | On error, open interactive debugger at the call stack |
+| `options(error=NULL)` | Reset to default error handling |
+
+```{r}
+# Example: use browser() as a breakpoint inside a function
+myfct <- function(x) {
+    browser()          # execution pauses here — inspect variables interactively
+    result <- x^2
+    return(result)
+}
+myfct(5)
+```
+
+Full guide: [Debugging in R (Advanced R)](https://adv-r.hadley.nz/debugging.html)
+
+---
+
+## Useful Utilities — Regular Expressions {.scrollable}
+
+R's regex utilities work similarly to other languages. Main reference: `?regexp`
+
+### Pattern matching with `grep`
+
+```{r}
+month.name[grep("^A", month.name)]        # months starting with A
+grep("^J", month.name, value=TRUE)        # same with value=TRUE
+grepl("^A", month.name)                   # returns logical vector
+```
+
+### String substitution with `gsub` and `sub`
+
+```{r}
+# gsub: replace ALL matches
+gsub("(i.*a)", "xxx_\\1", "virginica", perl=TRUE)   # back reference with \\1
+
+# sub: replace FIRST match only
+sub("a", "X", "banana")    # returns "bXnana"
+```
+
+### String operations
+
+```{r}
+# Insert a character with back reference, then split on it
+x <- gsub("(a)", "\\1_", month.name[1], perl=TRUE)   # "J_anu_ary"
+strsplit(x, "_")                                       # split on "_"
+
+# Reverse a string
+paste(rev(unlist(strsplit("hello", NULL))), collapse="")   # "olleh"
+```
+
+### Import lines matching a pattern from a file
+
+```{r}
+cat(month.name, file="months.txt", sep="\n")         # write months to file
+x <- readLines("months.txt")                          # read all lines
+x[grep("^J", x, perl=TRUE)]                          # keep lines starting with J
+```
+
+---
+
+## Useful Utilities — String and Time Functions {.scrollable}
+
+### String paste and manipulation
+
+```{r}
+paste("sample", 1:5, sep="_")           # "sample_1" ... "sample_5"
+paste0("C", 1:5)                         # "C1" ... "C5" (no separator)
+paste(month.name[1:3], collapse=", ")    # "January, February, March"
+nchar("hello")                           # 5  (string length)
+toupper("hello"); tolower("HELLO")       # case conversion
+trimws("  hello  ")                      # remove leading/trailing whitespace
+```
+
+### Interpret a string as R code
+
+```{r}
+myfct <- function(x) x^2
+mylist <- ls()
+n <- which(mylist %in% "myfct")
+
+get(mylist[n])       # retrieves the object named by the string
+get(mylist[n])(2)    # calls it as a function with argument 2
+eval(parse(text=mylist[n]))   # alternative: parse string as expression
+```
+
+### Timing and system calls
+
+```{r}
+system.time(ls())       # measure time for an expression
+date()                  # current system date and time
+Sys.sleep(1)            # pause R for 1 second
+```
+
+### Call external command-line tools from R
+
+```{r}
+system("blastall -p blastp -i seq.fasta -d uniprot -o seq.blastp")
+system2("blastp", args=c("-i", "seq.fasta", "-d", "uniprot"))
+```
+
+### File integrity check
+
+```{r}
+library(tools)
+md5 <- as.vector(md5sum(dir(R.home(), pattern="^COPY", full.names=TRUE)))
+identical(md5, md5)                        # TRUE
+identical(md5, sub("^b", "z", md5))       # FALSE — detects any change
+```
+
+---
+
+## Executing R Scripts {.scrollable}
+
+### From the R console
+
+```{r}
+source("my_script.R")    # execute entire script, output printed to console
+```
+
+### From the command-line (preferred for automation)
+
+```bash
+Rscript myscript.R                   # standard method
+./myscript.R                         # requires shebang + executable permission
+R CMD BATCH myscript.R               # older alternative
+R --slave < myscript.R               # older alternative
+```
+
+### Shebang line — required for `./myscript.R` execution
+
+Add as the **first line** of the script:
+
+```bash
+#!/usr/bin/env Rscript
+```
+
+Then make the script executable:
+
+```bash
+chmod +x myscript.R
+./myscript.R
+```
+
+### Passing arguments from command-line to R
+
+Create `test.R`:
+
+```{r}
+myarg <- commandArgs()
+print(iris[1:myarg[6], ])   # myarg[6] receives the first user-provided argument
+```
+
+Run it:
+
+```bash
+Rscript test.R 10    # prints first 10 rows of iris
+```
+
+::: {.callout-tip}
+For scripts accepting multiple complex arguments, use the
+[argparse](https://cran.r-project.org/web/packages/argparse/index.html)
+or [optparse](https://cran.r-project.org/web/packages/optparse/index.html)
+packages for clean argument parsing with help messages.
+:::
+
+---
+
+## Programming Exercises {.scrollable}
+
+### Exercise 1 — Comparing loop approaches for row-wise means
+
+Create the test matrix:
+
+```{r}
+myMA <- matrix(rnorm(500), 100, 5,
+               dimnames=list(1:100, paste("C", 1:5, sep="")))
+```
+
+**Task 1.1** — `for` loop with append (slow but instructive):
+
+```{r}
+myve_for <- NULL
+for (i in seq(along=myMA[,1])) {
+    myve_for <- c(myve_for, mean(as.numeric(myMA[i,])))
+}
+```
+
+**Task 1.2** — `while` loop:
+
+```{r}
+z <- 1; myve_while <- NULL
+while (z <= nrow(myMA)) {
+    myve_while <- c(myve_while, mean(as.numeric(myMA[z,])))
+    z <- z + 1
+}
+```
+
+**Task 1.3** — confirm both methods give identical results:
+
+```{r}
+all(myve_for == myve_while)    # should return TRUE
+```
+
+**Task 1.4** — `apply` loop:
+
+```{r}
+myve_apply <- apply(myMA, 1, mean)
+```
+
+**Task 1.5** — built-in `rowMeans` (fastest):
+
+```{r}
+mymean <- rowMeans(myMA)
+# Compare all approaches side by side:
+myResult <- cbind(myMA, mean_for=myve_for, mean_while=myve_while,
+                  mean_apply=myve_apply, mean_rowMeans=mymean)
+myResult[1:4, -c(1,2,3)]    # show only the mean columns
+```
+
+---
+
+## Programming Exercises (cont.) {.scrollable}
+
+### Exercise 2 — Custom function for grouped column means
+
+**Task 2.1** — implement a function that computes means for user-specified
+column groups in any matrix or data frame:
+
+```{r}
+myMA <- matrix(rnorm(100000), 10000, 10,
+               dimnames=list(1:10000, paste("C", 1:10, sep="")))
+
+# Group columns: cols 1-3 → group 1, cols 4-6 → group 2, etc.
+myList <- tapply(colnames(myMA), c(1,1,1,2,2,2,3,3,4,4), list)
+names(myList) <- sapply(myList, paste, collapse="_")
+
+# Apply mean to each column group
+myMAmean <- sapply(myList, function(x) apply(myMA[,x], 1, mean))
+myMAmean[1:4,]
+```
+
+### Exercise 3 — Nested loops: pairwise similarity matrix
+
+**Task 3.1** — create a list of character vectors of varying lengths:
+
+```{r}
+setlist <- lapply(11:30, function(x) sample(letters, x, replace=TRUE))
+names(setlist) <- paste("S", seq(along=setlist), sep="")
+```
+
+**Task 3.2** — compute all pairwise intersect sizes:
+
+```{r}
+setlist <- sapply(setlist, unique)    # remove duplicates first
+olMA <- sapply(names(setlist), function(x)
+               sapply(names(setlist), function(y)
+               sum(setlist[[x]] %in% setlist[[y]])))
+olMA[1:4, 1:4]
+```
+
+**Task 3.3** — plot as heatmap:
+
+```{r}
+library(pheatmap); library(RColorBrewer)
+pheatmap(olMA, color=brewer.pal(9,"Blues"),
+         cluster_rows=FALSE, cluster_cols=FALSE,
+         display_numbers=TRUE, number_format="%.0f", fontsize_number=10)
+```
+
+---
+
+## HW05 {.scrollable}
+
+::: {.callout-important}
+**Assignment:** [HW05 — Programming in R](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw05/hw05/)
+
+The programming exercises above (Exercises 1–3) form the basis of HW05.
+:::
+
+### Summary of exercise tasks
+
+| Exercise | Task | Topic |
+|---|---|---|
+| **1.1** | `for` loop with append | Row means on matrix |
+| **1.2** | `while` loop | Same computation |
+| **1.3** | Confirm identical results | `all()` comparison |
+| **1.4** | `apply` loop | Same computation |
+| **1.5** | `rowMeans` | Fastest approach |
+| **2.1** | Custom function | Grouped column means with `tapply` + `sapply` |
+| **3.1** | Create list | Character vectors of varying lengths |
+| **3.2** | Nested loops | Pairwise intersect matrix with `%in%` |
+| **3.3** | Heatmap | Visualize similarity matrix with `pheatmap` |
+
+::: {.callout-note}
+For the full homework instructions and submission details, see the
+[HW05 page](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw05/hw05/).
+:::
+
+---
+
+## Summary — Key R Programming Commands
+
+| Category | Command | Purpose |
+|---|---|---|
+| **Conditionals** | `if / else` | single-value branching |
+| | `ifelse(test, yes, no)` | vectorized conditional |
+| **Loops** | `for (i in seq)` | iterate over sequence |
+| | `while (cond)` | iterate while condition is TRUE |
+| | `stop("msg")` | break loop with error |
+| **Apply family** | `apply(X, 1, FUN)` | rows of matrix |
+| | `apply(X, 2, FUN)` | columns of matrix |
+| | `tapply(vec, fac, FUN)` | by factor groups |
+| | `sapply(list, FUN)` | returns vector/matrix |
+| | `lapply(list, FUN)` | returns list |
+| **Speed** | `rowMeans`, `rowSums` | fast built-in row ops |
+| | pre-allocate with `numeric(n)` | avoid growing with `c()` |
+| **Functions** | `function(arg1, arg2=default)` | define |
+| | `return(value)` | explicit return |
+| **Strings** | `grep`, `grepl` | pattern match |
+| | `gsub`, `sub` | pattern substitute |
+| | `strsplit`, `paste`, `paste0` | split / combine |
+| **Scripts** | `source("script.R")` | run from R console |
+| | `Rscript script.R` | run from command-line |
+| **Timing** | `system.time(expr)` | benchmark expression |
+
+**Next:** T5 — [Parallel R](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rparallel/rparallel_index.html)
