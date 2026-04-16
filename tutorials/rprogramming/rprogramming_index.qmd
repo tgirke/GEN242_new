@@ -989,9 +989,9 @@ library(mypackage)
 
 ```
 
-## Homework 5
+## Homework 4
 
-See homework section [here](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw05/hw05/).
+See homework section [here](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw04/hw04.html).
 
 
 ## Additional Exercises
