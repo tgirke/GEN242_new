@@ -191,8 +191,8 @@ website:
               href: assignments/homework/hw02/hw02.qmd
             - text: "HW3 — Alignments"
               href: assignments/homework/hw03/hw03.qmd
-            #- text: "HW4 — R Programming"
-            #  href: assignments/homework/hw05/index.qmd
+            - text: "HW4 — R Programming"
+              href: assignments/homework/hw04/hw04.qmd
             #- text: "HW5 — NGS Analysis"
             #  href: assignments/homework/hw06/index.qmd
             #- text: "HW6 — RNA-Seq"
