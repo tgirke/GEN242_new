@@ -90,4 +90,5 @@ Most homeworks will be due one week after they are assigned. This one is due on 
 
 ## Homework solution
 
-Willl posted after due date. 
+See [here]( https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw01/hw01_solution.sh
+). 
