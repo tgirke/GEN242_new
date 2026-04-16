@@ -14,7 +14,7 @@ format:
     code-block-height: 380px
     transition: slide
     embed-resources: true
-    footer: "GEN242 · UC Riverside · [Tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rprogramming/rprogramming_index.html) · [HW05](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw05/hw05/)"
+    footer: "GEN242 · UC Riverside · [Tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rprogramming/rprogramming_index.html) · [HW04](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw04/hw04.html)"
     logo: "https://girke.bioinformatics.ucr.edu/GEN242/assets/logo_gen242.png"
 execute:
   echo: true
@@ -38,10 +38,10 @@ Topics covered in this tutorial:
 - Writing custom functions
 - Useful utilities: regex, string operations, debugging
 - Executing R scripts from console and command-line
-- Programming exercises (HW05)
+- Programming exercises (HW04)
 
 ::: {.callout-note}
-**Prerequisite:** The [R Basics tutorial (T3)](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics_index.html)
+**Prerequisite:** The [R Basics tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rbasics/rbasics_index.html)
 provides the foundational R knowledge assumed here.
 :::
 
@@ -55,7 +55,7 @@ provides the foundational R knowledge assumed here.
 - Easy to implement custom functions for any analysis
 - Powerful, publication-quality graphics
 - Access to a rapidly growing ecosystem of packages
-- Most widely used language in bioinformatics
+- Widely used language in bioinformatics
 - Standard for data mining and biostatistical analysis
 - Free, open-source, available for all operating systems
 
@@ -63,7 +63,7 @@ provides the foundational R knowledge assumed here.
 
 ## R Scripts {.scrollable}
 
-An **R script** is a plain text file (`.R`) containing R code and comments.
+An **R script** is a plain text file (`.R` or `.Rmd/.qmd`) containing R code and comments.
 It is the primary way to write reproducible analyses.
 
 ### Structure of a well-organized R script
@@ -802,12 +802,12 @@ pheatmap(olMA, color=brewer.pal(9,"Blues"),
 
 ---
 
-## HW05 {.scrollable}
+## HW04 {.scrollable}
 
 ::: {.callout-important}
-**Assignment:** [HW05 — Programming in R](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw05/hw05/)
+**Assignment:** [HW04 — Programming in R](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw05/hw05/)
 
-The programming exercises above (Exercises 1–3) form the basis of HW05.
+The programming exercises above (Exercises 1–3) form the basis of HW04.
 :::
 
 ### Summary of exercise tasks
