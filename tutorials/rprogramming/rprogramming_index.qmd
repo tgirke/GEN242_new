@@ -844,7 +844,7 @@ In the given example the number `10` is passed on from the command-line as an ar
 
 ## Building R Packages
 
-This section has been moved to a dedicated tutorial on R package development [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rpackages/rpackages/).
+This section has been moved to a dedicated tutorial on R package development [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rpackages/rpackages_index.html).
 
 ## Programming Exercises
 
@@ -926,6 +926,18 @@ myMAmean[1:4,]
 
 ```
 
+<!---
+Solution
+```{r exercise2_fct_solution, eval=FALSE, echo=FALSE, keep.source=TRUE}
+myMAcomp <- function(myMA=myMA, group=c(1,1,1,2,2,2,3,3,4,4), myfct=mean) {
+	myList <- tapply(colnames(myMA), group, list)
+	names(myList) <- sapply(myList, paste, collapse="_")
+	myMAmean <- sapply(myList, function(x) apply(myMA[, x, drop=FALSE], 1, myfct))
+	return(myMAmean)
+}
+myMAcomp(myMA=myMA, group=c(1,1,1,2,2,2,3,3,4,4), myfct=mean)[1:2,] 
+```
+-->
 
 ### Exercise 3
 
@@ -967,7 +979,7 @@ __Task 4.1__: Save one or more of your functions to a file called `script.R` and
 
 ```{r package_skeleton2}
 #| eval: false
-package.skeleton(name="mypackage", code_files=c("script1.R"))
+package.skeleton(name="mypackage", code_files=c("script.R"))
 
 ```
 
