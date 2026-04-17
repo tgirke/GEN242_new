@@ -1,131 +1,294 @@
 ---
-title: "HW04 - Programming in R"
+title: "HW04 — Programming in R"
 sidebar: assignments
 ---
 
-<div style="text-align: right"> 
-Source code downloads: &nbsp; <a href="https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw04/hw04.R" target="_blank">[ .R ]</a>
+## Overview
 
-</div>
+This homework involves writing three R functions for transforming and 
+translating DNA sequences. All functions should be implemented in a single 
+well-structured and annotated R script submitted to your private GitHub 
+repository. Read the instructions for each task carefully. The expected 
+function names, arguments, and output formats are detailed below and 
+will be used for grading.
 
-## A. Reverse and complement of DNA
+---
 
-__Task 1__: Write a `RevComp` function that returns the reverse and complement of a DNA sequence string. Include an argument that will allow to return only (i) the reversed sequence, (ii) the complemented sequence, or (iii) the reversed and complemented sequence. The following R functions will be useful for the implementation: 
+## A. Reverse and Complement of DNA
 
+### Task 1 — Write the `RevComp` function
 
-Generate a short test DNA sequence
+Write a function named exactly **`RevComp`** that accepts a single DNA 
+sequence string and returns a tranformed version of it. The function must 
+include an argument named **`type`** that controls which transformation 
+is applied:
+
+| `type` value | Transformation |
+|---|---|
+| `"rev"` | Return only the **reversed** sequence |
+| `"comp"` | Return only the **complemented** sequence |
+| `"revcomp"` | Return the **reverse complement** (reversed then complemented) |
+
+The default value of `type` should be `"revcomp"`.
+
+**Required function signature:**
 ```r
-x <- c("ATGCATTGGACGTTAG")  
-x
+RevComp <- function(x, type = "revcomp") { ... }
 ```
 
-```
-## [1] "ATGCATTGGACGTTAG"
-```
+**Expected results for test sequence `"ATGCATTGGACGTTAG"`:**
 
-Vectorize sequence
 ```r
-x <- substring(x, 1:nchar(x), 1:nchar(x)) 
+x <- "ATGCATTGGACGTTAG"
+RevComp(x, type = "rev")      # → "GATTGCAGGTTACGTA"
+RevComp(x, type = "comp")     # → "TACGTAACCTGCAATC"
+RevComp(x, type = "revcomp")  # → "CTAACGTCCAATGCAT"
+RevComp(x)                    # → "CTAACGTCCAATGCAT"  (default)
+```
+
+**Useful R building blocks for your implementation:**
+
+```{r}
+#| eval: false
+x <- "ATGCATTGGACGTTAG"
+
+## Step 1: vectorize the string into individual characters
+x <- substring(x, 1:nchar(x), 1:nchar(x))
 x
-```
+## [1] "A" "T" "G" "C" "A" "T" "T" "G" "G" "A" "C" "G" "T" "T" "A" "G"
 
-```
-##  [1] "A" "T" "G" "C" "A" "T" "T" "G" "G" "A" "C" "G" "T" "T" "A" "G"
-```
-
-Reverse sequence
-```r
-x <- rev(x) 
+## Step 2: reverse the character vector
+x <- rev(x)
 x
-```
+## [1] "G" "A" "T" "T" "G" "C" "A" "G" "G" "T" "T" "A" "C" "G" "T" "A"
 
-```
-##  [1] "G" "A" "T" "T" "G" "C" "A" "G" "G" "T" "T" "A" "C" "G" "T" "A"
-```
-
-Collapse sequence back to character string
-```r
-x <- paste(x, collapse="")
+## Step 3: collapse back into a single string
+x <- paste(x, collapse = "")
 x
-```
-
-```
 ## [1] "GATTGCAGGTTACGTA"
-```
 
-Form complement of sequence
-```r
-chartr("ATGC", "TACG", x) 
-```
-
-```
+## Step 4: complement using base substitution (A↔T, G↔C)
+chartr("ATGC", "TACG", x)
 ## [1] "CTAACGTCCAATGCAT"
 ```
 
-__Task 2__: Write a function that applies the `RevComp` function to many sequences stored in a vector. In addition, write an export function that saves the sequences 
-generated under Tasks 1 and 2 to a file in FASTA format.  
+---
+
+### Task 2 — Vectorize `RevComp` and export to FASTA
+
+Write two additional functions:
+
+**(a)** A function named **`RevCompVector`** that applies `RevComp` to a 
+**vector of DNA sequences** (multiple sequences at once). It should accept 
+the same `type` argument and pass it through to `RevComp`.
+
+**Required function signature:**
+```r
+RevCompVector <- function(x, type = "revcomp") { ... }
+```
+
+**Expected behavior:**
+```r
+seqs <- c("ATGCATTGGACGTTAG", "TTGGCAATCGA", "GCTAGCTA")
+RevCompVector(seqs, type = "rev")
+## [1] "GATTGCAGGTTACGTA" "AGCTAACGGTT"      "ATCGATCG"
+```
+
+**(b)** A function named **`WriteFasta`** that saves a named vector of DNA 
+sequences to a file in standard FASTA format. Each sequence should be 
+preceded by a header line starting with `>` followed by the sequence name.
+
+**Required function signature:**
+```r
+WriteFasta <- function(seqs, file) { ... }
+```
+
+**Expected output format** in the saved file:
+```
+>seq1
+ATGCATTGGACGTTAG
+>seq2
+TTGGCAATCGA
+>seq3
+GCTAGCTA
+```
+
+**Example usage:**
+```r
+seqs <- c(seq1 = "ATGCATTGGACGTTAG",
+          seq2 = "TTGGCAATCGA",
+          seq3 = "GCTAGCTA")
+WriteFasta(seqs, file = "myseqs.fasta")
+```
+
+If the input vector has no names, the function should assign default names 
+`seq1`, `seq2`, ... automatically.
+
+---
 
 ## B. Translate DNA into Protein
 
-__Task 3__: Write a function that will translate one or many DNA sequences in all three reading frames into proteins. The following commands will simplify this task:
+### Task 3 — Write a DNA translation function
 
+Write a function named **`TranslateDNA`** that translates one or more DNA 
+sequences into protein sequences using the standard genetic code. The 
+function should translate in all **three reading frames** (frame 1, 2, 
+and 3) and return all translations.
 
-Import lookup table of genetic code
+**Required function signature:**
 ```r
-AAdf <- read.table(file="http://faculty.ucr.edu/~tgirke/Documents/R_BioCond/My_R_Scripts/AA.txt", header=TRUE, sep="\t") 
-AAdf[1:4,]
+TranslateDNA <- function(x) { ... }
 ```
 
+Where `x` can be a single sequence string or a vector of sequences.
+
+**Return value:** a named list where each element contains 
+the three reading frame translations for one input sequence, labeled 
+`frame1`, `frame2`, `frame3`. Stop codons should be represented as `*`.
+
+**Expected output for a single sequence:**
+```r
+TranslateDNA("ATGCATTGGACGTTAG")
+## $frame1
+## [1] "MHWT*"
+## $frame2
+## [1] "CIGR"  (or similar, depending on frame shift)
+## $frame3
+## [1] "ALDS"  (or similar, depending on frame shift)
 ```
+
+**Useful R building blocks for your implementation:**
+
+```{r}
+#| eval: false
+## Import the genetic code lookup table
+AAdf <- read.table(
+    file   = "http://faculty.ucr.edu/~tgirke/Documents/R_BioCond/My_R_Scripts/AA.txt",
+    header = TRUE, sep = "\t"
+)
+AAdf[1:4, ]
 ##   Codon AA_1 AA_3 AA_Full AntiCodon
 ## 1   TCA    S  Ser  Serine       TGA
 ## 2   TCG    S  Ser  Serine       CGA
 ## 3   TCC    S  Ser  Serine       GGA
 ## 4   TCT    S  Ser  Serine       AGA
-```
 
-Generated named vector of relevant components
-```r
-AAv <- as.character(AAdf[,2]) 
-names(AAv) <- AAdf[,1] 
-AAv
-```
+## Create named vector: codon → single-letter amino acid
+AAv <- as.character(AAdf[, 2])
+names(AAv) <- AAdf[, 1]
 
-```
-## TCA TCG TCC TCT TTT TTC TTA TTG TAT TAC TAA TAG TGT TGC TGA TGG CTA CTG CTC CTT CCA CCG CCC CCT CAT 
-## "S" "S" "S" "S" "F" "F" "L" "L" "Y" "Y" "*" "*" "C" "C" "*" "W" "L" "L" "L" "L" "P" "P" "P" "P" "H" 
-## CAC CAA CAG CGA CGG CGC CGT ATT ATC ATA ATG ACA ACG ACC ACT AAT AAC AAA AAG AGT AGC AGA AGG GTA GTG 
-## "H" "Q" "Q" "R" "R" "R" "R" "I" "I" "I" "M" "T" "T" "T" "T" "N" "N" "K" "K" "S" "S" "R" "R" "V" "V" 
-## GTC GTT GCA GCG GCC GCT GAT GAC GAA GAG GGA GGG GGC GGT 
-## "V" "V" "A" "A" "A" "A" "D" "D" "E" "E" "G" "G" "G" "G"
-```
-
-Tripletize sequence and translate by name subsetting/sorting of AAv
-```r
-y <- gsub("(...)", "\\1_", x) 
-y <- unlist(strsplit(y, "_")) 
-y <- y[grep("^...$", y)] 
-AAv[y] 
-```
-
-```
-## GAT TGC AGG TTA CGT 
+## Tripletize and translate (for a sequence x already split into characters)
+y <- gsub("(...)", "\\1_", x)   # insert _ after every 3 chars
+y <- unlist(strsplit(y, "_"))    # split on _
+y <- y[grep("^...$", y)]        # keep only complete triplets
+AAv[y]                           # look up amino acids by codon name
+## GAT TGC AGG TTA CGT
 ## "D" "C" "R" "L" "R"
 ```
 
-## Homework submission
+To translate in **frame 2**, skip the first character of the sequence 
+before tripletizing. To translate in **frame 3**, skip the first two 
+characters. Use `substring(seq, start)` to shift the reading frame.
 
-Submit the 3 functions in one well structured and annotated R script (or Rmd/qmd) to your
-private GitHub repository under `Homework/HW4/HW4.R`. The script should include
-instructions on how to use the functions.
+---
 
+## Homework Submission
 
-## Due date
+Submit **one R script** named **`HW4.R`** to your 
+private GitHub homework repository at the following exact path:
 
-This homework will be due Tue Apr 28th at 6:00 PM.
+```
+Homework/HW4/HW4.R
+```
+
+Optionally, students who wish to demonstrate their functions in a rendered document can additionally submit a HW4.qmd file in the same directory. The .qmd file should source the HW4.R script and execute the functions from it, for example:
+
+```{r}
+#| eval: false
+source("HW4.R")
+
+## Run RevComp
+RevComp("ATGCATTGGACGTTAG", type = "revcomp")
+
+## Run TranslateDNA
+TranslateDNA("ATGCATTGGACGTTAG")
+```
+Note that the `.qmd` file is an optional add-on and will not be used for grading. Grading is performed exclusively on `HW4.R`. The `HW4.R` file must still be fully self-contained and structured as specified above regardless of whether a `.qmd` file is also submitted.
+
+### Requirements for full credit
+
+Your submitted script must:
+
+1. Define all four functions with the **exact names** specified:
+   - `RevComp(x, type = "revcomp")`
+   - `RevCompVector(x, type = "revcomp")`
+   - `WriteFasta(seqs, file)`
+   - `TranslateDNA(x)`
+
+2. Include a **usage example** for each function as commented-out code in a `## Usage` section at the end of each task.
+
+3. Include **brief comments** explaining what each function does and what 
+   its arguments mean
+
+4. Be **runnable without errors** — source the script with `source("HW4.R")` 
+   before submitting to check this
+
+5. Handle the case where the input sequence vector has **no names** 
+   (auto-assign `seq1`, `seq2`, ... in `WriteFasta`)
+
+### Recommended script structure
+
+```r
+## ─────────────────────────────────────────────────────────────
+## HW4: DNA Sequence Manipulation and Translation
+## GEN242, Spring 2026
+## Author: <your name>
+## Date: <submission date>
+## ─────────────────────────────────────────────────────────────
+
+## Task 1: RevComp function
+RevComp <- function(x, type = "revcomp") {
+    ## ... your implementation ...
+}
+
+## Task 2a: RevCompVector function
+RevCompVector <- function(x, type = "revcomp") {
+    ## ... your implementation ...
+}
+
+## Task 2b: WriteFasta function
+WriteFasta <- function(seqs, file) {
+    ## ... your implementation ...
+}
+
+## Task 3: TranslateDNA function
+TranslateDNA <- function(x) {
+    ## ... your implementation ...
+}
+
+## ── Usage examples ────────────────────────────────────────────
+
+## Task 1
+# RevComp("ATGCATTGGACGTTAG", type = "rev")
+# RevComp("ATGCATTGGACGTTAG", type = "comp")
+# RevComp("ATGCATTGGACGTTAG", type = "revcomp")
+
+## Task 2
+# seqs <- c(seq1 = "ATGCATTGGACGTTAG", seq2 = "TTGGCAATCGA")
+# RevCompVector(seqs, type = "revcomp")
+# WriteFasta(seqs, file = "myseqs.fasta")
+
+## Task 3
+# TranslateDNA("ATGCATTGGACGTTAG")
+# TranslateDNA(c("ATGCATTGGACGTTAG", "TTGGCAATCGA"))
+```
+
+---
+
+## Due Date
+
+This homework is due **Tuesday, April 28th at 6:00 PM**.
 
 ## Homework Solutions
 
-To be posted after due date. 
-
-
+To be posted after the due date.
