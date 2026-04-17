@@ -1,5 +1,5 @@
 ---
-title: "HW04 — Programming in R"
+title: "HW04: Programming in R"
 sidebar: assignments
 ---
 
