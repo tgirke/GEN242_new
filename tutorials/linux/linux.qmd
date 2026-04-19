@@ -1153,6 +1153,7 @@ open the file browser, press `zz` in normal mode, and to close it, press `q`.
 | `S` | open file with horizontal split |
 | `H` | toggle hidden files on/off |
 | `?` | open neo-tree help |
+| `Ctrl-o` or `Ctrl-i`| switch back to previous or later file after opening it with Enter in tree browser |
 | `Ctrl-w w` | jump cursor back to editor |
 
 Hidden files (dotfiles) are not shown by default. Press `H` to toggle them.
