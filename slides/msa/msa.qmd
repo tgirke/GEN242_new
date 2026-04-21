@@ -1,0 +1,9 @@
+---
+title: "Multiple Sequence Alignments"
+sidebar: slides
+---
+
+
+[ [Download](https://docs.google.com/presentation/d/1D2sTWceDnvrtyXOpLyXL59v910NPbq8A-Eee_wMbAS4/edit?usp=sharing) ]
+
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vT00oH6rSGnKUBQEtiOavjMr75So8rjcWbGYi8etX-s2SnhTo2A33dbe3F7u1LEGdmWYXEzTuzIhAHa/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

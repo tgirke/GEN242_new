@@ -102,9 +102,9 @@ website:
             - text: "Sequence Alignments"
               href: slides/sequence_alignments/sequence_alignments.qmd
             - text: "Multiple Alignments"
-              href: slides/slides_10.qmd
+              href: slides/msa/msa.qmd
             - text: "Short Read Alignments"
-              href: slides/slides_11.qmd
+              href: slides/short_read_alignments/short_read_alignments.qmd
             - text: "NGS Analysis Basics"
               href: slides/slides_13.qmd
             - text: "Gene Expression"

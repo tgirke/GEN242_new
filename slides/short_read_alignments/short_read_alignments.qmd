@@ -1,0 +1,9 @@
+---
+title: "Short Read Alignments"
+sidebar: slides
+---
+
+
+[ [Download](https://docs.google.com/presentation/d/1FBPDCeVRiLcWWwUvdwj0rOCN8tRCzhNRyKDjgdo-dQU/edit?usp=sharing) ]
+
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQQqGdwfpOXL5mboXgB26oTlAJbaXCLuLIT14v81masUQp674xtMraDDGjLM6aDoiEKVKqYCrzjE8tf/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
