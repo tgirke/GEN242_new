@@ -1,0 +1,580 @@
+---
+title: "R on HPC — Module System, Storage, and Parallel Computing"
+subtitle: "GEN242: Data Analysis in Genome Biology"
+author: "Thomas Girke"
+date: today
+format:
+  revealjs:
+    theme: [default, ../../assets/revealjs_custom.scss]
+    slide-number: true
+    progress: true
+    scrollable: true
+    smaller: true
+    highlight-style: github
+    code-block-height: 340px
+    transition: slide
+    embed-resources: true
+    footer: "GEN242 · UC Riverside · [Linux/HPC Tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/linux/linux.html) · [Parallel R Tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rparallel/rparallel_index.html)"
+    logo: "https://girke.bioinformatics.ucr.edu/GEN242/assets/logo_gen242.png"
+execute:
+  echo: true
+  eval: false
+---
+
+## Overview
+
+Topics covered in this slide show:
+
+1. **Tmux** — persistent terminal sessions for remote work
+2. **Module system** — managing software on HPCC
+3. **Big data storage** — `bigdata` directories
+4. **Slurm queuing system** — submitting and monitoring jobs
+5. **Parallel R with `batchtools`** — cluster-aware job management from R
+
+::: {.callout-note}
+Full tutorials:
+[Linux/HPC Tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/linux/linux.html) ·
+[Parallel R Tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rparallel/rparallel_index.html)
+:::
+
+---
+
+## Tmux — Persistent Terminal Sessions {.scrollable}
+
+**The core problem on remote systems:** when your SSH connection drops, any running
+process in that terminal — your R session, a running script, an interactive job —
+is killed immediately.
+
+**Tmux solves this** by running your terminal session inside a persistent server
+process on the remote machine. The session keeps running after you disconnect and
+you can reattach to it from any location, on any computer.
+
+### Why Tmux matters for HPC work
+
+- Your R or Python session survives network interruptions, VPN drops, or closing your laptop
+- You can detach intentionally, go home, and reattach from a different machine
+- Split one terminal window into multiple panes — script editor next to R console
+- Combined with `nvim-R` it replicates the RStudio "script + console" workflow entirely in the terminal
+
+![nvim-R-Tmux in action](https://raw.githubusercontent.com/jalvesaq/Nvim-R/master/Nvim-R.gif){width=60%}
+
+### Quick start on HPCC
+
+Install nvim-R-Tmux once in your account:
+
+```bash
+git clone https://github.com/tgirke/nvim-R-Tmux.git
+cd nvim-R-Tmux
+module load neovim/0.11.4 tmux R && bash install_nvim_r_tmux.sh
+# Log out and back in to activate
+```
+
+Start or reattach to a session:
+
+```bash
+tmux a        # reattach to existing session (or start new default layout)
+tmux new -s mywork   # start a new named session
+tmux ls              # list all active sessions
+```
+
+::: {.callout-warning}
+Always start tmux from a **head node** (`skylark` or `bluejay`), not a compute
+node. Tmux sessions can only be reattached from the same head node where they
+were started — note which one you are on.
+:::
+
+---
+
+## Tmux — Typical Workflow with nvim-R {.scrollable}
+
+### Step-by-step usage routine
+
+**Step 1 — Start or reattach to a tmux session** (from the head node)
+
+```bash
+tmux a     # reattach, or create new session with default 5-window layout
+```
+
+Switch between the five default windows with `Ctrl-a 1` through `Ctrl-a 5`.
+
+**Step 2 — Log in to a compute node with `srun`** (from inside tmux)
+
+```bash
+srun --partition=gen242 --account=gen242 --mem=2gb \
+     --cpus-per-task 4 --ntasks 1 --time 1:00:00 --pty bash -l
+```
+
+**Step 3 — Open your R script in nvim and start the R console**
+
+```bash
+nvim myscript.R    # open script (also works with .Rmd and .qmd files)
+```
+
+Inside nvim: press `\rf` to open a connected R session in a split pane.
+
+**Step 4 — Send code to R**
+
+| Action | Key |
+|---|---|
+| Send current line | `Enter` (normal mode) |
+| Send visual selection | `Enter` (visual mode — press `v` to start) |
+| Send entire code chunk (Rmd/qmd) | `\cc` |
+| Start R console | `\rf` |
+| Quit R | `\rq` |
+
+### Important nvim keybindings
+
+| Key | Action |
+|---|---|
+| `\rf` | open connected R session |
+| `Enter` | send line/selection to R |
+| `\cc` | send code chunk |
+| `Ctrl-w w` | switch between nvim and R pane |
+| `gz` | maximize current viewport |
+| `Ctrl-w =` | equalize split sizes |
+| `Ctrl-w H` / `K` | toggle horizontal/vertical split |
+| `Ctrl-Space` | omni-completion for R objects and functions |
+| `:Rhelp fct_name` | open R help from nvim command mode |
+
+---
+
+## Tmux — Keybinding Reference {.scrollable}
+
+**Prefix key: `Ctrl-a`** — hold Ctrl, press a, release both, then press the next key.
+
+### Pane-level (split-screen within one window)
+
+| Key | Action |
+|---|---|
+| `Ctrl-a \|` | split pane vertically |
+| `Ctrl-a -` | split pane horizontally |
+| `Ctrl-a` + arrow | move cursor between panes |
+| `Alt` + arrow | resize pane (no prefix needed) |
+| `Ctrl-a z` | zoom/unzoom active pane (maximize) |
+| `Ctrl-a o` | rotate pane arrangement |
+| `Ctrl-a x` | close current pane |
+| `Ctrl-a m` | toggle mouse support on/off |
+
+### Window-level (separate tab-like windows)
+
+| Key | Action |
+|---|---|
+| `Ctrl-a c` | create new window |
+| `Ctrl-a n` / `Ctrl-a p` | next / previous window |
+| `Ctrl-a 1`…`5` | jump to window by number |
+| `Ctrl-a ,` | rename current window |
+
+### Session-level
+
+| Key / Command | Action |
+|---|---|
+| `Ctrl-a d` | **detach** — session keeps running in background |
+| `Ctrl-a s` | switch between sessions |
+| `tmux a` | reattach to existing session |
+| `tmux a -t NAME` | reattach to named session |
+| `tmux ls` | list active sessions |
+| `Ctrl-a : kill-session` | kill current session |
+| `Ctrl-a r` | reload tmux config |
+
+::: {.callout-tip}
+Mouse support is **enabled by default**. Use `Ctrl-a m` to toggle it off when
+you need to select text for terminal copy/paste. On most terminals,
+`Shift+click` selects text even when mouse support is active.
+:::
+
+---
+
+## Module System — Managing Software on HPCC {.scrollable}
+
+The HPCC cluster has **over 2,000 software tools** installed, including
+multiple versions of the same tool. A **module system** manages these so that
+users can load exactly the version they need without conflicts.
+
+### Key points
+
+- Software is not available until you explicitly `module load` it
+- Multiple versions of R, Python, compilers, etc. can coexist — load the one you need
+- Custom installs in your account: use [Conda](https://hpcc.ucr.edu/manuals/hpc_cluster/package_manage/)
+- Request new software: email `support@hpcc.ucr.edu`
+
+### Essential module commands
+
+```bash
+module avail              # list all available modules
+module avail R            # list all modules starting with "R"
+module load R             # load the default version of R
+module load R/4.5.2       # load a specific R version
+module list               # show currently loaded modules
+module unload R           # unload R
+module unload R/4.5.0     # unload a specific version
+```
+
+### Typical workflow
+
+```bash
+# Check what R versions are available
+module avail R
+
+# Load a specific version before starting work
+module load R/4.5.2
+R                         # now starts the loaded version
+
+# Or load multiple tools at once (e.g. for nvim-R-Tmux)
+module load neovim/0.11.4 tmux R
+```
+
+::: {.callout-tip}
+Add frequently used `module load` commands to your `~/.bashrc` so they
+run automatically at login. Example:
+```bash
+echo "module load R/4.5.2" >> ~/.bashrc
+```
+:::
+
+---
+
+## Big Data Storage {.scrollable}
+
+Each HPCC user account includes only **20 GB** of home directory space.
+For research data, much larger storage is available via the `bigdata` filesystem.
+
+### Storage paths
+
+| Path | Purpose |
+|---|---|
+| `~/` (home) | scripts, config files, small outputs — 20 GB limit |
+| `/bigdata/labname/username` | your personal large data |
+| `/bigdata/labname/shared` | shared space within your lab group |
+
+For GEN242 users, `labname = gen242`:
+
+```bash
+ls /bigdata/gen242/                   # list course bigdata directory
+ls /bigdata/gen242/shared/            # shared data for the course
+```
+
+### Monitoring disk usage
+
+Check your quota on the [HPCC Cluster Dashboard](https://dashboard.hpcc.ucr.edu/)
+or from the command line:
+
+```bash
+df -h ~                               # home directory usage
+du -sh /bigdata/gen242/shared/        # bigdata usage
+```
+
+::: {.callout-warning}
+All members of a lab group **share the same bigdata quota**. Coordinate with
+your group before storing very large datasets. Always clean up intermediate
+files that are no longer needed.
+:::
+
+::: {.callout-note}
+Additional project data details for GEN242 are on the
+[Project Data page](https://girke.bioinformatics.ucr.edu/GEN242/assignments/projects/project_data/).
+:::
+
+---
+
+## Slurm — Queuing System Overview {.scrollable}
+
+HPCC uses **Slurm** as its workload manager and job scheduler. All
+compute-intensive jobs must be submitted through Slurm — running heavy jobs
+directly on the head node is not permitted and will be killed.
+
+### Two submission modes
+
+| Mode | Command | Use case |
+|---|---|---|
+| Batch job | `sbatch script.sh` | non-interactive, production runs |
+| Interactive session | `srun --pty bash -l` | testing, debugging, short tasks |
+
+### Available partitions (queues) for GEN242
+
+| Partition | Time limit | Notes |
+|---|---|---|
+| `gen242` | varies | course partition — use for homework |
+| `short` | 2 hours | quick testing |
+| `intel` / `batch` | longer | general compute |
+| `highmem` | longer | large memory jobs |
+| `gpu` | varies | GPU-accelerated jobs |
+
+### Check partition availability
+
+```bash
+sinfo                   # list all partitions and their status
+```
+
+![Slurm cluster overview](images/slurm_overview.png){width=65%}
+
+---
+
+## Slurm — Submit, Monitor and Manage Jobs {.scrollable}
+
+### Batch job submission with `sbatch`
+
+Create a submission script `script_name.sh`:
+
+```bash
+#!/bin/bash -l
+
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=1G
+#SBATCH --time=1-00:15:00          # 1 day and 15 minutes
+#SBATCH --mail-user=user@ucr.edu
+#SBATCH --mail-type=ALL
+#SBATCH --job-name="my_analysis"
+#SBATCH --partition=gen242
+#SBATCH --account=gen242
+
+Rscript my_script.R                 # the R script to run
+```
+
+Submit it:
+
+```bash
+sbatch script_name.sh
+```
+
+Output (`STDOUT` and `STDERR`) is written to `slurm-<jobid>.out` by default.
+
+### Interactive session with `srun`
+
+```bash
+srun --pty bash -l                  # minimal interactive session
+
+# With specific resources:
+srun --x11 --partition=gen242 --account=gen242 \
+     --mem=2gb --cpus-per-task 4 --ntasks 1 \
+     --time 1:00:00 --pty bash -l
+```
+
+### Monitor jobs
+
+```bash
+squeue                              # all jobs in queue
+squeue -u <username>                # your jobs only
+scontrol show job <JOBID>           # detailed job info
+jobMonitor                          # custom HPCC cluster activity view
+```
+
+### Cancel and alter jobs
+
+```bash
+scancel -i <JOBID>                  # cancel one job
+scancel -u <username>               # cancel all your jobs
+scancel --name <myJobName>          # cancel by job name
+scontrol update jobid=<JOBID> TimeLimit=<NEW_TIME>  # change walltime
+```
+
+### View resource limits
+
+```bash
+sacctmgr show account $GROUP \
+    format=Account,User,Partition,GrpCPUs,GrpMem,GrpNodes --ass | grep $USER
+```
+
+---
+
+## Parallel R — Overview and Options {.scrollable}
+
+R provides many options for parallel computation — from single-node
+multi-core parallelism to full cluster-scale job arrays.
+
+### Key parallel computing packages for R
+
+| Package | Scope | Notes |
+|---|---|---|
+| `parallel` | multi-core (single node) | built into R base |
+| `foreach` + `doParallel` | multi-core (single node) | simple `foreach` loops |
+| [`batchtools`](https://mllg.github.io/batchtools/) | **multi-node cluster** | most comprehensive, Slurm-aware |
+| [`BiocParallel`](https://bioconductor.org/packages/BiocParallel) | multi-core + cluster | Bioconductor-oriented |
+
+Full list: [CRAN High Performance Computing Task View](https://cran.r-project.org/web/views/HighPerformanceComputing.html)
+
+### Traditional approach — plain `sbatch`
+
+The simplest method: write an R script, submit it with a Slurm bash script.
+
+```bash
+# script_name.sh
+#!/bin/bash -l
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=1G
+#SBATCH --time=1-00:15:00
+#SBATCH --partition=gen242
+#SBATCH --account=gen242
+Rscript my_script.R
+```
+
+```bash
+sbatch script_name.sh    # submit from the command line
+```
+
+**Limitation:** managing many jobs (e.g. 100 parameter combinations) manually
+becomes error-prone. This is where `batchtools` excels.
+
+### Why `batchtools`?
+
+- Submit, monitor, and collect results for many jobs **from within R**
+- Supports Slurm, SGE, Torque, and other schedulers via template files
+- Results stored in a registry (file-based database) — survives R session crashes
+- Easy restart of failed jobs
+
+---
+
+## Parallel R with `batchtools` — Setup and Demo {.scrollable}
+
+`batchtools` orchestrates cluster job arrays from within an R session.
+All job management — submission, monitoring, result collection — happens in R.
+
+### Step 1 — Set up working directory and download config files
+
+From within R on the cluster (after logging in and starting an R session):
+
+```{r}
+dir.create("mytestdir")
+setwd("mytestdir")
+download.file("https://bit.ly/3Oh9dRO", "slurm.tmpl")       # Slurm template
+download.file("https://bit.ly/3KPBwou", ".batchtools.conf.R") # batchtools config
+```
+
+Two required files:
+- **`slurm.tmpl`** — Slurm submission template (specifies partition, R version, resources)
+- **`.batchtools.conf.R`** — tells batchtools to use the Slurm template
+
+### Step 2 — Load packages and define the function to run on the cluster
+
+```{r}
+library(RenvModule)
+module("load", "slurm")   # loads Slurm environment modules
+
+library(batchtools)
+
+# Define the function that will run on each compute node
+myFct <- function(x) {
+    Sys.sleep(10)   # pause 10s so you can see the job in the queue
+    result <- cbind(
+        iris[x, 1:4],
+        Node     = system("hostname", intern=TRUE),   # which node ran this?
+        Rversion = paste(R.Version()[6:7], collapse=".")
+    )
+    return(result)
+}
+```
+
+### Step 3 — Create a registry and submit jobs
+
+```{r}
+reg <- makeRegistry(file.dir="myregdir", conf.file=".batchtools.conf.R")
+
+Njobs <- 1:4                         # run 4 jobs (rows 1–4 of iris)
+ids   <- batchMap(fun=myFct, x=Njobs) # map function over job IDs
+
+done <- submitJobs(ids, reg=reg,
+    resources=list(
+        partition = "gen242",
+        account   = "gen242",
+        walltime  = 120,       # seconds
+        ntasks    = 1,
+        ncpus     = 1,
+        memory    = 1024       # MB
+    ))
+
+waitForJobs()                        # block R until all jobs finish
+```
+
+### Step 4 — Check status and collect results
+
+```{r}
+getStatus()                          # summarize: submitted / running / done / error
+showLog(Njobs[1])                    # inspect log for job 1
+
+# Retrieve results
+loadResult(1)                        # single result
+lapply(Njobs, loadResult)            # all results as list
+reduceResults(rbind)                 # combine all results into one data.frame
+do.call("rbind", lapply(Njobs, loadResult))  # equivalent
+```
+
+---
+
+## `batchtools` — Registry Management and Conclusions {.scrollable}
+
+### Registry management
+
+Results are stored as `.rds` files in the registry directory (`myregdir`).
+The registry persists across R sessions — you can close R, come back later,
+and reload results.
+
+```{r}
+# Read result files directly
+readRDS("myregdir/results/1.rds")
+
+# Reload a registry into a new R session (e.g. after moving to local machine)
+from_file <- loadRegistry("myregdir", conf.file=".batchtools.conf.R")
+reduceResults(rbind)
+
+# Clean up when done
+clearRegistry()                           # clear registry object in R session
+removeRegistry(wait=0, reg=reg)           # delete registry directory from disk
+# unlink("myregdir", recursive=TRUE)      # same as above
+```
+
+### Full `batchtools` workflow summary
+
+```
+Login node → R session → batchtools
+     ↓
+makeRegistry()          # create job database
+batchMap(fun, args)     # define one job per argument value
+submitJobs(resources)   # submit all jobs to Slurm at once
+waitForJobs()           # wait for completion
+getStatus()             # inspect job status
+reduceResults(rbind)    # collect results into R
+```
+
+### Advantages of `batchtools` over plain `sbatch`
+
+- **From R** — no shell scripting needed for job arrays
+- **Scheduler-agnostic** — same R code works with Slurm, SGE, Torque
+- **Robust** — registry survives crashes; failed jobs can be restarted individually
+- **Scalable** — manages hundreds of jobs with the same code as 4 jobs
+- **Result management** — structured storage, easy loading and assembly
+- **Well maintained** — active package with good documentation
+
+::: {.callout-tip}
+For Bioconductor workflows, `BiocParallel` provides similar functionality
+with native support for Bioconductor S4 objects.
+See [BiocParallel vignette](https://bioconductor.org/packages/release/bioc/html/BiocParallel.html).
+:::
+
+---
+
+## Summary
+
+| Topic | Key commands / concepts |
+|---|---|
+| **Tmux — sessions** | `tmux a` reattach · `Ctrl-a d` detach · `tmux ls` list |
+| **Tmux — panes** | `Ctrl-a \|` split · `Ctrl-a` + arrow move · `Ctrl-a z` zoom |
+| **Tmux — windows** | `Ctrl-a c` new · `Ctrl-a 1`…`5` jump |
+| **nvim-R** | `\rf` start R · `Enter` send line · `\cc` send chunk |
+| **Module system** | `module avail R` · `module load R/4.4.0` · `module list` |
+| **Big data** | `/bigdata/gen242/<username>` · monitor at [dashboard.hpcc.ucr.edu](https://dashboard.hpcc.ucr.edu/) |
+| **Slurm — submit** | `sbatch script.sh` · `srun --pty bash -l` |
+| **Slurm — monitor** | `squeue -u <user>` · `scontrol show job <ID>` · `jobMonitor` |
+| **Slurm — cancel** | `scancel -i <ID>` · `scancel -u <user>` |
+| **batchtools** | `makeRegistry()` → `batchMap()` → `submitJobs()` → `reduceResults()` |
+
+### References
+
+- [UCR HPCC Manual](https://hpcc.ucr.edu/manuals/hpc_cluster/)
+- [Slurm Documentation](https://slurm.schedmd.com/documentation.html)
+- [batchtools manual](https://mllg.github.io/batchtools/articles/batchtools.html)
+- [Linux/HPC Tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/linux/linux.html)
+- [Parallel R Tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rparallel/rparallel_index.html)
+- Bischl B et al. (2015) BatchJobs and BatchExperiments: Abstraction Mechanisms for Using R in Batch Environments. *Journal of Statistical Software*, 64(11). [DOI](https://doi.org/10.18637/jss.v064.i11)
