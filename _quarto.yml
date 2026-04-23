@@ -90,7 +90,7 @@ website:
             - text: "Programming in R"
               href: slides/rprogramming/rprogramming_page.qmd
             - text: "R on HPC"
-              href: slides/rhpc/rhpc_slides.qmd
+              href: slides/rhpc/rhpc_page.qmd
             - text: "Graphics in R"
               href: slides/slides_21.qmd
             - text: "Tidyverse & SQLite"
