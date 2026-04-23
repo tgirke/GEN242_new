@@ -39,8 +39,8 @@ Topics covered in this tutorial:
 - Efficient sequence parsing from genome files
 
 ::: {.callout-note}
-**HW06** tasks are linked at the end of this tutorial.  
-Full assignment: [HW06](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw06/hw06/)
+**HW05** tasks are linked at the end of this tutorial.  
+Full assignment: [HW05](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw05/hw05.html)
 :::
 
 ---
