@@ -305,7 +305,7 @@ directly on the head node is not permitted and will be killed.
 sinfo                   # list all partitions and their status
 ```
 
-![Slurm cluster overview](images/slurm_overview.png){width=65%}
+![Slurm cluster overview](images/slurm_overview.png){width=130%}
 
 ---
 
