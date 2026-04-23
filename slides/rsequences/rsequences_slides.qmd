@@ -1,0 +1,777 @@
+---
+title: "NGS Analysis Basics"
+subtitle: "GEN242: Data Analysis in Genome Biology"
+author: "Thomas Girke"
+date: today
+format:
+  revealjs:
+    theme: [default, ../../assets/revealjs_custom.scss]
+    slide-number: true
+    progress: true
+    scrollable: true
+    smaller: true
+    highlight-style: github
+    code-block-height: 380px
+    transition: slide
+    embed-resources: true
+    footer: "GEN242 · UC Riverside · [Tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rsequences/rsequences_index.html) · [HW05](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw05/hw05/)"
+    logo: "https://girke.bioinformatics.ucr.edu/GEN242/assets/logo_gen242.png"
+execute:
+  echo: true
+  eval: false
+---
+
+## Overview
+
+Topics covered in this tutorial:
+
+- String handling in R base
+- Key Bioconductor packages for sequence analysis
+- Biostrings: sequence containers, import/export, manipulation
+- Pattern matching with and without mismatches
+- Sequence logos and PWM searching
+- NGS data: FASTQ format and quality scores
+- FASTQ quality reports and QC
+- Filtering and trimming FASTQ files
+- Memory-efficient FASTQ processing
+- Range operations with `IRanges` and `GRanges`
+- Transcript ranges and `TxDb` databases
+- Efficient sequence parsing from genome files
+
+::: {.callout-note}
+**HW06** tasks are linked at the end of this tutorial.  
+Full assignment: [HW06](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw06/hw06/)
+:::
+
+---
+
+## Key Bioconductor Packages for Sequence Analysis
+
+### R Base
+
+Basic string handling (`grep`, `gsub`, `substring`) plus the full range of
+numeric data analysis tools.
+
+### Bioconductor — sequence-specific infrastructure
+
+| Package | Purpose |
+|---|---|
+| [Biostrings](http://bioconductor.org/packages/release/bioc/html/Biostrings.html) | General sequence analysis — the core package |
+| [ShortRead](http://bioconductor.org/packages/release/bioc/html/ShortRead.html) | Pipeline for short read / FASTQ data |
+| [IRanges](http://bioconductor.org/packages/release/bioc/html/IRanges.html) | Low-level range data infrastructure |
+| [GenomicRanges](http://bioconductor.org/packages/release/bioc/html/GenomicRanges.html) | High-level genomic range data |
+| [GenomicFeatures](http://bioconductor.org/packages/release/bioc/html/GenomicFeatures.html) | Transcript-centric annotation management |
+| [GenomicAlignments](http://bioconductor.org/packages/release/bioc/html/GenomicAlignments.html) | Short genomic alignments |
+| [Rsamtools](http://bioconductor.org/packages/release/bioc/html/Rsamtools.html) | Interface to `samtools`, `bcftools`, `tabix` |
+| [BSgenome](http://bioconductor.org/packages/release/bioc/html/BSgenome.html) | Genome annotation data |
+| [biomaRt](http://bioconductor.org/packages/release/bioc/html/biomaRt.html) | Interface to BioMart annotations |
+| [rtracklayer](http://bioconductor.org/packages/release/bioc/html/rtracklayer.html) | Annotation imports, interface to genome browsers |
+
+### Install required packages
+
+```{r}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(c("Biostrings", "GenomicRanges", "rtracklayer",
+                        "systemPipeR", "seqLogo", "ShortRead"))
+```
+
+---
+
+## String Handling in R Base {.scrollable}
+
+### Sample sequence data
+
+```{r}
+myseq <- c("ATGCAGACATAGTG", "ATGAACATAGATCC", "GTACAGATCAC")
+```
+
+### String matching
+
+```{r}
+myseq[grep("ATG", myseq)]                        # sequences containing "ATG"
+
+pos1 <- regexpr("AT", myseq)                     # position of FIRST match per sequence
+as.numeric(pos1)
+attributes(pos1)$match.length
+
+pos2 <- gregexpr("AT", myseq)                    # positions of ALL matches per sequence
+as.numeric(pos2[[1]])                            # match positions in first sequence
+attributes(pos2[[1]])$match.length               # match lengths in first sequence
+```
+
+### String substitution
+
+```{r}
+gsub("^ATG", "atg", myseq)                       # replace "ATG" at start of string
+```
+
+### Positional parsing
+
+```{r}
+nchar(myseq)                                      # length of each string
+substring(myseq[1], c(1,3), c(2,5))              # extract two fragments from one string
+substring(myseq, c(1,4,7), c(2,6,10))            # one fragment from each string
+```
+
+### Generate random DNA sequences
+
+```{r}
+rand <- sapply(1:100, function(x)
+    paste(sample(c("A","T","G","C"), sample(10:20, 1), replace=TRUE), collapse=""))
+rand[1:3]
+table(c(rand[1:4], rand[1]))                      # count identical sequences
+```
+
+---
+
+## Biostrings — Data Objects {.scrollable}
+
+The `Biostrings` package provides dedicated containers for biological sequences.
+
+### `XString` — single sequence
+
+| Class | Use |
+|---|---|
+| `DNAString` | DNA sequence |
+| `RNAString` | RNA sequence |
+| `AAString` | Amino acid sequence |
+| `BString` | Any character string |
+
+```{r}
+library(Biostrings)
+d <- DNAString("GCATAT-TAC")
+d
+d[1:4]                        # subsetting by position
+
+r <- RNAString(d)             # convert DNA to RNA
+p <- AAString("HCWYHH")       # amino acid sequence
+b <- BString("Any characters can go here.")
+```
+
+### `XStringSet` — many sequences in one object
+
+| Class | Use |
+|---|---|
+| `DNAStringSet` | set of DNA sequences |
+| `RNAStringSet` | set of RNA sequences |
+| `AAStringSet` | set of amino acid sequences |
+
+```{r}
+dset <- DNAStringSet(c("GCATATTAC", "AATCGATCC", "GCATATTAC"))
+names(dset) <- c("seq1", "seq2", "seq3")
+dset[1:2]
+
+width(dset)                    # length of each sequence
+d <- dset[[1]]                 # [[ returns single entry as XString
+dset2 <- c(dset, dset)         # concatenate two XStringSet objects
+dsetchar <- as.character(dset) # convert to named character vector
+dsetone <- unlist(dset)        # collapse all sequences into one DNAString
+
+DNAStringSet(dset, start=c(1,2,3), end=c(4,8,5))  # subset by positions
+```
+
+### `QualityScaleXStringSet` — sequences with quality scores
+
+```{r}
+# QualityScaledDNAStringSet, QualityScaledRNAStringSet, QualityScaledAAStringSet
+```
+
+---
+
+## Biostrings — Import, Export and Manipulation {.scrollable}
+
+### Import FASTA file
+
+```{r}
+# Download sample sequences
+dir.create("data", showWarnings = FALSE)
+download.file(
+  "https://ftp.ncbi.nlm.nih.gov/genomes/archive/old_genbank/Bacteria/Halobacterium_sp_uid217/AE004437.ffn",
+  "data/AE004437.ffn"
+)
+myseq <- readDNAStringSet("data/AE004437.ffn")  # import FASTA
+myseq[1:3]
+```
+
+### Subset and export
+
+```{r}
+sub <- myseq[grep("99.*", names(myseq))]         # subset by name pattern
+length(sub)
+writeXStringSet(sub, file="./data/AE004437sub.ffn", width=80)  # export to FASTA
+```
+
+### Basic sequence manipulations
+
+```{r}
+randset <- DNAStringSet(rand)                     # convert random seqs to DNAStringSet
+complement(randset[1:2])                          # complement
+reverse(randset[1:2])                             # reverse
+reverseComplement(randset[1:2])                   # reverse complement (standard for NGS)
+translate(randset[1:2])                           # translate DNA to protein
+```
+
+### Multiple sequence alignment
+
+```{r}
+origMAlign <- readDNAMultipleAlignment(
+    filepath = system.file("extdata", "msx2_mRNA.aln", package="Biostrings"),
+    format = "clustal"
+)
+origMAlign
+```
+
+---
+
+## Pattern Matching with Biostrings {.scrollable}
+
+Biostrings supports pattern matching with **mismatches** — not possible with base R regex.
+
+### Match a single pattern against one sequence
+
+```{r}
+myseq1 <- readDNAStringSet("./data/AE004437.ffn")
+
+# Find all occurrences allowing 1 mismatch
+mypos <- matchPattern("ATGGTG", myseq1[[1]], max.mismatch=1)
+
+# Count matches only
+countPattern("ATGGCT", myseq1[[1]], max.mismatch=1)
+```
+
+### Match against all sequences in a set
+
+```{r}
+vcountPattern("ATGGCT", myseq1, max.mismatch=1)[1:20]   # count per sequence
+
+myvpos <- vmatchPattern("ATGGCT", myseq1, max.mismatch=1) # match positions (MIndex)
+Views(myseq1[[1]], start(myvpos[[1]]), end(myvpos[[1]]))   # retrieve matches for seq 1
+
+# Retrieve match sequences across all entries
+sapply(names(myseq1), function(x)
+    as.character(Views(myseq1[[x]], start(myvpos[[x]]), end(myvpos[[x]]))))[1:4]
+```
+
+### Consensus matrix for query and hits
+
+```{r}
+tmp <- c(DNAStringSet("ATGGTG"), DNAStringSet(mypos))
+consensusMatrix(tmp)[1:4,]    # shows nucleotide frequency at each position
+```
+
+### Pattern matching with regular expression support
+
+```{r}
+myseq <- DNAStringSet(c("ATGCAGACATAGTG", "ATGAACATAGATCC", "GTACAGATCAC"))
+myseq[grep("^ATG", myseq, perl=TRUE)]            # sequences starting with ATG
+DNAStringSet(gsub("^ATG", "NNN", myseq))         # substitute ATG at start with NNN
+```
+
+---
+
+## Sequence Logos and PWM Searching
+
+### Build a position weight matrix (PWM)
+
+```{r}
+library(seqLogo)
+pwm <- PWM(DNAStringSet(c("GCT", "GGT", "GCA")))
+pwm
+```
+
+### Plot sequence logo with `seqLogo`
+
+```{r}
+seqLogo(t(t(pwm) * 1/colSums(pwm)))
+```
+
+### Plot with `ggseqlogo` (more customization options)
+
+```{r}
+library(ggplot2); library(ggseqlogo)
+pwm <- PWM(DNAStringSet(c("GCT", "GGT", "GCA")))
+ggseqlogo(pwm)
+```
+
+`ggseqlogo` supports various alphabets including amino acid sequences.
+See the [manual](https://omarwagih.github.io/ggseqlogo/) for details.
+
+### Search a sequence for PWM matches
+
+```{r}
+chr <- DNAString("AAAGCTAAAGGTAAAGCAAAA")
+matchPWM(pwm, chr, min.score=0.9)   # returns matches scoring > 90% of maximum
+```
+
+---
+
+## FASTQ Format — Sequence and Quality Data {.scrollable}
+
+FASTQ is the standard format for raw NGS reads. Each read occupies **4 lines**:
+
+```default
+@SRR038845.3 HWI-EAS038:6:1:0:1938 length=36
+CAACGAGTTCACACCTTGGCCGACAGGCCCGGGTAA
++SRR038845.3 HWI-EAS038:6:1:0:1938 length=36
+BA@7>B=>:>>7@7@>>9=BAA?;>52;>:9=8.=A
+```
+
+| Line | Content |
+|---|---|
+| 1 | `@` + read ID and description |
+| 2 | DNA sequence |
+| 3 | `+` (optionally repeated ID) |
+| 4 | Quality scores as ASCII characters (Phred encoding) |
+
+### Phred quality scores
+
+Phred scores are integers 0–50 stored as ASCII characters (score + 33):
+
+```{r}
+phred <- 1:9
+phreda <- paste(sapply(as.raw((phred)+33), rawToChar), collapse="")
+phreda                           # ASCII representation
+as.integer(charToRaw(phreda))-33 # convert back to integers
+```
+
+- **Phred 10** = 90% base call accuracy (1 error in 10)
+- **Phred 20** = 99% accuracy (1 error in 100) — common QC cutoff
+- **Phred 30** = 99.9% accuracy (1 error in 1,000)
+
+---
+
+## Working with FASTQ Files — ShortRead {.scrollable}
+
+### Download sample data and import
+
+```{r}
+library(ShortRead)
+download.file(
+    "https://cluster.hpcc.ucr.edu/~tgirke/HTML_Presentations/Manuals/testdata/samplefastq/data.zip",
+    "data.zip"
+)
+unzip("data.zip")
+
+fastq <- list.files("data", "*.fastq$")
+fastq <- paste("data/", fastq, sep="")
+names(fastq) <- paste("flowcell6_lane", 1:length(fastq), sep="_")
+```
+
+### Read and inspect a FASTQ file
+
+```{r}
+fq <- readFastq(fastq[1])          # import first FASTQ file as ShortReadQ object
+countLines(dirPath="./data", pattern=".fastq$") / 4  # count reads in each file
+
+id(fq)[1]                          # read ID
+sread(fq)[1]                       # sequence
+quality(fq)[1]                     # Phred quality scores (ASCII)
+as(quality(fq), "matrix")[1:4, 1:12]  # convert Phred to numeric matrix
+
+ShortReadQ(sread=sread(fq), quality=quality(fq), id=id(fq))  # construct from components
+```
+
+### Construct a `QualityScaledDNAStringSet` from scratch
+
+```{r}
+dset <- DNAStringSet(sapply(1:100, function(x)
+    paste(sample(c("A","T","G","C"), 20, replace=TRUE), collapse="")))
+myqlist <- lapply(1:100, function(x) sample(1:40, 20, replace=TRUE))
+myqual <- sapply(myqlist, function(x) toString(PhredQuality(x)))
+myqual <- PhredQuality(myqual)
+dsetq1 <- QualityScaledDNAStringSet(dset, myqual)
+dsetq1[1:2]
+```
+
+---
+
+## FASTQ Quality Reports {.scrollable}
+
+### Using `systemPipeR` — comprehensive QC plots
+
+```{r}
+library(systemPipeR)
+fqlist <- seeFastq(fastq=fastq, batchsize=800, klength=8)
+# For real data: set batchsize to at least 10^5
+seeFastqPlot(fqlist)
+```
+
+Generates a multi-panel QC report covering:
+- Read length distribution
+- Per-position base quality
+- Per-position nucleotide frequency
+- K-mer frequency
+- Adapter contamination
+
+Output can be written to a single PDF covering all samples.
+
+### Using `ShortRead` — alternative QC
+
+```{r}
+sp <- SolexaPath(system.file('extdata', package='ShortRead'))
+fl <- file.path(analysisPath(sp), "s_1_sequence.txt")
+fls <- c(fl, fl)
+coll <- QACollate(
+    QAFastqSource(fls),
+    QAReadQuality(),
+    QAAdapterContamination(),
+    QANucleotideUse(),
+    QAQualityUse(),
+    QASequenceUse(),
+    QAFrequentSequence(n=10),
+    QANucleotideByCycle(),
+    QAQualityByCycle()
+)
+x <- qa2(coll, verbose=TRUE)
+res <- report(x)
+if (interactive()) browseURL(res)   # open HTML report in browser
+```
+
+---
+
+## Filtering and Trimming FASTQ Files {.scrollable}
+
+All filtering operates on `ShortReadQ` objects and returns a filtered subset.
+
+### Adapter trimming
+
+```{r}
+fqtrim <- trimLRPatterns(Rpattern="GCCCGGGTAA", subject=fq)
+sread(fq)[1:2]      # before trimming
+sread(fqtrim)[1:2]  # after trimming — adapter sequence removed
+```
+
+### Count reads and remove duplicates
+
+```{r}
+tables(fq)$distribution          # frequency table of read occurrences
+sum(srduplicated(fq))            # number of duplicated reads
+fq[!srduplicated(fq)]           # keep only unique reads
+```
+
+### Trim low-quality tails
+
+```{r}
+cutoff <- 30
+cutoff <- rawToChar(as.raw(cutoff + 33))   # convert Phred score to ASCII
+sread(trimTails(fq, k=2, a=cutoff, successive=FALSE))[1:2]
+# k=2: trim if 2 consecutive bases fall below cutoff
+```
+
+### Remove reads with low average quality
+
+```{r}
+cutoff <- 30
+qcount <- rowSums(as(quality(fq), "matrix") <= 20)
+fq[qcount == 0]   # keep only reads where ALL Phred scores are >= 20
+```
+
+### Remove reads with Ns or low complexity
+
+```{r}
+filter1 <- nFilter(threshold=1)                           # exclude reads with any N
+filter2 <- polynFilter(threshold=20, nuc=c("A","T","G","C"))  # exclude low complexity
+filter <- compose(filter1, filter2)                       # combine filters
+fq[filter(fq)]                                            # apply combined filter
+```
+
+---
+
+## Memory-Efficient FASTQ Processing {.scrollable}
+
+For large FASTQ files, streaming avoids loading everything into memory at once.
+
+### Stream or randomly sample reads
+
+```{r}
+fq <- yield(FastqStreamer(fastq[1], 50))   # import first 50 reads
+fq <- yield(FastqSampler(fastq[1], 50))   # randomly sample 50 reads
+```
+
+### Stream through a file with filtering and write output
+
+```{r}
+f <- FastqStreamer(fastq[1], 50)    # open streamer with chunk size 50
+while (length(fq <- yield(f))) {
+    fqsub <- fq[grepl("^TT", sread(fq))]   # keep reads starting with "TT"
+    writeFastq(fqsub,
+               paste(fastq[1], "sub", sep="_"),
+               mode="a",           # append mode — builds file across chunks
+               compress=FALSE)
+}
+close(f)                            # always close the streamer
+```
+
+::: {.callout-tip}
+**Streaming workflow** is the standard approach for production FASTQ processing:
+open a `FastqStreamer`, yield chunks, apply filters/trimming, write output,
+repeat until the file is exhausted. This handles files of any size with
+constant memory usage.
+:::
+
+---
+
+## Range Operations — IRanges and GRanges {.scrollable}
+
+Genomic ranges (chromosome, start, end, strand) are the foundation of most
+genome-scale analyses in Bioconductor.
+
+### Three key range containers
+
+| Class | Package | Stores |
+|---|---|---|
+| `IRanges` | IRanges | integer ranges only |
+| `GRanges` | GenomicRanges | ranges + chromosome + strand + metadata |
+| `GRangesList` | GenomicRanges | list of GRanges objects |
+
+### Construct a `GRanges` object
+
+```{r}
+library(GenomicRanges); library(rtracklayer)
+
+gr <- GRanges(
+    seqnames = Rle(c("chr1","chr2","chr1","chr3"), c(1,3,2,4)),
+    ranges   = IRanges(1:10, end=7:16, names=head(letters,10)),
+    strand   = Rle(strand(c("-","+","*","+","-")), c(1,2,2,3,2)),
+    score    = 1:10,
+    GC       = seq(1, 0, length=10)
+)
+```
+
+### Import a GFF/GTF file directly into a `GRanges` object
+
+```{r}
+gff <- import.gff("https://cluster.hpcc.ucr.edu/~tgirke/Documents/R_BioCond/Samples/gff3.gff")
+seqlengths(gff) <- end(ranges(gff[which(values(gff)[,"type"]=="chromosome"),]))
+names(gff) <- 1:length(gff)
+gff[1:4,]
+seqinfo(gff)
+
+as.data.frame(gff)[1:4, 1:7]    # coerce to data.frame for inspection
+```
+
+---
+
+## GRanges — Accessor Functions and Subsetting {.scrollable}
+
+### Accessor functions
+
+```{r}
+seqnames(gff)             # chromosome names
+ranges(gff)               # IRanges object (start, end, width)
+strand(gff)               # strand information
+seqlengths(gff)           # chromosome lengths
+start(gff[1:4])           # start positions
+end(gff[1:4])             # end positions
+width(gff[1:4])           # feature widths
+```
+
+### Accessing metadata columns
+
+```{r}
+values(gff)                                    # all metadata columns
+values(gff)[, "type"][1:20]                    # one metadata column
+gff[values(gff)[, "type"] == "gene"]          # filter by metadata value
+```
+
+### Subsetting and concatenation
+
+```{r}
+gff[1:4]                        # subset by index
+gff[1:4, c("type", "ID")]       # subset rows and metadata columns
+gff[2] <- gff[3]                # replace range
+c(gff[1:2], gff[401:402])       # concatenate GRanges objects
+```
+
+---
+
+## GRanges — Range Utilities {.scrollable}
+
+### Modify ranges
+
+```{r}
+gff <- gff[values(gff)$type != "chromosome"]  # remove chromosome-level entries
+strand(gff) <- "*"                             # erase strand information
+```
+
+### Set operations on ranges
+
+```{r}
+reduce(gff)                                    # collapse overlapping ranges to continuous
+gaps(gff)                                      # return uncovered (gap) regions
+setdiff(as(seqinfo(gff), "GRanges"), gff)     # gaps — more intuitive approach
+disjoin(gff)                                   # return disjoint (non-overlapping) ranges
+coverage(gff)                                  # per-base coverage as Rle object
+```
+
+### Overlap operations
+
+```{r}
+findOverlaps(gff, gff[1:4])                    # index pairs of overlapping ranges
+countOverlaps(gff, gff[1:4])[1:40]            # count overlaps per range
+subsetByOverlaps(gff, gff[1:4])               # return only overlapping ranges
+```
+
+::: {.callout-tip}
+`findOverlaps` and `subsetByOverlaps` are among the most frequently used
+functions in genomic analyses — they power intersection of features with
+peaks, reads, SNPs, and any other range-based data.
+:::
+
+### GRangesList — list of GRanges objects
+
+```{r}
+sp <- split(gff, seq(along=gff))              # one range per list component
+split(gff, seqnames(gff))                     # ranges grouped by chromosome
+unlist(sp)                                    # collapse back to GRanges
+sp[1:4, "type"]                               # subset GRangesList
+lapply(sp[1:4], length)                       # loop over GRangesList like a list
+```
+
+---
+
+## Transcript Ranges — TxDb Databases {.scrollable}
+
+`TxDb` (TranscriptDb) objects store transcript, exon, and CDS ranges in a
+SQLite database — making annotation retrieval robust and convenient.
+
+### Build a `TxDb` from a GFF file
+
+```{r}
+library(txdbmaker)
+download.file(
+    "https://cluster.hpcc.ucr.edu/~tgirke/Documents/R_BioCond/Samples/gff3.gff",
+    "data/gff3.gff"
+)
+txdb <- makeTxDbFromGFF(
+    file       = "data/gff3.gff",
+    format     = "gff",
+    dataSource = "TAIR",
+    organism   = "Arabidopsis thaliana"
+)
+saveDb(txdb, file="./data/TAIR10.sqlite")    # save for reuse
+txdb <- loadDb("./data/TAIR10.sqlite")       # reload later
+
+transcripts(txdb)                            # all transcripts as GRanges
+transcriptsBy(txdb, by="gene")               # transcripts grouped by gene
+exonsBy(txdb, by="gene")                     # exons grouped by gene
+```
+
+### Build a `TxDb` from BioMart
+
+```{r}
+library(GenomicFeatures); library(txdbmaker); library(biomaRt)
+
+txdb <- makeTxDbFromBiomart(
+    biomart = "plants_mart",
+    dataset = "athaliana_eg_gene",
+    host    = "https://plants.ensembl.org"
+)
+
+# Explore BioMart databases
+listMarts(host="plants.ensembl.org")
+mymart <- useMart("plants_mart", dataset="athaliana_eg_gene", host="plants.ensembl.org")
+listAttributes(mymart)
+getBM(attributes=c("ensembl_gene_id", "description"), mart=mymart)[1:4,]
+```
+
+---
+
+## Efficient Sequence Parsing from Genome Files {.scrollable}
+
+### `getSeq` — parse sequences for any GRanges annotations
+
+Parse all ranges defined in a `GRanges` object from a genome FASTA file:
+
+```{r}
+library(Biostrings); library(Rsamtools)
+
+# Create a random test genome and write to file
+gff <- gff[values(gff)$type != "chromosome"]
+rand <- DNAStringSet(sapply(
+    unique(as.character(seqnames(gff))),
+    function(x) paste(sample(c("A","T","G","C"), 200000, replace=TRUE), collapse="")
+))
+writeXStringSet(DNAStringSet(rand), "./data/test")
+
+# Parse sequences for all annotated ranges
+getSeq(FaFile("./data/test"), gff)
+```
+
+### `extractTranscriptSeqs` — splice-aware transcript parsing
+
+For multi-exon transcripts, exon sequences must be extracted and concatenated.
+`extractTranscriptSeqs` handles this automatically:
+
+```{r}
+library(GenomicFeatures); library(Biostrings); library(Rsamtools)
+
+txdb <- loadDb("./data/TAIR10.sqlite")
+indexFa("data/test")                                    # index the genome FASTA first
+
+txseq <- extractTranscriptSeqs(
+    FaFile("data/test"),
+    txdb,
+    use.names=TRUE
+)
+txseq
+```
+
+::: {.callout-tip}
+Use `getSeq` for simple range extraction (genes, peaks, features).  
+Use `extractTranscriptSeqs` when you need spliced transcript sequences
+that span multiple exons.
+:::
+
+---
+
+## HW05
+
+::: {.callout-important}
+**Assignment:** [HW05 — NGS Analysis Basics](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw06/hw06/)
+
+The homework is based on the sequence analysis, FASTQ processing, and
+range operations covered in this tutorial.
+:::
+
+---
+
+## Summary — Key Functions by Topic
+
+### Biostrings — sequences
+
+| Function | Purpose |
+|---|---|
+| `readDNAStringSet()` | import FASTA file |
+| `writeXStringSet()` | export to FASTA |
+| `reverseComplement()` | reverse complement |
+| `translate()` | DNA → protein |
+| `matchPattern()` / `vmatchPattern()` | pattern matching (with mismatches) |
+| `countPattern()` / `vcountPattern()` | count matches |
+| `PWM()` / `matchPWM()` | position weight matrix search |
+
+### ShortRead — FASTQ
+
+| Function | Purpose |
+|---|---|
+| `readFastq()` | import FASTQ file |
+| `sread()`, `quality()`, `id()` | access sequence, quality, ID |
+| `seeFastqPlot()` | QC report (systemPipeR) |
+| `trimLRPatterns()` | adapter trimming |
+| `trimTails()` | quality tail trimming |
+| `nFilter()`, `polynFilter()` | N and complexity filters |
+| `FastqStreamer()` / `yield()` | memory-efficient streaming |
+
+### GenomicRanges — ranges
+
+| Function | Purpose |
+|---|---|
+| `import.gff()` | GFF/GTF → GRanges |
+| `findOverlaps()` | find overlapping ranges |
+| `subsetByOverlaps()` | keep overlapping ranges |
+| `reduce()` / `coverage()` | merge / per-base coverage |
+| `getSeq()` | extract sequences for ranges |
+| `extractTranscriptSeqs()` | spliced transcript sequences |
+
+**Next:** T7 — [Workflow Framework](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/systempiper/systemPipeR_index.html)

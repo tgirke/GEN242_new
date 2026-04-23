@@ -106,7 +106,7 @@ website:
             - text: "Short Read Alignments"
               href: slides/short_read_alignments/short_read_alignments.qmd
             - text: "NGS Analysis Basics"
-              href: slides/slides_13.qmd
+              href: slides/rsequences/rsequences_page.qmd
             - text: "Gene Expression"
               href: slides/slides_14.qmd
             - text: "NGS Workflows"
