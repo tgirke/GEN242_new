@@ -7,8 +7,12 @@ bibliography: bibtex.bib
 ---
 
 <p align="right">
-  <a href="https://raw.githubusercontent.com/tgirke/GEN242/main/tutorials/rsequences/rsequences_index.qmd">
-    <img src="https://img.shields.io/badge/Download-.qmd-blue?style=for-the-badge&logoColor=white" alt="Download qmd">
+  <img src="https://img.shields.io/badge/Open-grey?style=for-the-badge" alt="Open">
+  <a href="https://girke.bioinformatics.ucr.edu/GEN242/slides/rsequences/rsequences_page.html" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
+    <img src="https://img.shields.io/badge/Slideshow-blue?style=for-the-badge" alt="Slideshow">
+  </a>
+  <a href="https://raw.githubusercontent.com/tgirke/GEN242/main/tutorials/rsequences/rsequences_index.qmd" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
+    <img src="https://img.shields.io/badge/.QMD-blue?style=for-the-badge" alt="Download qmd">
   </a>
 </p>
 
