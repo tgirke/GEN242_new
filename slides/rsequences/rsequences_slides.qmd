@@ -18,7 +18,7 @@ format:
     logo: "https://girke.bioinformatics.ucr.edu/GEN242/assets/logo_gen242.png"
 execute:
   echo: true
-  eval: false
+  eval: true
 ---
 
 ## Overview
@@ -215,6 +215,7 @@ translate(randset[1:2])                           # translate DNA to protein
 ### Multiple sequence alignment
 
 ```{r}
+#| eval: false
 origMAlign <- readDNAMultipleAlignment(
     filepath = system.file("extdata", "msx2_mRNA.aln", package="Biostrings"),
     format = "clustal"
@@ -388,12 +389,16 @@ dsetq1[1:2]
 
 ## FASTQ Quality Reports {.scrollable}
 
-### Using `systemPipeR` — comprehensive QC plots
+### Using `systemPipeR` to create comprehensive QC plots
 
-```{r}
+```{r see_fastq}
+#| eval: true
+#| message: false
+#| warning: false
+#| fig-width: 22
+#| fig-height: 12
 library(systemPipeR)
-fqlist <- seeFastq(fastq=fastq, batchsize=800, klength=8)
-# For real data: set batchsize to at least 10^5
+fqlist <- seeFastq(fastq=fastq, batchsize=800, klength=8) # For real data set batchsize to at least 10^5 
 seeFastqPlot(fqlist)
 ```
 
