@@ -193,8 +193,8 @@ website:
               href: assignments/homework/hw03/hw03.qmd
             - text: "HW4 — R Programming"
               href: assignments/homework/hw04/hw04.qmd
-            #- text: "HW5 — NGS Analysis"
-            #  href: assignments/homework/hw06/index.qmd
+            - text: "HW5 — NGS Analysis"
+              href: assignments/homework/hw05/hw05.qmd
             #- text: "HW6 — RNA-Seq"
             #  href: assignments/homework/hw07/index.qmd
             #- text: "HW7 — R Markdown"

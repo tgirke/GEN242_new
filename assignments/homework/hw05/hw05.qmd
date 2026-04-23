@@ -1,0 +1,332 @@
+---
+title: "HW05 — NGS Analysis Basics"
+sidebar: assignments
+---
+
+Source code downloads: [[ .R ]](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw05/hw05.R)
+
+## Overview
+
+This homework covers two topics from the 
+[NGS Analysis Basics](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rsequences/rsequences_index.html) 
+tutorial: **(A)** extending a demultiplexing function to also trim low-quality 
+read tails, and **(B)** parsing genomic sequences using GFF annotation and 
+Bioconductor range operations. Both parts require the `Biostrings`, 
+`ShortRead`, `GenomicRanges`, and `rtracklayer` Bioconductor packages.
+
+Install required packages if needed:
+
+```{r}
+#| eval: false
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(c("Biostrings", "ShortRead", "GenomicRanges", "rtracklayer"))
+```
+
+---
+
+## A. Demultiplexing with Quality Trimming
+
+### Background
+
+Demultiplexing splits a multiplexed FASTQ file into separate files based on 
+barcode sequences at the start of each read. A common additional step is to 
+remove low-quality bases from the 3' end of each read (quality tail trimming) 
+before writing the output.
+
+The following starter function handles **demultiplexing only**. Your task is 
+to extend it to also perform **quality tail trimming**.
+
+### Starter function (demultiplexing only)
+
+```{r}
+#| eval: false
+library(ShortRead)
+
+demultiplex <- function(x, barcode, nreads) {
+    f <- FastqStreamer(x, nreads)
+    while(length(fq <- yield(f))) {
+        for(i in barcode) {
+            pattern <- paste("^", i, sep = "")
+            fqsub <- fq[grepl(pattern, sread(fq))]
+            if(length(fqsub) > 0) {
+                writeFastq(fqsub, paste(x, i, sep = "_"),
+                           mode = "a", compress = FALSE)
+            }
+        }
+    }
+    close(f)
+}
+```
+
+### Task A — Extend `demultiplex` to trim low-quality tails
+
+Write a new function named **`demultiplex_trim`** that extends the starter 
+function above with a quality trimming step. The function must have the 
+following **exact signature**:
+
+```{r}
+#| eval: false
+demultiplex_trim <- function(x, barcode, nreads, cutoff = 20) { ... }
+```
+
+**Arguments:**
+
+| Argument | Type | Description |
+|---|---|---|
+| `x` | character | Path to input FASTQ file |
+| `barcode` | character vector | One or more barcode sequences to match at read start |
+| `nreads` | integer | Number of reads to process per chunk (passed to `FastqStreamer`) |
+| `cutoff` | integer | Minimum quality score threshold for trimming (default: 20) |
+
+**Required behavior:**
+
+1. Stream the FASTQ file in chunks of `nreads` reads
+2. For each barcode, subset reads whose sequence starts with that barcode (same as starter)
+3. **Trim low-quality bases from the 3' tail** of each matched read before writing — remove trailing bases whose quality score falls below `cutoff`
+4. Write trimmed, barcode-matched reads to a file named `<x>_<barcode>` using `writeFastq(..., mode="a", compress=FALSE)`
+
+**Useful functions for quality trimming:**
+
+```{r}
+#| eval: false
+## trimTails() from ShortRead trims bases from the 3' end
+## where quality drops below a threshold
+## Arguments: object, k (min consecutive good bases), a (quality character threshold)
+trimTails(fqsub, k = 2, a = encoding(cutoff))
+
+## Alternatively, use trimEnds() for a simpler threshold approach
+## PhredQuality encoding: quality score 20 = ASCII '5'
+## Use encoding() to convert numeric cutoff to the correct character
+quality(fqsub)  # inspect quality scores
+encoding(quality(fqsub))  # see score-to-character mapping
+```
+
+**Test data:** Download the FASTQ test files from the tutorial:
+
+```{r}
+#| eval: false
+## Download FASTQ test files used in the NGS tutorial
+library(ShortRead)
+fastq <- dir(system.file("extdata", package = "ShortRead"),
+             pattern = "fastq$", full.names = TRUE)
+
+## Run your function on the first test file
+demultiplex_trim(x = fastq[1], barcode = c("TT", "AA", "GG"),
+                 nreads = 50, cutoff = 20)
+```
+
+**Expected output:** One FASTQ file per barcode (e.g. `<fastq[1]>_TT`, 
+`<fastq[1]>_AA`, `<fastq[1]>_GG`) in the working directory, containing 
+trimmed reads that matched the respective barcode.
+
+---
+
+## B. Sequence Parsing from GFF and Genome
+
+### Background
+
+Genomic annotation files in GFF format define the coordinates of genes and 
+other features on a reference genome. In this task you will use Bioconductor 
+range operations to extract gene sequences, reduce overlapping ranges, and 
+generate intergenic sequences from the *Halobacterium sp.* genome.
+
+### Download data
+
+Download the GFF annotation file and genome FASTA for *Halobacterium sp.*:
+
+```{r}
+#| eval: false
+library(Biostrings)
+library(GenomicRanges)
+library(rtracklayer)
+
+dir.create("data", showWarnings = FALSE)
+
+download.file(
+    "https://ftp.ncbi.nlm.nih.gov/genomes/archive/old_genbank/Bacteria/Halobacterium_sp_uid217/AE004437.gff",
+    "data/AE004437.gff"
+)
+download.file(
+    "https://ftp.ncbi.nlm.nih.gov/genomes/archive/old_genbank/Bacteria/Halobacterium_sp_uid217/AE004437.fna",
+    "data/AE004437.fna"
+)
+
+## Import genome and GFF
+chr    <- readDNAStringSet("data/AE004437.fna")
+gff    <- import("data/AE004437.gff")
+```
+
+### Task B1 — Extract gene sequences and translate to protein
+
+Extract all gene ranges from the GFF, parse their sequences from the genome, 
+and translate them into protein sequences. Account for strand: genes on the 
+`+` strand are translated directly; genes on the `-` strand must be 
+reverse-complemented before translation.
+
+Write the combined protein sequences to a file named **`data/mypep.fasta`**.
+
+**Required variable names** (used by the grading script):
+
+| Variable | Content |
+|---|---|
+| `gffgene` | GRanges object — gene features only (type == "gene") |
+| `gene` | `DNAStringSet` of gene sequences parsed from genome |
+| `p1` | `AAStringSet` of translated proteins from `+` strand genes |
+| `p2` | `AAStringSet` of translated proteins from `-` strand genes |
+
+**Useful commands:**
+
+```{r}
+#| eval: false
+## Filter GFF to gene features only
+gffgene <- gff[values(gff)[, "type"] == "gene"]
+
+## Extract gene sequences using Views
+gene <- DNAStringSet(Views(chr[[1]],
+                           IRanges(start(gffgene), end(gffgene))))
+names(gene) <- values(gffgene)[, "locus_tag"]
+
+## Translate + strand genes
+pos <- values(gffgene[strand(gffgene) == "+"])[, "locus_tag"]
+p1  <- translate(gene[names(gene) %in% pos])
+names(p1) <- names(gene[names(gene) %in% pos])
+
+## Translate - strand genes (reverse complement first)
+neg <- values(gffgene[strand(gffgene) == "-"])[, "locus_tag"]
+p2  <- translate(reverseComplement(gene[names(gene) %in% neg]))
+names(p2) <- names(gene[names(gene) %in% neg])
+
+## Write all proteins to FASTA
+writeXStringSet(c(p1, p2), "./data/mypep.fasta")
+```
+
+### Task B2 — Reduce overlapping gene ranges
+
+Collapse overlapping gene ranges using the `reduce()` function and parse 
+the resulting non-redundant sequences from the genome.
+
+**Required variable names:**
+
+| Variable | Content |
+|---|---|
+| `gffgene_reduced` | `GRanges` result of `reduce(gffgene)` |
+| `gene_reduced` | `DNAStringSet` of sequences for reduced ranges |
+
+**Useful commands:**
+
+```{r}
+#| eval: false
+## Reduce overlapping ranges
+gffgene_reduced <- reduce(gffgene)
+
+## Parse sequences for reduced ranges
+gene_reduced <- DNAStringSet(Views(chr[[1]],
+                    IRanges(start(gffgene_reduced),
+                            end(gffgene_reduced))))
+```
+
+### Task B3 — Generate intergenic ranges and parse sequences
+
+Compute the intergenic regions (gaps between genes) and parse their sequences 
+from the genome.
+
+**Required variable names:**
+
+| Variable | Content |
+|---|---|
+| `intergenic` | `GRanges` or `IRanges` of intergenic regions |
+| `gene_intergenic` | `DNAStringSet` of intergenic sequences |
+
+**Useful commands:**
+
+```{r}
+#| eval: false
+## Compute gaps between reduced gene ranges
+intergenic <- gaps(gffgene_reduced)
+
+## Parse intergenic sequences
+gene_intergenic <- DNAStringSet(Views(chr[[1]],
+                       IRanges(start(intergenic),
+                               end(intergenic))))
+```
+
+---
+
+## Homework Submission
+
+Submit **one R script** named **`HW5.R`** to your private GitHub homework 
+repository at the following exact path:
+
+```
+Homework/HW5/HW5.R
+```
+
+### Requirements for full credit
+
+Your script must:
+
+1. Define the function **`demultiplex_trim(x, barcode, nreads, cutoff = 20)`** 
+   with the quality trimming step implemented
+2. Include a **usage example** showing how to call `demultiplex_trim` on the 
+   ShortRead test FASTQ files
+3. Implement all three **Task B** steps using the required variable names 
+   (`gffgene`, `gene`, `p1`, `p2`, `gffgene_reduced`, `gene_reduced`, 
+   `intergenic`, `gene_intergenic`)
+4. Write the protein FASTA output to **`data/mypep.fasta`**
+5. Include **brief comments** explaining each step
+
+### Recommended script structure
+
+```{r}
+#| eval: false
+## ─────────────────────────────────────────────────────────────
+## HW5: NGS Analysis Basics
+## GEN242, Spring 2026
+## Author: <your name>
+## ─────────────────────────────────────────────────────────────
+
+library(ShortRead)
+library(Biostrings)
+library(GenomicRanges)
+library(rtracklayer)
+
+## ── Part A: Demultiplexing with quality trimming ──────────────
+
+demultiplex_trim <- function(x, barcode, nreads, cutoff = 20) {
+    ## ... your implementation ...
+}
+
+## Usage example
+# fastq <- dir(system.file("extdata", package = "ShortRead"),
+#              pattern = "fastq$", full.names = TRUE)
+# demultiplex_trim(x = fastq[1], barcode = c("TT", "AA", "GG"),
+#                 nreads = 50, cutoff = 20)
+
+## ── Part B: Sequence parsing from GFF and genome ─────────────
+
+dir.create("data", showWarnings = FALSE)
+
+## Download data
+# download.file("https://ftp.ncbi.nlm.nih.gov/genomes/archive/old_genbank/Bacteria/Halobacterium_sp_uid217/AE004437.gff", "data/AE004437.gff")
+# download.file("https://ftp.ncbi.nlm.nih.gov/genomes/archive/old_genbank/Bacteria/Halobacterium_sp_uid217/AE004437.fna", "data/AE004437.fna")
+
+## Task B1: Extract gene sequences and translate to protein
+## ... your implementation using gffgene, gene, p1, p2 ...
+
+## Task B2: Reduce overlapping gene ranges
+## ... your implementation using gffgene_reduced, gene_reduced ...
+
+## Task B3: Generate intergenic ranges
+## ... your implementation using intergenic, gene_intergenic ...
+```
+
+---
+
+## Due Date
+
+This homework is due **Tuesday, May 6th at 6:00 PM**.
+
+## Homework Solutions
+
+To be posted after the due date.
