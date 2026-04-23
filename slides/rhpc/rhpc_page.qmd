@@ -49,9 +49,9 @@ sidebar: slides
   </div>
 
   <iframe
-    id="frame-rsequences"
+    id="frame-rhpc"
     class="slide-embed-frame"
-    src="rsequences_slides.html"
+    src="rhpc_slides.html"
     allowfullscreen
     loading="lazy"
     title="R Basics slides">
