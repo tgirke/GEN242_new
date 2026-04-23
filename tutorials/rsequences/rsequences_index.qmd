@@ -879,9 +879,9 @@ txseq
 
 ```
 
-## Homework 6
+## Homework 5
 
-See [here](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw06/hw06/).
+See [here](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw05/hw05.html).
 	
 
 ## Session Info
