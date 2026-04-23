@@ -391,15 +391,14 @@ multi-core parallelism to full cluster-scale job arrays.
 | `foreach` + `doParallel` | multi-core (single node) | simple `foreach` loops |
 | [`batchtools`](https://mllg.github.io/batchtools/) | **multi-node cluster** | most comprehensive, Slurm-aware |
 | [`BiocParallel`](https://bioconductor.org/packages/BiocParallel) | multi-core + cluster | Bioconductor-oriented |
+| [`crew`](https://wlandau.github.io/crew/) + [`crew.cluster`](https://wlandau.github.io/crew.cluster/) | **multi-node cluster** | most comprehensive, Slurm-aware |
 
 Full list: [CRAN High Performance Computing Task View](https://cran.r-project.org/web/views/HighPerformanceComputing.html)
 
 ### Traditional approach — plain `sbatch`
 
-The simplest method: write an R script, submit it with a Slurm bash script.
-
+The simplest method: write an R script, submit it with a Slurm bash script (here `script_name.sh`).
 ```bash
-# script_name.sh
 #!/bin/bash -l
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -431,6 +430,7 @@ becomes error-prone. This is where `batchtools` excels.
 
 `batchtools` orchestrates cluster job arrays from within an R session.
 All job management — submission, monitoring, result collection — happens in R.
+Note, the R script for the following demo is [here](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/slides/rhpc/R_for_HPC_demo.R).
 
 ### Step 1 — Set up working directory and download config files
 
@@ -574,7 +574,7 @@ See [BiocParallel vignette](https://bioconductor.org/packages/release/bioc/html/
 
 - [UCR HPCC Manual](https://hpcc.ucr.edu/manuals/hpc_cluster/)
 - [Slurm Documentation](https://slurm.schedmd.com/documentation.html)
-- [batchtools manual](https://mllg.github.io/batchtools/articles/batchtools.html)
+- [batchtools manual](https://batchtools.mlr-org.com/)
 - [Linux/HPC Tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/linux/linux.html)
 - [Parallel R Tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rparallel/rparallel_index.html)
 - Bischl B et al. (2015) BatchJobs and BatchExperiments: Abstraction Mechanisms for Using R in Batch Environments. *Journal of Statistical Software*, 64(11). [DOI](https://doi.org/10.18637/jss.v064.i11)
