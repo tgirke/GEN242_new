@@ -290,6 +290,7 @@ seqLogo(t(t(pwm) * 1/colSums(pwm)))
 ### Plot with `ggseqlogo` (more customization options)
 
 ```{r}
+#| eval: false
 library(ggplot2); library(ggseqlogo)
 pwm <- PWM(DNAStringSet(c("GCT", "GGT", "GCA")))
 ggseqlogo(pwm)
