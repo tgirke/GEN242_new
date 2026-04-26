@@ -48,7 +48,7 @@ Source code downloads: &nbsp; &nbsp;
 
 This topic is covered in more detail in other tutorials. The following only provides a very brief overview of this submission method. 
 
-__1.__ Create Slurm submission script, here called [script_name.sh](https://raw.githubusercontent.com/tgirke/GEN242/main/static/custom/slides/R_for_HPC/demo_files/script_name.sh) with:
+__1.__ Create Slurm submission script, here called [script_name.sh](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/tutorials/rparallel/script_name.sh) with:
 
 
 ```bash
@@ -67,7 +67,7 @@ __1.__ Create Slurm submission script, here called [script_name.sh](https://raw.
 Rscript my_script.R
 ```
 
-__2.__ Submit R script called [my_script.R](https://raw.githubusercontent.com/tgirke/GEN242/main/static/custom/slides/R_for_HPC/demo_files/my_script.R) by above Slurm script with:
+__2.__ Submit R script called [my_script.R](/https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/tutorials/rparallel/my_script.R) by above Slurm script with:
 
 
 ```bash
