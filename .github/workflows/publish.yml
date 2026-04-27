@@ -65,7 +65,7 @@ jobs:
               "ggplot2", "reticulate", "htmlwidgets", "plotly",
               "tidyr", "stringr", "tibble", "purrr", "readr",
               "RSQLite", "dbplyr", "ggrepel", "pheatmap", "RColorBrewer", 
-              "tidyverse", "batchtools", "kableExtra"
+              "tidyverse", "batchtools", "kableExtra", "ggseqlogo"
             )
             install.packages(cran_pkgs, repos = "https://cloud.r-project.org")
           '
@@ -83,7 +83,8 @@ jobs:
               "BiocParallel",
               "AnnotationDbi", "org.Hs.eg.db", "org.At.tair.db",
               "TxDb.Athaliana.BioMart.plantsmart28", "txdbmaker",
-              "BSgenome.Athaliana.TAIR.TAIR9"
+              "BSgenome.Athaliana.TAIR.TAIR9", "GenomeInfoDbData",
+              "seqLogo"
             ), ask = FALSE, update = FALSE)
           '
 
