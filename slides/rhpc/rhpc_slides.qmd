@@ -414,7 +414,7 @@ Rscript my_script.R
 sbatch script_name.sh    # submit from the command line
 ```
 
-**Limitation:** managing many jobs (e.g. 100 parameter combinations) manually
+**Limitation:** managing many jobs (e.g. 100s of parameter combinations) manually
 becomes error-prone. This is where `batchtools` excels.
 
 ### Why `batchtools`?
