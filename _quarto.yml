@@ -75,13 +75,13 @@ website:
           href: slides/index.qmd
         - section: "Foundations"
           contents:
-            - text: "S1: Course Introduction"
+            - text: "Course Introduction"
               href: slides/course_intro/course_intro_page.qmd
-            - text: "S2: Linux and HPC"
+            - text: "Linux and HPC"
               href: slides/linux_hpc_intro/linux_hpc_intro_page.qmd
-            - text: "S3: Git and GitHub"
+            - text: "Git and GitHub"
               href: slides/github_intro/github_intro_page.qmd
-            - text: "S4: DNA Sequencing"
+            - text: "DNA Sequencing"
               href: slides/sequencing_technologies/sequencing_technologies.qmd
         - section: "R Programming"
           contents:
@@ -108,7 +108,7 @@ website:
             - text: "NGS Analysis Basics"
               href: slides/rsequences/rsequences_page.qmd
             - text: "Gene Expression"
-              href: slides/slides_14.qmd
+              href: slides/expression_analysis/expression_analysis.qmd
             - text: "NGS Workflows"
               href: slides/slides_15.qmd
             - text: "Cluster Analysis"

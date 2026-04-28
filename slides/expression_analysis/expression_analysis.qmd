@@ -1,0 +1,9 @@
+---
+title: "Gene Expression Analysis"
+sidebar: slides
+---
+
+
+[ [Download](https://docs.google.com/presentation/d/1Vot3gcxUY2uE15xtRG1I1ab-CwXo8kOpeKZr17p7UkY/edit?usp=sharing) ]
+
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTtvSOXfoKvZGtzkLJ1ftSwluYQL-UqvCJfCooTGLUewfQb25YCwCNI_TjaIhG00yaiQY4KqEGPSh5C/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
