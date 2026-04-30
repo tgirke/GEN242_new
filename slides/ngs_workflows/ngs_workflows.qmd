@@ -1,0 +1,9 @@
+---
+title: "NGS Workflow and RNA-Seq Analysis"
+sidebar: slides
+---
+
+
+[ [Download](https://docs.google.com/presentation/d/11mEVhXOLOf3njaMLB-zlEoIy9Qi5OyGE6ovzECUwgT0/edit?usp=sharing) ]
+
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRKwpfloPt7oR8YvEzstJylwNFlnpPFHysZJ-tDScgOp_WtPYwCGCUFqdmi1enVMgzCALtb7aF4OZmc/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

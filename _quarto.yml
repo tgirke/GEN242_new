@@ -110,7 +110,7 @@ website:
             - text: "Gene Expression"
               href: slides/expression_analysis/expression_analysis.qmd
             - text: "NGS Workflows"
-              href: slides/slides_15.qmd
+              href: slides/ngs_workflows/ngs_workflows.qmd
             - text: "Cluster Analysis"
               href: slides/slides_16.qmd
             - text: "Enrichment Analysis"
