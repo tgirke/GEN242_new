@@ -1,5 +1,5 @@
 ---
-title: "NGS Workflow and RNA-Seq Analysis"
+title: "NGS Workflows and RNA-Seq Analysis"
 sidebar: slides
 ---
 

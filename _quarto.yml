@@ -111,14 +111,8 @@ website:
               href: slides/expression_analysis/expression_analysis.qmd
             - text: "NGS Workflows"
               href: slides/ngs_workflows/ngs_workflows.qmd
-            - text: "Cluster Analysis"
-              href: slides/slides_16.qmd
-            - text: "Enrichment Analysis"
-              href: slides/slides_17.qmd
-            - text: "ChIP-Seq"
-              href: slides/slides_18.qmd
-            - text: "VAR-Seq"
-              href: slides/slides_19.qmd
+            - text: "Functional Enrichment Analysis"
+              href: slides/rfea/rfea.qmd
 
     # ── Tutorials ────────────────────────────────────────────────────────────
     - id: tutorials
@@ -161,10 +155,10 @@ website:
               href: tutorials/systempiper/systemPipeR_index.qmd
             - text: "RNA-Seq Workflow"
               href: tutorials/sprnaseq/sprnaseq_index.qmd
-            - text: "Cluster Analysis"
-              href: tutorials/rclustering/rclustering_index.qmd
             - text: "Enrichment Analysis"
               href: tutorials/rfea/rfea_index.qmd
+            - text: "Cluster Analysis"
+              href: tutorials/rclustering/rclustering_index.qmd
             - text: "ChIP-Seq Workflow"
               href: tutorials/spchipseq/spchipseq_index.qmd
             - text: "scRNA-Seq Methods"
