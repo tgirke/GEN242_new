@@ -107,9 +107,9 @@ website:
               href: slides/short_read_alignments/short_read_alignments.qmd
             - text: "NGS Analysis Basics"
               href: slides/rsequences/rsequences_page.qmd
-            - text: "Gene Expression"
+            - text: "Gene Expression Analysis"
               href: slides/expression_analysis/expression_analysis.qmd
-            - text: "NGS Workflows"
+            - text: "RNA-Seq Analysis Workflow"
               href: slides/ngs_workflows/ngs_workflows.qmd
             - text: "Functional Enrichment Analysis"
               href: slides/rfea/rfea.qmd
