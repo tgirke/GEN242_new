@@ -366,6 +366,153 @@ Both PDF files must be committed to the repository at:
 
 ---
 
+## D. Bonus Challenge — edgeR in Native Mode with Time Course Design
+
+::: {.callout-note}
+## Bonus: +1 extra point
+
+This section is optional. Completing it earns **1 bonus point** on top of
+the 5-point maximum, for a total possible score of 6/5. It is intentionally
+more challenging and is meant for students who want a deeper understanding
+of linear model design in RNA-Seq analysis.
+:::
+
+### Background
+
+The `run_edgeR()` wrapper used in Part C is convenient but hides the
+underlying statistical machinery. Internally, it builds a simple pairwise
+design matrix and fits a generalized linear model (GLM). For the Howard et al.
+(2013) data set used throughout this workflow, a **pairwise design is not the
+optimal approach** — the experiment is a **two-factor time course** that
+deserves a more informative model.
+
+The experimental design of Howard et al. (2013) consists of 18 samples:
+
+| Factor | Meaning | Time points | Replicates |
+|---|---|---|---|
+| `M` | Mock-inoculated (*susceptible*) | 1h, 2h, 12h | A, B |
+| `A` | *Pseudomonas*-infected (*resistant*) | 1h, 2h, 12h | A, B |
+
+The sample names in `targetsPE.txt` encode this as: `M1A`, `M1B`, `M2A`,
+`M2B`, `M12A`, `M12B` (mock) and `A1A`, `A1B`, `A2A`, `A2B`, `A12A`, `A12B`
+(infected). The two factors are **treatment** (mock vs infected) and **time**
+(1h, 2h, 12h).
+
+An appropriate model for this design captures:
+
+- The main effect of **time**
+- The main effect of **treatment** (mock vs infected)
+- The **interaction** between time and treatment — i.e. whether the
+  treatment effect changes over time, which is the biologically interesting question
+
+### Task D — Run edgeR natively with an interaction model
+
+Using the `unstranded` count table from Part A as input, implement the
+full native edgeR workflow with a `~ treatment + time + treatment:time`
+interaction design.
+
+**Step 1 — Prepare sample metadata**
+
+```{r}
+#| eval: false
+library(edgeR)
+
+## Load targets to get sample information
+targets <- read.delim("targetsPE.txt", comment.char = "#")
+
+## Extract treatment and time factors from the Factor column
+## Factor levels: M1, M2, M12 (mock) and A1, A2, A12 (infected)
+targets$treatment <- ifelse(grepl("^M", targets$Factor), "mock", "infected")
+targets$time      <- gsub("^[MA]", "", targets$Factor)   # extracts "1", "2", "12"
+targets$time      <- factor(targets$time, levels = c("1", "2", "12"))
+targets$treatment <- factor(targets$treatment, levels = c("mock", "infected"))
+
+## Confirm the design
+targets[, c("SampleName", "Factor", "treatment", "time")]
+```
+
+**Step 2 — Create DGEList and filter low-count genes**
+
+```{r}
+#| eval: false
+## Match count table columns to sample order in targets
+countDF <- unstranded[, targets$SampleName]
+
+## Create DGEList object
+dge <- DGEList(counts = countDF, group = targets$Factor)
+
+## Filter genes with very low counts across all samples
+## Keep genes with at least 1 count per million (CPM) in at least 2 samples
+keep    <- rowSums(cpm(dge) >= 1) >= 2
+dge     <- dge[keep, , keep.lib.sizes = FALSE]
+message(sum(keep), " genes retained after low-count filtering")
+
+## Normalize library sizes with TMM
+dge <- calcNormFactors(dge, method = "TMM")
+```
+
+**Step 3 — Build the interaction design matrix**
+
+```{r}
+#| eval: false
+## Interaction model: ~ treatment + time + treatment:time
+## This tests whether the treatment effect differs across time points
+design_tc <- model.matrix(~ treatment + time + treatment:time,
+                          data = targets)
+colnames(design_tc)
+## Should show: Intercept, treatmentinfected, time2, time12,
+##              treatmentinfected:time2, treatmentinfected:time12
+```
+
+**Step 4 — Estimate dispersion and fit the GLM**
+
+```{r}
+#| eval: false
+## Estimate common, trended and tagwise dispersions
+dge <- estimateDisp(dge, design_tc, robust = TRUE)
+plotBCV(dge)   # optional: inspect biological coefficient of variation
+
+## Fit the negative binomial GLM
+fit_tc <- glmQLFit(dge, design_tc, robust = TRUE)
+```
+
+**Step 5 — Test for genes responding differently across time in infected vs mock**
+
+Test the interaction terms — these identify genes where the treatment effect
+changes significantly over time (the core time course question):
+
+```{r}
+#| eval: false
+## Test interaction coefficients:
+## treatmentinfected:time2  and  treatmentinfected:time12
+interaction_cols <- grep("treatmentinfected:time", colnames(design_tc))
+qlf_interaction  <- glmQLFTest(fit_tc, coef = interaction_cols)
+
+## Extract top DEGs
+topTags(qlf_interaction, n = 20)
+
+## Summary of significant genes at FDR < 0.05
+summary(decideTests(qlf_interaction, p.value = 0.05))
+
+## Save full results table
+tc_results <- as.data.frame(topTags(qlf_interaction, n = Inf))
+write.csv(tc_results, "results/edgeR_timecourse_interaction.csv")
+```
+
+**Step 6 — Compare with pairwise result from Part C**
+
+Briefly compare (in comment text) the number of DEGs identified by the
+interaction model versus the pairwise approach from Part C. Consider:
+
+- Which approach identified more DEGs?
+- Which design better captures the biology of a time course experiment and why?
+- What biological question does each design answer?
+
+Store your interaction results in a variable named exactly **`tc_results`**
+and save the CSV to `results/edgeR_timecourse_interaction.csv`.
+
+---
+
 ## Homework Submission
 
 Submit **one R script** named **`HW6.R`** and the **two Venn diagram PDFs**
@@ -375,6 +522,7 @@ to your private GitHub homework repository at the following paths:
 Homework/HW6/HW6.R
 results/DEGcount_unstranded.pdf
 results/DEGcount_pos.pdf
+results/edgeR_timecourse_interaction.csv   # bonus only
 ```
 
 ### Requirements for full credit
@@ -384,6 +532,15 @@ results/DEGcount_pos.pdf
 3. Include **comment text** for all four points of Task A3
 4. Commit both **Venn diagram PDF files** alongside `HW6.R`
 5. Script must be well structured following the recommended layout below
+
+### Bonus requirement (+1 point)
+
+To earn the bonus point, additionally include in `HW6.R`:
+
+- The full native edgeR workflow for the interaction model (`~ treatment + time + treatment:time`)
+- Variable `tc_results` containing the full DEG table from `topTags(..., n = Inf)`
+- File `results/edgeR_timecourse_interaction.csv` committed to the repo
+- Comment text comparing the interaction model result with the pairwise result from Part C
 
 ### Recommended script structure
 
