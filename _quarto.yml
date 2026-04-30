@@ -189,8 +189,8 @@ website:
               href: assignments/homework/hw04/hw04.qmd
             - text: "HW5 — NGS Analysis"
               href: assignments/homework/hw05/hw05.qmd
-            #- text: "HW6 — RNA-Seq"
-            #  href: assignments/homework/hw07/index.qmd
+            - text: "HW6 — RNA-Seq"
+              href: assignments/homework/hw06/hw06.qmd
             #- text: "HW7 — R Markdown"
             #  href: assignments/homework/hw08/index.qmd
         - section: "Projects"

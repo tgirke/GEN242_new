@@ -1,0 +1,478 @@
+---
+title: "HW06 — RNA-Seq Analysis"
+sidebar: assignments
+---
+
+Source code downloads: [[ .R ]](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw07/hw07.R)
+
+## Overview
+
+This homework covers read counting strategies and differential expression
+analysis (DEG) from the
+[RNA-Seq Workflow](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/sprnaseq/sprnaseq_index.html)
+tutorial. It has three parts:
+
+- **Part A** — Compare unstranded and strand-specific read counting with `featureCounts`
+- **Part B** — Count reads over different genomic feature types with `featureCounts`
+- **Part C** — DEG analysis with `edgeR` and Venn diagram visualization
+
+All tasks build on the RNA-Seq workflow environment generated with
+`systemPipeRdata::genWorkenvir(workflow = "rnaseq")`. Complete the workflow
+through the **HISAT2 mapping step** before starting this homework — the sorted
+BAM files and `sal` object it produces are required as input throughout.
+
+### Required packages
+
+```{r}
+#| eval: false
+library(Rsubread)       # featureCounts
+library(GenomicFeatures) # makeTxDbFromGFF, intronsByTranscript, fiveUTRsByTranscript
+library(systemPipeR)    # run_edgeR, filterDEGs, overLapper, vennPlot
+library(edgeR)
+```
+
+### Required input objects
+
+Run the following once inside your `rnaseq` workflow directory to prepare
+shared inputs used across all tasks:
+
+```{r}
+#| eval: false
+## Paths to sorted BAM files produced by HISAT2 mapping step
+bam_files <- getColumn(sal, step = "hisat2_mapping",
+                       "outfiles", column = "samtools_sort_bam")
+## Alternative if sal object is not available:
+# bam_files <- list.files("results/hisat2_mapping/",
+#                         pattern = "sorted.bam$", full.names = TRUE)
+
+## GTF annotation file used in the RNA-Seq workflow
+gtf_file <- "data/tair10.gtf"
+```
+
+---
+
+## A. Unstranded and Strand-Specific Read Counting
+
+### Background
+
+`featureCounts` from the `Rsubread` package counts reads overlapping
+genomic features defined in a GTF file. The `strandSpecific` argument
+controls strand awareness:
+
+| Mode | `strandSpecific` | Counts reads on |
+|---|---|---|
+| Unstranded | `0` | Both strands |
+| Sense (positive) strand | `1` | Same strand as feature |
+| Antisense (negative) strand | `2` | Opposite strand to feature |
+
+For paired-end RNA-Seq data always set `isPairedEnd = TRUE`. The count
+matrix is accessed from the returned list via `$counts`. The `nthreads`
+argument controls parallelization — adjust to the number of available cores.
+
+### Task A1 — Generate three count tables
+
+Using `bam_files` as input and `gtf_file` as the annotation, generate three
+count tables — one per strand mode. Count at the gene level by grouping exon
+features by `gene_id` (`useMetaFeatures = TRUE`).
+
+**1. Unstranded** (`strandSpecific = 0`)
+
+```{r}
+#| eval: false
+fc_unstranded <- featureCounts(
+    files                  = bam_files,
+    annot.ext              = gtf_file,
+    isGTFAnnotationFile    = TRUE,
+    GTF.featureType        = "exon",
+    GTF.attrType           = "gene_id",
+    useMetaFeatures        = TRUE,
+    strandSpecific         = 0,
+    isPairedEnd            = TRUE,
+    countMultiMappingReads = FALSE,
+    nthreads               = 4
+)
+unstranded <- fc_unstranded$counts
+unstranded[1:4, ]
+```
+
+**2. Sense (positive) strand** (`strandSpecific = 1`)
+
+```{r}
+#| eval: false
+fc_stranded_pos <- featureCounts(
+    files                  = bam_files,
+    annot.ext              = gtf_file,
+    isGTFAnnotationFile    = TRUE,
+    GTF.featureType        = "exon",
+    GTF.attrType           = "gene_id",
+    useMetaFeatures        = TRUE,
+    strandSpecific         = 1,
+    isPairedEnd            = TRUE,
+    countMultiMappingReads = FALSE,
+    nthreads               = 4
+)
+stranded_pos <- fc_stranded_pos$counts
+stranded_pos[1:4, ]
+```
+
+**3. Antisense (negative) strand** (`strandSpecific = 2`)
+
+```{r}
+#| eval: false
+fc_stranded_neg <- featureCounts(
+    files                  = bam_files,
+    annot.ext              = gtf_file,
+    isGTFAnnotationFile    = TRUE,
+    GTF.featureType        = "exon",
+    GTF.attrType           = "gene_id",
+    useMetaFeatures        = TRUE,
+    strandSpecific         = 2,
+    isPairedEnd            = TRUE,
+    countMultiMappingReads = FALSE,
+    nthreads               = 4
+)
+stranded_neg <- fc_stranded_neg$counts
+stranded_neg[1:4, ]
+```
+
+Store the count matrices in variables named exactly **`unstranded`**,
+**`stranded_pos`**, and **`stranded_neg`**.
+
+### Task A2 — Compare strand-specific counts to unstranded
+
+Test whether the two strand-specific count tables sum to approximately the
+same values as the unstranded count table. Calculate for each
+strand-specific result the mean mapping frequency as a percentage of the
+unstranded counts:
+
+```{r}
+#| eval: false
+perc_pos <- mean((stranded_pos / unstranded) * 100, na.rm = TRUE)
+perc_neg <- mean((stranded_neg / unstranded) * 100, na.rm = TRUE)
+perc_pos
+perc_neg
+```
+
+Store results in variables named exactly **`perc_pos`** and **`perc_neg`**.
+
+**Interpretation:** if both values are close to 50%, the RNA-Seq library is
+very likely **unstranded**. If one value dominates (e.g. ~100% sense,
+~0% antisense), the library is strand-specific. For paired-end data expect
+very similar but not necessarily identical results between the sum of stranded
+counts and the unstranded total.
+
+### Task A3 — Biological interpretation of strand-specific counting
+
+Include comment text in your script addressing the following four points:
+
+1. When should strand-specific counting be used instead of unstranded counting?
+2. How does strand-specific counting help resolve reads from overlapping genes
+   encoded on opposite strands?
+3. What biological information can antisense strand counting reveal?
+4. How can comparing stranded and unstranded results determine whether an
+   RNA-Seq experiment used a strand-specific library preparation protocol?
+
+---
+
+## B. Read Counting for Different Feature Types
+
+### Background
+
+By changing `GTF.featureType` and `useMetaFeatures` in `featureCounts`,
+reads can be counted over different genomic features (genes, exons, introns,
+UTRs). Importantly, `featureCounts` accepts `GRanges` and `GRangesList`
+objects directly via the `annot.ext` argument — no conversion to a data
+frame is needed. This makes it straightforward to pass intron or UTR ranges
+derived from a `TxDb` object directly to `featureCounts`. Set
+`isGTFAnnotationFile = FALSE` whenever `annot.ext` is a range object rather
+than a GTF file path.
+
+### Task B — Count reads over five feature types
+
+Compute **sense strand** (`strandSpecific = 1`) count tables for the
+following five feature types. Use `isPairedEnd = TRUE` for genes and exon
+features. For introns and UTRs use `isPairedEnd = FALSE` (single-end mode
+since these are sub-gene features).
+
+**1. Genes** — exons grouped by gene (`useMetaFeatures = TRUE`)
+
+```{r}
+#| eval: false
+fc_genes <- featureCounts(
+    files                  = bam_files,
+    annot.ext              = gtf_file,
+    isGTFAnnotationFile    = TRUE,
+    GTF.featureType        = "exon",
+    GTF.attrType           = "gene_id",
+    useMetaFeatures        = TRUE,
+    strandSpecific         = 1,
+    isPairedEnd            = TRUE,
+    countMultiMappingReads = FALSE,
+    nthreads               = 4
+)
+gene_ranges_countDF <- fc_genes$counts
+gene_ranges_countDF[1:4, ]
+```
+
+**2. Exons** — individual exon level (`useMetaFeatures = FALSE`)
+
+```{r}
+#| eval: false
+fc_exons <- featureCounts(
+    files                  = bam_files,
+    annot.ext              = gtf_file,
+    isGTFAnnotationFile    = TRUE,
+    GTF.featureType        = "exon",
+    GTF.attrType           = "gene_id",
+    useMetaFeatures        = FALSE,
+    strandSpecific         = 1,
+    isPairedEnd            = TRUE,
+    countMultiMappingReads = FALSE,
+    nthreads               = 4
+)
+exon_ranges_countDF <- fc_exons$counts
+exon_ranges_countDF[1:4, ]
+```
+
+**3. Exons by genes** — same as Task B1; explicitly assigned for direct
+comparison with the `exonsBy(txdb, by="gene")` approach used in tutorials:
+
+```{r}
+#| eval: false
+exonByg_ranges_countDF <- fc_genes$counts   # reuses result from Task B1
+exonByg_ranges_countDF[1:4, ]
+```
+
+**4. Introns by transcripts** — derive intron ranges from `txdb` and pass
+the `GRangesList` directly to `featureCounts` via `annot.ext`
+
+```{r}
+#| eval: false
+txdb          <- makeTxDbFromGFF(gtf_file, format = "gtf")
+intron_ranges <- intronsByTranscript(txdb, use.names = TRUE)
+
+## GRangesList can be passed directly — no data frame conversion needed
+fc_introns <- featureCounts(
+    files                  = bam_files,
+    annot.ext              = intron_ranges,
+    isGTFAnnotationFile    = FALSE,
+    strandSpecific         = 1,
+    isPairedEnd            = FALSE,
+    countMultiMappingReads = FALSE,
+    nthreads               = 4
+)
+intron_ranges_countDF <- fc_introns$counts
+intron_ranges_countDF[1:4, ]
+```
+
+**5. 5'-UTRs by transcripts** — same approach as introns, passing the
+`GRangesList` directly
+
+```{r}
+#| eval: false
+fiveUTR_ranges <- fiveUTRsByTranscript(txdb, use.names = TRUE)
+
+fc_fiveUTR <- featureCounts(
+    files                  = bam_files,
+    annot.ext              = fiveUTR_ranges,
+    isGTFAnnotationFile    = FALSE,
+    strandSpecific         = 1,
+    isPairedEnd            = FALSE,
+    countMultiMappingReads = FALSE,
+    nthreads               = 4
+)
+fiveUTR_ranges_countDF <- fc_fiveUTR$counts
+fiveUTR_ranges_countDF[1:4, ]
+```
+
+Use the **exact variable names** shown above:
+`gene_ranges_countDF`, `exon_ranges_countDF`, `exonByg_ranges_countDF`,
+`intron_ranges_countDF`, `fiveUTR_ranges_countDF`.
+
+---
+
+## C. DEG Analysis with edgeR
+
+### Background
+
+`run_edgeR()` from `systemPipeR` wraps the standard edgeR DEG workflow.
+Here you will run it on two count tables (unstranded vs sense strand) and
+compare the resulting DEG sets visually using 4-way Venn diagrams.
+
+### Task C — DEG analysis and Venn diagram comparison
+
+**1. Run edgeR on both count tables**
+
+```{r}
+#| eval: false
+cmp <- readComp(stepsWF(sal)[["hisat2_mapping"]],
+                format = "matrix", delim = "-")
+## Alternative if sal is not available:
+# cmp <- readComp(file = "targetsPE.txt", format = "matrix", delim = "-")
+
+## DEG analysis with unstranded count table
+edgeDF_unstranded <- run_edgeR(
+    countDF     = unstranded,
+    targets     = targetsWF(sal)[["hisat2_mapping"]],
+    cmp         = cmp[[1]],
+    independent = FALSE,
+    mdsplot     = ""
+)
+
+## DEG analysis with sense strand count table
+edgeDF_pos <- run_edgeR(
+    countDF     = stranded_pos,
+    targets     = targetsWF(sal)[["hisat2_mapping"]],
+    cmp         = cmp[[1]],
+    independent = FALSE,
+    mdsplot     = ""
+)
+```
+
+**2. Generate and save 4-way Venn diagrams**
+
+```{r}
+#| eval: false
+## (1) Venn diagram — unstranded count table
+DEG_list_unstranded <- filterDEGs(
+    degDF  = edgeDF_unstranded,
+    filter = c(Fold = 2, FDR = 40),
+    plot   = FALSE
+)
+vennsetup   <- overLapper(DEG_list_unstranded$Up[6:9],   type = "vennsets")
+vennsetdown <- overLapper(DEG_list_unstranded$Down[6:9], type = "vennsets")
+pdf("results/DEGcount_unstranded.pdf")
+vennPlot(list(vennsetup, vennsetdown),
+         mymain = "", mysub = "", colmode = 2, ccol = c("blue", "red"))
+dev.off()
+
+## (2) Venn diagram — sense strand count table
+DEG_list_pos <- filterDEGs(
+    degDF  = edgeDF_pos,
+    filter = c(Fold = 2, FDR = 40),
+    plot   = FALSE
+)
+vennsetup   <- overLapper(DEG_list_pos$Up[6:9],   type = "vennsets")
+vennsetdown <- overLapper(DEG_list_pos$Down[6:9], type = "vennsets")
+pdf("results/DEGcount_pos.pdf")
+vennPlot(list(vennsetup, vennsetdown),
+         mymain = "", mysub = "", colmode = 2, ccol = c("blue", "red"))
+dev.off()
+```
+
+Both PDF files must be committed to the repository at:
+
+- `results/DEGcount_unstranded.pdf`
+- `results/DEGcount_pos.pdf`
+
+---
+
+## Homework Submission
+
+Submit **one R script** named **`HW6.R`** and the **two Venn diagram PDFs**
+to your private GitHub homework repository at the following paths:
+
+```
+Homework/HW6/HW6.R
+results/DEGcount_unstranded.pdf
+results/DEGcount_pos.pdf
+```
+
+### Requirements for full credit
+
+1. Use **`featureCounts()`** from `Rsubread` for all read counting (Parts A and B)
+2. Define all variables with the **exact names** specified throughout
+3. Include **comment text** for all four points of Task A3
+4. Commit both **Venn diagram PDF files** alongside `HW7.R`
+5. Script must be well structured following the recommended layout below
+
+### Recommended script structure
+
+```{r}
+#| eval: false
+## ─────────────────────────────────────────────────────────────
+## HW7: RNA-Seq Analysis
+## GEN242, Spring 2026
+## Author: <your name>
+## ─────────────────────────────────────────────────────────────
+
+library(Rsubread); library(GenomicFeatures)
+library(systemPipeR); library(edgeR)
+
+## Input
+bam_files <- getColumn(sal, step = "hisat2_mapping",
+                       "outfiles", column = "samtools_sort_bam")
+gtf_file  <- "data/tair10.gtf"
+
+## ── Part A: Strand-specific read counting ─────────────────────
+
+## Task A1 — unstranded (strandSpecific = 0)
+fc_unstranded <- featureCounts(files = bam_files, annot.ext = gtf_file,
+                               isGTFAnnotationFile = TRUE,
+                               GTF.featureType = "exon", GTF.attrType = "gene_id",
+                               useMetaFeatures = TRUE, strandSpecific = 0,
+                               isPairedEnd = TRUE, nthreads = 4)
+unstranded <- fc_unstranded$counts
+
+## Task A1 — sense strand (strandSpecific = 1)
+fc_stranded_pos <- featureCounts( <fill in arguments, strandSpecific = 1> )
+stranded_pos <- fc_stranded_pos$counts
+
+## Task A1 — antisense strand (strandSpecific = 2)
+fc_stranded_neg <- featureCounts( <fill in arguments, strandSpecific = 2> )
+stranded_neg <- fc_stranded_neg$counts
+
+## Task A2 — percentage comparison
+perc_pos <- mean((stranded_pos / unstranded) * 100, na.rm = TRUE)
+perc_neg <- mean((stranded_neg / unstranded) * 100, na.rm = TRUE)
+
+## Task A3 — biological interpretation (replace ... with your answers)
+## 1. Strand-specific counting should be used when the library is stranded because ...
+## 2. For overlapping genes on opposite strands, strand-specific counting allows ...
+## 3. Antisense strand counting can reveal biological events such as ...
+## 4. Comparing stranded and unstranded results determines strandedness because ...
+
+## ── Part B: Feature type counting ────────────────────────────
+
+## B1: Genes
+gene_ranges_countDF    <- featureCounts( <fill in, useMetaFeatures = TRUE> )$counts
+
+## B2: Exons (individual)
+exon_ranges_countDF    <- featureCounts( <fill in, useMetaFeatures = FALSE> )$counts
+
+## B3: Exons by genes
+exonByg_ranges_countDF <- gene_ranges_countDF
+
+## B4: Introns
+txdb          <- makeTxDbFromGFF(gtf_file, format = "gtf")
+intron_ranges <- intronsByTranscript(txdb, use.names = TRUE)
+intron_ranges_countDF  <- featureCounts( <fill in, annot.ext = intron_ranges> )$counts
+
+## B5: 5'-UTRs
+fiveUTR_ranges <- fiveUTRsByTranscript(txdb, use.names = TRUE)
+fiveUTR_ranges_countDF <- featureCounts( <fill in, annot.ext = fiveUTR_ranges> )$counts
+
+## ── Part C: DEG analysis ──────────────────────────────────────
+
+cmp <- readComp(stepsWF(sal)[["hisat2_mapping"]], format = "matrix", delim = "-")
+
+edgeDF_unstranded <- run_edgeR(countDF = unstranded,
+                               targets = targetsWF(sal)[["hisat2_mapping"]],
+                               cmp = cmp[[1]], independent = FALSE, mdsplot = "")
+edgeDF_pos        <- run_edgeR(countDF = stranded_pos,
+                               targets = targetsWF(sal)[["hisat2_mapping"]],
+                               cmp = cmp[[1]], independent = FALSE, mdsplot = "")
+
+## Venn diagrams → results/DEGcount_unstranded.pdf and results/DEGcount_pos.pdf
+## <add filterDEGs, overLapper, vennPlot calls here>
+```
+
+---
+
+## Due Date
+
+This homework is due **Thur, May 14th at 6:00 PM**.
+
+## Homework Solutions
+
+To be posted after the due date.
