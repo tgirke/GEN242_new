@@ -154,7 +154,7 @@ From command-line
 ```{bash shell_01}
 #| eval: false
 srun --x11 --partition=gen242 --account=gen242 --mem=20gb --cpus-per-task 8 --ntasks 1 --time 20:00:00 --pty bash -l
-module unload R; module load R/4.4.2
+module unload R; module load R/4.5.0 # or higher
 
 ```
 
@@ -188,6 +188,9 @@ genWorkenvir(workflow = "rnaseq", mydirname = "rnaseq")
 setwd("rnaseq")
 
 ```
+
+Note: for the specific RNA-Seq workflow version for GEN242-2026 is [here](https://github.com/GEN242-2026/sprwf-rnaseq-gen242-2026). To use it, follow the 
+instructions in its README.
 
 3. If the user wishes to use another `Rmd` file than the template instance 
 provided by the `genWorkenvir` function, then it can be copied or downloaded 
@@ -312,7 +315,6 @@ to update the sal object. The technical reports are based on log information tha
 ```{r report_rnaseq}
 #| eval: false
 # Scientific report
-sal <- renderReport(sal)
 rmarkdown::render("systemPipeRNAseq.Rmd", clean = TRUE, output_format = "BiocStyle::html_document") 
 
 # Technical (log) report
