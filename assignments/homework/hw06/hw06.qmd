@@ -3,7 +3,7 @@ title: "HW06 — RNA-Seq Analysis"
 sidebar: assignments
 ---
 
-Source code downloads: [[ .R ]](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw06/hw06.R)
+Source code downloads: [[ .qmd ]](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw06/hw06.R)
 
 ## Overview
 
