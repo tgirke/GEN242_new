@@ -3,7 +3,7 @@ title: "HW06 — RNA-Seq Analysis"
 sidebar: assignments
 ---
 
-Source code downloads: [[ .R ]](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw07/hw07.R)
+Source code downloads: [[ .R ]](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw06/hw06.R)
 
 ## Overview
 
@@ -25,28 +25,35 @@ BAM files and `sal` object it produces are required as input throughout.
 
 ```{r}
 #| eval: false
-library(Rsubread)       # featureCounts
-library(GenomicFeatures) # makeTxDbFromGFF, intronsByTranscript, fiveUTRsByTranscript
-library(systemPipeR)    # run_edgeR, filterDEGs, overLapper, vennPlot
+library(Rsubread)        # featureCounts
+library(GenomicFeatures) # loadDb, exonsBy, intronsByTranscript, fiveUTRsByTranscript
+library(systemPipeR)     # run_edgeR, filterDEGs, overLapper, vennPlot
 library(edgeR)
 ```
 
 ### Required input objects
 
 Run the following once inside your `rnaseq` workflow directory to prepare
-shared inputs used across all tasks:
+shared inputs used across all tasks. The `TxDb` object (`tair10.sqlite`)
+is created from the GFF annotation file during the RNA-Seq workflow and
+saved to disk — load it with `loadDb()`. All annotation ranges for
+`featureCounts` are derived from this `TxDb`.
 
 ```{r}
 #| eval: false
+## Load TxDb created during the RNA-Seq workflow
+txdb <- loadDb("./data/tair10.sqlite")
+
+## Exons grouped by gene — used as annotation for featureCounts
+## in Parts A and B (gene/exon feature types)
+eByg <- exonsBy(txdb, by = "gene")
+
 ## Paths to sorted BAM files produced by HISAT2 mapping step
 bam_files <- getColumn(sal, step = "hisat2_mapping",
                        "outfiles", column = "samtools_sort_bam")
 ## Alternative if sal object is not available:
 # bam_files <- list.files("results/hisat2_mapping/",
 #                         pattern = "sorted.bam$", full.names = TRUE)
-
-## GTF annotation file used in the RNA-Seq workflow
-gtf_file <- "data/tair10.gtf"
 ```
 
 ---
@@ -56,8 +63,12 @@ gtf_file <- "data/tair10.gtf"
 ### Background
 
 `featureCounts` from the `Rsubread` package counts reads overlapping
-genomic features defined in a GTF file. The `strandSpecific` argument
-controls strand awareness:
+genomic features. When a `GRangesList` object such as `eByg` (exons grouped
+by gene) is passed via `annot.ext`, `featureCounts` treats each list element
+as one meta-feature (gene). This is equivalent to the `exonsBy(txdb, by="gene")`
+approach used throughout the RNA-Seq workflow and is more flexible than
+relying on a GTF file. Set `isGTFAnnotationFile = FALSE` when passing a
+range object. The `strandSpecific` argument controls strand awareness:
 
 | Mode | `strandSpecific` | Counts reads on |
 |---|---|---|
@@ -71,9 +82,10 @@ argument controls parallelization — adjust to the number of available cores.
 
 ### Task A1 — Generate three count tables
 
-Using `bam_files` as input and `gtf_file` as the annotation, generate three
-count tables — one per strand mode. Count at the gene level by grouping exon
-features by `gene_id` (`useMetaFeatures = TRUE`).
+Using `bam_files` as input and `eByg` as the annotation, generate three
+count tables — one per strand mode. Since `eByg` is already a `GRangesList`
+of exons grouped by gene, set `useMetaFeatures = TRUE` and
+`isGTFAnnotationFile = FALSE`.
 
 **1. Unstranded** (`strandSpecific = 0`)
 
@@ -81,10 +93,8 @@ features by `gene_id` (`useMetaFeatures = TRUE`).
 #| eval: false
 fc_unstranded <- featureCounts(
     files                  = bam_files,
-    annot.ext              = gtf_file,
-    isGTFAnnotationFile    = TRUE,
-    GTF.featureType        = "exon",
-    GTF.attrType           = "gene_id",
+    annot.ext              = eByg,
+    isGTFAnnotationFile    = FALSE,
     useMetaFeatures        = TRUE,
     strandSpecific         = 0,
     isPairedEnd            = TRUE,
@@ -101,10 +111,8 @@ unstranded[1:4, ]
 #| eval: false
 fc_stranded_pos <- featureCounts(
     files                  = bam_files,
-    annot.ext              = gtf_file,
-    isGTFAnnotationFile    = TRUE,
-    GTF.featureType        = "exon",
-    GTF.attrType           = "gene_id",
+    annot.ext              = eByg,
+    isGTFAnnotationFile    = FALSE,
     useMetaFeatures        = TRUE,
     strandSpecific         = 1,
     isPairedEnd            = TRUE,
@@ -121,10 +129,8 @@ stranded_pos[1:4, ]
 #| eval: false
 fc_stranded_neg <- featureCounts(
     files                  = bam_files,
-    annot.ext              = gtf_file,
-    isGTFAnnotationFile    = TRUE,
-    GTF.featureType        = "exon",
-    GTF.attrType           = "gene_id",
+    annot.ext              = eByg,
+    isGTFAnnotationFile    = FALSE,
     useMetaFeatures        = TRUE,
     strandSpecific         = 2,
     isPairedEnd            = TRUE,
@@ -178,32 +184,29 @@ Include comment text in your script addressing the following four points:
 
 ### Background
 
-By changing `GTF.featureType` and `useMetaFeatures` in `featureCounts`,
-reads can be counted over different genomic features (genes, exons, introns,
-UTRs). Importantly, `featureCounts` accepts `GRanges` and `GRangesList`
-objects directly via the `annot.ext` argument — no conversion to a data
-frame is needed. This makes it straightforward to pass intron or UTR ranges
-derived from a `TxDb` object directly to `featureCounts`. Set
-`isGTFAnnotationFile = FALSE` whenever `annot.ext` is a range object rather
-than a GTF file path.
+By using different range extraction functions on `txdb`, reads can be
+counted over different genomic features (genes, exons, introns, UTRs).
+All annotation ranges are derived from the same `TxDb` object loaded from
+`tair10.sqlite`, keeping everything consistent with the RNA-Seq workflow.
+`featureCounts` accepts `GRanges` and `GRangesList` objects directly via
+`annot.ext` — set `isGTFAnnotationFile = FALSE` for all range-based inputs.
 
 ### Task B — Count reads over five feature types
 
 Compute **sense strand** (`strandSpecific = 1`) count tables for the
-following five feature types. Use `isPairedEnd = TRUE` for genes and exon
+following five feature types. Use `isPairedEnd = TRUE` for gene and exon
 features. For introns and UTRs use `isPairedEnd = FALSE` (single-end mode
 since these are sub-gene features).
 
-**1. Genes** — exons grouped by gene (`useMetaFeatures = TRUE`)
+**1. Genes** — exons grouped by gene (`eByg` from `exonsBy`)
 
 ```{r}
 #| eval: false
+## eByg already available from the input setup above
 fc_genes <- featureCounts(
     files                  = bam_files,
-    annot.ext              = gtf_file,
-    isGTFAnnotationFile    = TRUE,
-    GTF.featureType        = "exon",
-    GTF.attrType           = "gene_id",
+    annot.ext              = eByg,
+    isGTFAnnotationFile    = FALSE,
     useMetaFeatures        = TRUE,
     strandSpecific         = 1,
     isPairedEnd            = TRUE,
@@ -214,16 +217,15 @@ gene_ranges_countDF <- fc_genes$counts
 gene_ranges_countDF[1:4, ]
 ```
 
-**2. Exons** — individual exon level (`useMetaFeatures = FALSE`)
+**2. Exons** — individual exon level using `exons(txdb)`
 
 ```{r}
 #| eval: false
+exon_ranges <- exons(txdb)
 fc_exons <- featureCounts(
     files                  = bam_files,
-    annot.ext              = gtf_file,
-    isGTFAnnotationFile    = TRUE,
-    GTF.featureType        = "exon",
-    GTF.attrType           = "gene_id",
+    annot.ext              = exon_ranges,
+    isGTFAnnotationFile    = FALSE,
     useMetaFeatures        = FALSE,
     strandSpecific         = 1,
     isPairedEnd            = TRUE,
@@ -234,24 +236,22 @@ exon_ranges_countDF <- fc_exons$counts
 exon_ranges_countDF[1:4, ]
 ```
 
-**3. Exons by genes** — same as Task B1; explicitly assigned for direct
-comparison with the `exonsBy(txdb, by="gene")` approach used in tutorials:
+**3. Exons by genes** — `eByg` is the direct equivalent of
+`exonsBy(txdb, by="gene")`; reuse it here for clarity
 
 ```{r}
 #| eval: false
-exonByg_ranges_countDF <- fc_genes$counts   # reuses result from Task B1
+## eByg groups exons by gene — identical to the exonsBy approach
+exonByg_ranges_countDF <- gene_ranges_countDF   # reuses result from Task B1
 exonByg_ranges_countDF[1:4, ]
 ```
 
-**4. Introns by transcripts** — derive intron ranges from `txdb` and pass
-the `GRangesList` directly to `featureCounts` via `annot.ext`
+**4. Introns by transcripts** — `intronsByTranscript(txdb)` returns a
+`GRangesList` that is passed directly to `featureCounts`
 
 ```{r}
 #| eval: false
-txdb          <- makeTxDbFromGFF(gtf_file, format = "gtf")
 intron_ranges <- intronsByTranscript(txdb, use.names = TRUE)
-
-## GRangesList can be passed directly — no data frame conversion needed
 fc_introns <- featureCounts(
     files                  = bam_files,
     annot.ext              = intron_ranges,
@@ -265,13 +265,12 @@ intron_ranges_countDF <- fc_introns$counts
 intron_ranges_countDF[1:4, ]
 ```
 
-**5. 5'-UTRs by transcripts** — same approach as introns, passing the
-`GRangesList` directly
+**5. 5'-UTRs by transcripts** — `fiveUTRsByTranscript(txdb)` passed
+directly
 
 ```{r}
 #| eval: false
 fiveUTR_ranges <- fiveUTRsByTranscript(txdb, use.names = TRUE)
-
 fc_fiveUTR <- featureCounts(
     files                  = bam_files,
     annot.ext              = fiveUTR_ranges,
@@ -383,7 +382,7 @@ results/DEGcount_pos.pdf
 1. Use **`featureCounts()`** from `Rsubread` for all read counting (Parts A and B)
 2. Define all variables with the **exact names** specified throughout
 3. Include **comment text** for all four points of Task A3
-4. Commit both **Venn diagram PDF files** alongside `HW7.R`
+4. Commit both **Venn diagram PDF files** alongside `HW6.R`
 5. Script must be well structured following the recommended layout below
 
 ### Recommended script structure
@@ -391,7 +390,7 @@ results/DEGcount_pos.pdf
 ```{r}
 #| eval: false
 ## ─────────────────────────────────────────────────────────────
-## HW7: RNA-Seq Analysis
+## HW6: RNA-Seq Analysis
 ## GEN242, Spring 2026
 ## Author: <your name>
 ## ─────────────────────────────────────────────────────────────
@@ -400,16 +399,16 @@ library(Rsubread); library(GenomicFeatures)
 library(systemPipeR); library(edgeR)
 
 ## Input
+txdb      <- loadDb("./data/tair10.sqlite")
+eByg      <- exonsBy(txdb, by = "gene")
 bam_files <- getColumn(sal, step = "hisat2_mapping",
                        "outfiles", column = "samtools_sort_bam")
-gtf_file  <- "data/tair10.gtf"
 
 ## ── Part A: Strand-specific read counting ─────────────────────
 
 ## Task A1 — unstranded (strandSpecific = 0)
-fc_unstranded <- featureCounts(files = bam_files, annot.ext = gtf_file,
-                               isGTFAnnotationFile = TRUE,
-                               GTF.featureType = "exon", GTF.attrType = "gene_id",
+fc_unstranded <- featureCounts(files = bam_files, annot.ext = eByg,
+                               isGTFAnnotationFile = FALSE,
                                useMetaFeatures = TRUE, strandSpecific = 0,
                                isPairedEnd = TRUE, nthreads = 4)
 unstranded <- fc_unstranded$counts
@@ -434,22 +433,22 @@ perc_neg <- mean((stranded_neg / unstranded) * 100, na.rm = TRUE)
 
 ## ── Part B: Feature type counting ────────────────────────────
 
-## B1: Genes
-gene_ranges_countDF    <- featureCounts( <fill in, useMetaFeatures = TRUE> )$counts
+## B1: Genes (eByg = exonsBy(txdb, by="gene"))
+gene_ranges_countDF    <- featureCounts( <fill in, annot.ext = eByg> )$counts
 
 ## B2: Exons (individual)
-exon_ranges_countDF    <- featureCounts( <fill in, useMetaFeatures = FALSE> )$counts
+exon_ranges            <- exons(txdb)
+exon_ranges_countDF    <- featureCounts( <fill in, annot.ext = exon_ranges> )$counts
 
 ## B3: Exons by genes
 exonByg_ranges_countDF <- gene_ranges_countDF
 
 ## B4: Introns
-txdb          <- makeTxDbFromGFF(gtf_file, format = "gtf")
-intron_ranges <- intronsByTranscript(txdb, use.names = TRUE)
+intron_ranges          <- intronsByTranscript(txdb, use.names = TRUE)
 intron_ranges_countDF  <- featureCounts( <fill in, annot.ext = intron_ranges> )$counts
 
 ## B5: 5'-UTRs
-fiveUTR_ranges <- fiveUTRsByTranscript(txdb, use.names = TRUE)
+fiveUTR_ranges         <- fiveUTRsByTranscript(txdb, use.names = TRUE)
 fiveUTR_ranges_countDF <- featureCounts( <fill in, annot.ext = fiveUTR_ranges> )$counts
 
 ## ── Part C: DEG analysis ──────────────────────────────────────
@@ -471,7 +470,7 @@ edgeDF_pos        <- run_edgeR(countDF = stranded_pos,
 
 ## Due Date
 
-This homework is due **Thur, May 14th at 6:00 PM**.
+This homework is due **Tuesday, May 20th at 6:00 PM**.
 
 ## Homework Solutions
 
