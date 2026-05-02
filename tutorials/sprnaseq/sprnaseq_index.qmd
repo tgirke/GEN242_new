@@ -158,17 +158,28 @@ module unload R; module load R/4.5.0 # or higher
 
 ```
 
-2. Load a workflow template with the `genWorkenvir` function. This can be done 
-from the command-line or from within R. However, only one of the two options needs to be used.
+2. Load a workflow template
 
-The environment for this RNA-Seq workflow is auto-generated below with the 
-`genWorkenvir` function (selected under `workflow="rnaseq"`). It is fully populated 
-with a small test data set, including FASTQ files, reference genome and annotation data. The name of the
-resulting workflow directory can be specified under the `mydirname` argument.
-The default `NULL` uses the name of the chosen workflow. An error is issued if
-a directory of the same name and path exists already. After this, the user’s R
-session needs to be directed into the resulting `rnaseq` directory (here with
-`setwd`). 
+Workflow environments can be initialized either from the `systemPipeRdata` package or directly from a GitHub repository.
+
+- `genWorkenvir()` initializes workflows distributed with **systemPipeRdata** (Bioconductor).
+- `genWorkenvir_gh()` initializes workflows from **GitHub repositories**.
+
+_Important for GEN242 HW06_: For this course, you must use the
+GEN242-specific RNA-Seq workflow provided here:
+[sprwf-rnaseq-gen242-2026](https://github.com/GEN242-2026/sprwf-rnaseq-gen242-2026).
+This version contains modifications specific to the class assignments.  Do not use the default `systemPipeRdata` RNA-Seq workflow for HW06. Follow the
+instructions on the
+[README](https://github.com/GEN242-2026/sprwf-rnaseq-gen242-2026) page to
+initialize this workflow.
+
+Workflows from the `systemPipeRdata` package can be loaded as follows.
+Most workflows, of either intialization method, are fully populated with a small test data set, including FASTQ files, reference genome and
+annotation data. The name of the resulting workflow directory can be specified
+under the `mydirname` argument. The default `NULL` uses the name of the chosen
+workflow. An error is issued if a directory of the same name and path exists
+already. After this, the user’s R session needs to be directed into the
+resulting rnaseq directory (here with `cd` or `setwd`).
 
 From command-line
 
@@ -188,9 +199,6 @@ genWorkenvir(workflow = "rnaseq", mydirname = "rnaseq")
 setwd("rnaseq")
 
 ```
-
-Note: for the specific RNA-Seq workflow version for GEN242-2026 is [here](https://github.com/GEN242-2026/sprwf-rnaseq-gen242-2026). To use it, follow the 
-instructions in its README.
 
 3. If the user wishes to use another `Rmd` file than the template instance 
 provided by the `genWorkenvir` function, then it can be copied or downloaded 
@@ -639,7 +647,7 @@ appendStep(sal) <- LineWise(
 ### Read quantification
 
 Reads overlapping with annotation ranges of interest are counted for
-each sample using the `summarizeOverlaps` function [@Lawrence2013-kt]. 
+each sample using the `featureCounts` function [@Liao2013-bn]. 
 Most often the read counting is preformed for exonic gene regions. This can be
 done in a strand-specific or non-strand-specific manner, while accounting for overlaps 
 among adjacent genes or ignoring them. Subsequently, the expression
@@ -666,43 +674,60 @@ appendStep(sal) <- LineWise(
 
 ```
 
+### Read Counting with `featureCounts`
 
-#### Read counting with `summarizeOverlaps` 
+Reads overlapping with annotation ranges of interest are counted for each
+sample using the `featureCounts` function from the `Rsubread` package
+[@Liao2013-bn]. Most often the read counting is performed for exonic gene
+regions. The annotation ranges are derived from the `TxDb` object created
+in the previous step. `featureCounts` accepts `GRangesList` objects directly
+via the `annot.ext` argument, making it straightforward to use the
+`eByg` object (exons grouped by gene) as the feature annotation without
+any conversion. Count tables and the corresponding RPKM tables are written
+to files in the project's `results` directory.
 
-The provided example employs non-strand-specific read counting while
-disregarding overlaps between different genes. As normalization the example uses
-*reads per kilobase per million mapped reads* (RPKM). The raw read count table
-(`countDFeByg.xls`) and the corresponding RPKM table (`rpkmDFeByg.xls`) are written
-to distinct files in the project's results directory. Parallelization across
-multiple CPU cores is achieved with the `BiocParallel` package. When supplying a
-`BamFileList` as illustrated below, `the summarizeOverlaps` method defaults to
-employing `bplapply` and the register interface from `BiocParallel`. The
-`MulticoreParam` will utilize the number of cores returned by
-`parallel::detectCores` if the number of workers is left unspecified. For
-further information, refer to the help documentation by typing
-`help("summarizeOverlaps")`.
-
-```{r read_counting}
-#| eval: false
-#| spr: true
-#| classes: scrollable
+```{r read_counting, eval=FALSE, spr=TRUE}
 appendStep(sal) <- LineWise(
     code = {
-        library(GenomicFeatures); library(BiocParallel)
-        txdb <- loadDb("./data/tair10.sqlite")
-        outpaths <- getColumn(sal, step = "hisat2_mapping", "outfiles", column = "samtools_sort_bam")
-        eByg <- exonsBy(txdb, by = c("gene"))
-        bfl <- BamFileList(outpaths, yieldSize = 50000, index = character())
-        multicoreParam <- MulticoreParam(workers = 4); register(multicoreParam); registered()
-        counteByg <- bplapply(bfl, function(x) summarizeOverlaps(eByg, x, mode = "Union", 
-                                                                 ignore.strand = TRUE, 
-                                                                 inter.feature = FALSE, 
-                                                                 singleEnd = FALSE, 
-                                                                 BPPARAM = multicoreParam))
-        countDFeByg <- sapply(seq(along=counteByg), function(x) assays(counteByg[[x]])$counts)
-        rownames(countDFeByg) <- names(rowRanges(counteByg[[1]])); colnames(countDFeByg) <- names(bfl)
-        rpkmDFeByg <- apply(countDFeByg, 2, function(x) returnRPKM(counts=x, ranges=eByg))
-        write.table(countDFeByg, "results/countDFeByg.xls", col.names=NA, quote=FALSE, sep="\t")
+        library(GenomicFeatures)
+        library(Rsubread)
+        txdb     <- loadDb("./data/tair10.sqlite")
+        eByg     <- exonsBy(txdb, by = "gene")
+        ## Helper: convert GRangesList or GRanges to data.frame for featureCounts 
+        grl_to_df <- function(grl) {
+            gr <- unlist(grl)
+            data.frame(GeneID = names(gr),
+                       Chr    = as.character(seqnames(gr)),
+                       Start  = start(gr),
+                       End    = end(gr),
+                       Strand = as.character(strand(gr)),
+                       stringsAsFactors = FALSE)
+        } 
+        outpaths <- getColumn(sal, step = "hisat2_mapping", "outfiles",
+                              column = "samtools_sort_bam")
+        ## featureCounts accepts GRangesList directly via annot.ext
+        ## strandSpecific=0: unstranded; 1: sense strand; 2: antisense strand
+        ## Set strandSpecific=1 or 2 for strand-specific library preparations
+        fc <- featureCounts(
+            files                  = outpaths,
+            annot.ext              = grl_to_df(eByg),
+            isGTFAnnotationFile    = FALSE,
+            useMetaFeatures        = TRUE,
+            strandSpecific         = 0,
+            isPairedEnd            = TRUE,
+            countMultiMappingReads = FALSE,
+            nthreads               = 4
+        )
+        countDFeByg <- fc$counts
+        ## Assign sample names from outpaths
+        colnames(countDFeByg) <- names(outpaths)
+        ## Compute RPKM values
+        ## eByg widths: sum of exon widths per gene for length normalization
+        geneLengths <- sum(width(reduce(eByg)))
+        rpkmDFeByg  <- apply(countDFeByg, 2, function(x)
+            returnRPKM(counts = x, ranges = eByg))
+        ## Write count and RPKM tables to results directory
+        write.table(countDFeByg, "results/countDFeByg.xls", col.names = NA, quote = FALSE, sep = "\t")
         write.table(rpkmDFeByg, "results/rpkmDFeByg.xls", col.names=NA, quote=FALSE, sep="\t")
         ## Creating a SummarizedExperiment object
         colData <- data.frame(row.names=SampleName(sal, "hisat2_mapping"), 
@@ -715,7 +740,6 @@ appendStep(sal) <- LineWise(
         }, 
     step_name = "read_counting", 
     dependency = "create_db")
-
 ```
 
 Importantly, when conducting statistical differential expression or abundance analysis using
