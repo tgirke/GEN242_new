@@ -52,7 +52,7 @@ eByg <- exonsBy(txdb, by = "gene")
 ## data frame (required format: GeneID, Chr, Start, End, Strand).
 ## Use this for every featureCounts call in Parts A and B.
 grl_to_df <- function(grl) {
-    gr <- unlist(grl)
+    gr <- if (is(grl, "GRangesList")) unlist(grl) else grl
     data.frame(GeneID = names(gr),
                Chr    = as.character(seqnames(gr)),
                Start  = start(gr),
@@ -67,6 +67,7 @@ bam_files <- getColumn(sal, step = "hisat2_mapping",
 ## Alternative if sal object is not available:
 # bam_files <- list.files("results/hisat2_mapping/",
 #                         pattern = "sorted.bam$", full.names = TRUE)
+# names(bam_files) <- read.delim("targetsPE.txt", comment.char="#")$SampleName
 ```
 
 ---
@@ -166,6 +167,7 @@ unstranded counts:
 
 ```{r}
 #| eval: false
+unstranded[unstranded == 0] <- NA
 perc_pos <- mean((stranded_pos / unstranded) * 100, na.rm = TRUE)
 perc_neg <- mean((stranded_neg / unstranded) * 100, na.rm = TRUE)
 perc_pos
@@ -235,6 +237,7 @@ gene_ranges_countDF[1:4, ]
 ```{r}
 #| eval: false
 exon_ranges <- exons(txdb)
+names(exon_ranges) <- names(unlist(eByg))
 fc_exons <- featureCounts(
     files                  = bam_files,
     annot.ext              = grl_to_df(exon_ranges),
@@ -269,7 +272,7 @@ fc_introns <- featureCounts(
     annot.ext              = grl_to_df(intron_ranges),
     isGTFAnnotationFile    = FALSE,
     strandSpecific         = 1,
-    isPairedEnd            = FALSE,
+    isPairedEnd            = TRUE,
     countMultiMappingReads = FALSE,
     nthreads               = 4
 )
@@ -287,7 +290,7 @@ fc_fiveUTR <- featureCounts(
     annot.ext              = grl_to_df(fiveUTR_ranges),
     isGTFAnnotationFile    = FALSE,
     strandSpecific         = 1,
-    isPairedEnd            = FALSE,
+    isPairedEnd            = TRUE,
     countMultiMappingReads = FALSE,
     nthreads               = 4
 )
@@ -321,6 +324,7 @@ cmp <- readComp(stepsWF(sal)[["hisat2_mapping"]],
 # cmp <- readComp(file = "targetsPE.txt", format = "matrix", delim = "-")
 
 ## DEG analysis with unstranded count table
+colnames(unstranded) <- gsub("\\..*", "", colnames(unstranded))
 edgeDF_unstranded <- run_edgeR(
     countDF     = unstranded,
     targets     = targetsWF(sal)[["hisat2_mapping"]],
@@ -330,6 +334,7 @@ edgeDF_unstranded <- run_edgeR(
 )
 
 ## DEG analysis with sense strand count table
+colnames(stranded_pos) <- gsub("\\..*", "", colnames(stranded_pos))
 edgeDF_pos <- run_edgeR(
     countDF     = stranded_pos,
     targets     = targetsWF(sal)[["hisat2_mapping"]],
@@ -434,8 +439,8 @@ targets <- read.delim("targetsPE.txt", comment.char = "#")
 ## Extract treatment and time factors from the Factor column
 ## Factor levels: M1, M2, M12 (mock) and A1, A2, A12 (infected)
 targets$treatment <- ifelse(grepl("^M", targets$Factor), "mock", "infected")
-targets$time      <- gsub("^[MA]", "", targets$Factor)   # extracts "1", "2", "12"
-targets$time      <- factor(targets$time, levels = c("1", "2", "12"))
+targets$time      <- gsub("^[MAV]", "", targets$Factor)   # extracts "1", "2", "12"
+targets$time      <- factor(targets$time, levels = c("1", "6", "12"))
 targets$treatment <- factor(targets$treatment, levels = c("mock", "infected"))
 
 ## Confirm the design
@@ -503,7 +508,9 @@ qlf_interaction  <- glmQLFTest(fit_tc, coef = interaction_cols)
 topTags(qlf_interaction, n = 20)
 
 ## Summary of significant genes at FDR < 0.05
-summary(decideTests(qlf_interaction, p.value = 0.05))
+## note: because the toy gene set contains only 127 genes,
+## an unreasonably large p.value is chosen here to obtain at least some genes 
+summary(decideTests(qlf_interaction, p.value = 0.3))
 
 ## Save full results table
 tc_results <- as.data.frame(topTags(qlf_interaction, n = Inf))
@@ -515,7 +522,8 @@ write.csv(tc_results, "results/edgeR_timecourse_interaction.csv")
 Briefly compare (in comment text) the number of DEGs identified by the
 interaction model versus the pairwise approach from Part C. Consider:
 
-- Which approach identified more DEGs?
+- Which approach identified more DEGs? Is more genes better? 
+- What methods would you use to determine which approach enriches for genes that align with the biology of the RNA-Seq experiment.
 - Which design better captures the biology of a time course experiment and why?
 - What biological question does each design answer?
 
