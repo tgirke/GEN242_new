@@ -48,6 +48,19 @@ txdb <- loadDb("./data/tair10.sqlite")
 ## in Parts A and B (gene/exon feature types)
 eByg <- exonsBy(txdb, by = "gene")
 
+## Helper function: convert GRangesList/GRanges to featureCounts annotation
+## data frame (required format: GeneID, Chr, Start, End, Strand).
+## Use this for every featureCounts call in Parts A and B.
+grl_to_df <- function(grl) {
+    gr <- unlist(grl)
+    data.frame(GeneID = names(gr),
+               Chr    = as.character(seqnames(gr)),
+               Start  = start(gr),
+               End    = end(gr),
+               Strand = as.character(strand(gr)),
+               stringsAsFactors = FALSE)
+}
+
 ## Paths to sorted BAM files produced by HISAT2 mapping step
 bam_files <- getColumn(sal, step = "hisat2_mapping",
                        "outfiles", column = "samtools_sort_bam")
@@ -83,9 +96,9 @@ argument controls parallelization — adjust to the number of available cores.
 ### Task A1 — Generate three count tables
 
 Using `bam_files` as input and `eByg` as the annotation, generate three
-count tables — one per strand mode. Since `eByg` is already a `GRangesList`
-of exons grouped by gene, set `useMetaFeatures = TRUE` and
-`isGTFAnnotationFile = FALSE`.
+count tables — one per strand mode. Pass `grl_to_df(eByg)` to `annot.ext`
+to convert the `GRangesList` to the data frame format required by
+`featureCounts`.
 
 **1. Unstranded** (`strandSpecific = 0`)
 
@@ -93,7 +106,7 @@ of exons grouped by gene, set `useMetaFeatures = TRUE` and
 #| eval: false
 fc_unstranded <- featureCounts(
     files                  = bam_files,
-    annot.ext              = eByg,
+    annot.ext              = grl_to_df(eByg),
     isGTFAnnotationFile    = FALSE,
     useMetaFeatures        = TRUE,
     strandSpecific         = 0,
@@ -111,7 +124,7 @@ unstranded[1:4, ]
 #| eval: false
 fc_stranded_pos <- featureCounts(
     files                  = bam_files,
-    annot.ext              = eByg,
+    annot.ext              = grl_to_df(eByg),
     isGTFAnnotationFile    = FALSE,
     useMetaFeatures        = TRUE,
     strandSpecific         = 1,
@@ -129,7 +142,7 @@ stranded_pos[1:4, ]
 #| eval: false
 fc_stranded_neg <- featureCounts(
     files                  = bam_files,
-    annot.ext              = eByg,
+    annot.ext              = grl_to_df(eByg),
     isGTFAnnotationFile    = FALSE,
     useMetaFeatures        = TRUE,
     strandSpecific         = 2,
@@ -205,7 +218,7 @@ since these are sub-gene features).
 ## eByg already available from the input setup above
 fc_genes <- featureCounts(
     files                  = bam_files,
-    annot.ext              = eByg,
+    annot.ext              = grl_to_df(eByg),
     isGTFAnnotationFile    = FALSE,
     useMetaFeatures        = TRUE,
     strandSpecific         = 1,
@@ -224,7 +237,7 @@ gene_ranges_countDF[1:4, ]
 exon_ranges <- exons(txdb)
 fc_exons <- featureCounts(
     files                  = bam_files,
-    annot.ext              = exon_ranges,
+    annot.ext              = grl_to_df(exon_ranges),
     isGTFAnnotationFile    = FALSE,
     useMetaFeatures        = FALSE,
     strandSpecific         = 1,
@@ -246,15 +259,14 @@ exonByg_ranges_countDF <- gene_ranges_countDF   # reuses result from Task B1
 exonByg_ranges_countDF[1:4, ]
 ```
 
-**4. Introns by transcripts** — `intronsByTranscript(txdb)` returns a
-`GRangesList` that is passed directly to `featureCounts`
+**4. Introns by transcripts** — convert with `grl_to_df()`
 
 ```{r}
 #| eval: false
 intron_ranges <- intronsByTranscript(txdb, use.names = TRUE)
 fc_introns <- featureCounts(
     files                  = bam_files,
-    annot.ext              = intron_ranges,
+    annot.ext              = grl_to_df(intron_ranges),
     isGTFAnnotationFile    = FALSE,
     strandSpecific         = 1,
     isPairedEnd            = FALSE,
@@ -265,15 +277,14 @@ intron_ranges_countDF <- fc_introns$counts
 intron_ranges_countDF[1:4, ]
 ```
 
-**5. 5'-UTRs by transcripts** — `fiveUTRsByTranscript(txdb)` passed
-directly
+**5. 5'-UTRs by transcripts** — convert with `grl_to_df()`
 
 ```{r}
 #| eval: false
 fiveUTR_ranges <- fiveUTRsByTranscript(txdb, use.names = TRUE)
 fc_fiveUTR <- featureCounts(
     files                  = bam_files,
-    annot.ext              = fiveUTR_ranges,
+    annot.ext              = grl_to_df(fiveUTR_ranges),
     isGTFAnnotationFile    = FALSE,
     strandSpecific         = 1,
     isPairedEnd            = FALSE,
@@ -530,12 +541,12 @@ results/edgeR_timecourse_interaction.csv   # bonus only
 1. Use **`featureCounts()`** from `Rsubread` for all read counting (Parts A and B)
 2. Define all variables with the **exact names** specified throughout
 3. Include **comment text** for all four points of Task A3
-4. Commit both **Venn diagram PDF files** alongside `HW6.R`
+4. Commit both **Venn diagram PDF files** alongside `HW7.R`
 5. Script must be well structured following the recommended layout below
 
 ### Bonus requirement (+1 point)
 
-To earn the bonus point, additionally include in `HW6.R`:
+To earn the bonus point, additionally include in `HW7.R`:
 
 - The full native edgeR workflow for the interaction model (`~ treatment + time + treatment:time`)
 - Variable `tc_results` containing the full DEG table from `topTags(..., n = Inf)`
@@ -561,10 +572,18 @@ eByg      <- exonsBy(txdb, by = "gene")
 bam_files <- getColumn(sal, step = "hisat2_mapping",
                        "outfiles", column = "samtools_sort_bam")
 
+## Helper: convert GRangesList/GRanges to featureCounts annotation data frame
+grl_to_df <- function(grl) {
+    gr <- unlist(grl)
+    data.frame(GeneID = names(gr), Chr = as.character(seqnames(gr)),
+               Start  = start(gr), End = end(gr),
+               Strand = as.character(strand(gr)), stringsAsFactors = FALSE)
+}
+
 ## ── Part A: Strand-specific read counting ─────────────────────
 
 ## Task A1 — unstranded (strandSpecific = 0)
-fc_unstranded <- featureCounts(files = bam_files, annot.ext = eByg,
+fc_unstranded <- featureCounts(files = bam_files, annot.ext = grl_to_df(eByg),
                                isGTFAnnotationFile = FALSE,
                                useMetaFeatures = TRUE, strandSpecific = 0,
                                isPairedEnd = TRUE, nthreads = 4)
@@ -590,23 +609,23 @@ perc_neg <- mean((stranded_neg / unstranded) * 100, na.rm = TRUE)
 
 ## ── Part B: Feature type counting ────────────────────────────
 
-## B1: Genes (eByg = exonsBy(txdb, by="gene"))
-gene_ranges_countDF    <- featureCounts( <fill in, annot.ext = eByg> )$counts
+## B1: Genes
+gene_ranges_countDF    <- featureCounts( <fill in, annot.ext = grl_to_df(eByg)> )$counts
 
 ## B2: Exons (individual)
 exon_ranges            <- exons(txdb)
-exon_ranges_countDF    <- featureCounts( <fill in, annot.ext = exon_ranges> )$counts
+exon_ranges_countDF    <- featureCounts( <fill in, annot.ext = grl_to_df(exon_ranges)> )$counts
 
 ## B3: Exons by genes
 exonByg_ranges_countDF <- gene_ranges_countDF
 
 ## B4: Introns
 intron_ranges          <- intronsByTranscript(txdb, use.names = TRUE)
-intron_ranges_countDF  <- featureCounts( <fill in, annot.ext = intron_ranges> )$counts
+intron_ranges_countDF  <- featureCounts( <fill in, annot.ext = grl_to_df(intron_ranges)> )$counts
 
 ## B5: 5'-UTRs
 fiveUTR_ranges         <- fiveUTRsByTranscript(txdb, use.names = TRUE)
-fiveUTR_ranges_countDF <- featureCounts( <fill in, annot.ext = fiveUTR_ranges> )$counts
+fiveUTR_ranges_countDF <- featureCounts( <fill in, annot.ext = grl_to_df(fiveUTR_ranges)> )$counts
 
 ## ── Part C: DEG analysis ──────────────────────────────────────
 
