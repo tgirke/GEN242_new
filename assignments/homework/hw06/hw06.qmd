@@ -17,9 +17,10 @@ tutorial. It has three parts:
 - **Part C** — DEG analysis with `edgeR` and Venn diagram visualization
 
 All tasks build on the RNA-Seq workflow environment generated with
-`systemPipeRdata::genWorkenvir(workflow = "rnaseq")`. Complete the workflow
-through the **HISAT2 mapping step** before starting this homework — the sorted
-BAM files and `sal` object it produces are required as input throughout.
+`genWorkenvir_gh` from this class-specific GitHub repos: [sprwf-rnaseq-gen242-2026](https://github.com/GEN242-2026/sprwf-rnaseq-gen242-2026). 
+Complete the workflow with `runWF` before starting this homework. The sorted
+BAM files generated in the **HISAT2 mapping step** and (optionally) the `sal` object it produces 
+are required as input throughout.
 
 ### Required packages
 
