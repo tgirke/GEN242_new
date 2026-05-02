@@ -469,7 +469,7 @@ appendStep(sal) <- SYSargsList(
 
 ```
 
-#### FASTQ quality report
+### FASTQ quality report
 
 The following `seeFastq` and `seeFastqPlot` functions generate and plot a
 series of useful quality statistics for a set of FASTQ files, including per
@@ -500,9 +500,9 @@ appendStep(sal) <- LineWise(code = {
 ![Figure 1: FASTQ quality report for 18 samples.](results/fastqReport.png){width=100% fig-align="center"}
 
 
-## Short read alignments
+### Short read alignments
 
-### Read mapping with `HISAT2`
+#### Read mapping with `HISAT2`
 
 To use the `HISAT2` short read aligner developed by Kim, Langmead, and Salzberg
 [-@Kim2015-ve], it is necessary to index the reference genome. `HISAT2` relies on the
@@ -581,7 +581,7 @@ ults/M1A.sorted.bam "
 ```
 
 
-#### Alignment stats
+### Alignment stats
 
 The following computes an alignment summary file (here `alignStats.xls`), which
 comprises the count of reads in each FASTQ file and the number of reads that
@@ -755,7 +755,7 @@ DT::datatable(countDF, options = list(scrollX = TRUE, autoWidth = TRUE))
 
 ```
 
-#### Sample-wise clustering
+### Sample-wise clustering
 
 The sample-wise Spearman correlation coefficients are calculated from the `rlog`
 transformed expression values (`countDF_se`) generated using the `DESeq2` package.
@@ -864,7 +864,7 @@ appendStep(sal) <- LineWise(
 
 ![Figure 3: Up and down regulated DEGs.](results/DEGcounts.png){width=80% fig-align="center"}
 
-### Venn diagrams of DEG sets
+#### Venn diagrams of DEG sets
 
 The `overLapper` function can compute Venn intersects for large numbers of sample
 sets (up to 20 or more) and plots 2-5 way Venn diagrams. A useful
