@@ -163,9 +163,9 @@ module unload R; module load R/4.5.0 # or higher
 Workflow environments can be initialized either from the `systemPipeRdata` package or directly from a GitHub repository.
 
 - `genWorkenvir()` initializes workflows distributed with **systemPipeRdata** (Bioconductor).
-- `genWorkenvir_gh()` initializes workflows from **GitHub repositories**.
+- `genWorkenvir_gh()` initializes workflows from **GitHub repositories** ([examples](https://systempipe.org/about/project/)).
 
-_Important for GEN242 HW06_: For this course, you must use the
+_Important for [GEN242 HW06](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw06/hw06.html)_: For this course, you must use the
 GEN242-specific RNA-Seq workflow provided here:
 [sprwf-rnaseq-gen242-2026](https://github.com/GEN242-2026/sprwf-rnaseq-gen242-2026).
 This version contains modifications specific to the class assignments.  Do not use the default `systemPipeRdata` RNA-Seq workflow for HW06. Follow the
