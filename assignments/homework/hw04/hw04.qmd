@@ -291,4 +291,4 @@ This homework is due **Tuesday, April 28th at 6:00 PM**.
 
 ## Homework Solutions
 
-To be posted after the due date.
+See [here](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw04/hw4_solution.R).
