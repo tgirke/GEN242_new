@@ -1,7 +1,7 @@
 ---
-title: "HW4: Pairwise Alignment Solutions" 
+title: "HW3: Pairwise Alignment Solutions" 
 author: "Author: Your Name"
-date: "Last update: April 24, 2025" 
+date: "Last update: April 23, 2026" 
 output:
   html_document:
     toc: true
@@ -20,13 +20,13 @@ weight: 304
 
 <!---
 - Compile from command-line
-Rscript -e "rmarkdown::render('HW4_key.Rmd', c('html_document', 'pdf_document'), clean=FALSE)"
+Rscript -e "rmarkdown::render('HW3_key.Rmd', c('html_document', 'pdf_document'), clean=FALSE)"
 -->
 
 <div style="text-align: right"> 
 Source code downloads: &nbsp; &nbsp;
-[ [.Rmd](https://raw.githubusercontent.com/tgirke/GEN242/main/content/en/assignments/Homework/HW04/hw4_solution/HW4_key.Rmd) ] &nbsp; &nbsp; 
-[ [pairwiseAlign_Fct.R](https://raw.githubusercontent.com/tgirke/GEN242/main/content/en/assignments/Homework/HW04/hw4_solution/pairwiseAlign_Fct.R) ]
+[ [.Rmd](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw03/hw3_solution/HW3_key.Rmd) ] &nbsp; &nbsp; 
+[ [pairwiseAlign_Fct.R](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw03/hw3_solution/pairwiseAlign_Fct.R) ]
 </div>
 
 # Rendering Instructions 
