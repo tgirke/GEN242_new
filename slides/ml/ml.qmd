@@ -1,0 +1,9 @@
+---
+title: "Foundations of ML/AI for Genomics"
+sidebar: slides
+---
+
+
+[ [Download](https://docs.google.com/presentation/d/1wp9KloyNZkWxgzQ9SJZ5SgKm_EjUo7-0w6C0IH4kygo/edit?usp=sharing) ]
+
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRDC2SptSOYUy4srZkw2haGI4ty0ydDegGpxaxw2UebDXl54ugEz00Nzlw0OBtI6jeENZf0akaHkQ99/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

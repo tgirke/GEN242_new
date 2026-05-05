@@ -113,6 +113,8 @@ website:
               href: slides/ngs_workflows/ngs_workflows.qmd
             - text: "Functional Enrichment Analysis"
               href: slides/rfea/rfea.qmd
+            - text: "ML/AI for Genomics"
+              href: slides/ml/ml.qmd
 
     # ── Tutorials ────────────────────────────────────────────────────────────
     - id: tutorials
