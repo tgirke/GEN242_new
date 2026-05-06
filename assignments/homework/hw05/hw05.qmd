@@ -325,7 +325,7 @@ dir.create("data", showWarnings = FALSE)
 
 ## Due Date
 
-This homework is due **Tuesday, May 6th at 6:00 PM**.
+This homework is due **Thursday, May 7th at 6:00 PM**.
 
 ## Homework Solutions
 
