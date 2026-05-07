@@ -50,4 +50,4 @@ This homework will be due Apr 23th at 6:00 PM.
 
 ## Homework Solutions
 
-See here: [HTML](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw03/hw3_solution/HW4_key.html) or [PDF](https://github.com/tgirke/GEN242/blob/main/assignments/homework/hw03/hw3_solution/HW3_key.pdf) format.
+See here: [HTML](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw03/hw3_solution/HW3_key.html) or [PDF](https://github.com/tgirke/GEN242/blob/main/assignments/homework/hw03/hw3_solution/HW3_key.pdf) format.
