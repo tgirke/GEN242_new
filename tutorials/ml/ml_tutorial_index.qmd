@@ -1,0 +1,680 @@
+---
+title: "Foundations of ML for Genomics"
+author: "GEN242 Instructors"
+date: last-modified
+output:
+  html_document:
+    toc: true
+    toc_float:
+        collapsed: true
+        smooth_scroll: true
+    toc_depth: 3
+    fig_caption: yes
+    code_folding: show
+    number_sections: true
+
+fontsize: 14pt
+bibliography: bibtex.bib
+weight: 13
+type: docs
+---
+
+<p align="right">
+  <img src="https://img.shields.io/badge/Open-grey?style=for-the-badge" alt="Open">
+  <a href="https://girke.bioinformatics.ucr.edu/GEN242/slides/ml/ml.html" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
+    <img src="https://img.shields.io/badge/Slideshow-blue?style=for-the-badge" alt="Slideshow">
+  </a>
+  <a href="https://raw.githubusercontent.com/tgirke/GEN242/main/tutorials/tutorials/ml/ml_tutorial_index.qmd" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
+    <img src="https://img.shields.io/badge/.QMD-blue?style=for-the-badge" alt="Download qmd">
+  </a>
+</p>
+
+## Overview
+
+This tutorial introduces machine learning concepts in the context of genomics using R.
+We work through a complete ML workflow on a real RNA-Seq time-course dataset:
+from data preparation and exploration, through model training and comparison, to evaluation
+and biological interpretation.
+
+**Learning objectives:**
+
+- Frame a genomics question as a supervised classification problem
+- Prepare and split high-dimensional expression data for ML
+- Train and compare three classifiers: Random Forest, Gradient Boosting, and SVM
+- Evaluate model performance with cross-validation and ROC curves
+- Extract and interpret feature importances in a biological context
+
+## Setup and Data
+
+### Install and load packages
+
+```{r}
+#| label: packages
+# Install if needed (run once):
+# install.packages(c("tidyverse", "caret", "randomForest", "xgboost", "e1071",
+#                    "pROC", "pheatmap", "ggrepel", "patchwork", "BiocManager"))
+# install.packages(c("treeshap", "shapviz"))   # for SHAP section
+# BiocManager::install(c("DESeq2", "curatedTCGAData"))
+
+library(tidyverse)
+library(randomForest)
+library(xgboost)
+library(e1071)
+library(pROC)
+library(pheatmap)
+library(ggrepel)
+library(treeshap)
+library(shapviz)
+library(patchwork)
+
+# Load caret after other packages so caret::train is registered last.
+# generics (a DESeq2 dependency) also exports train(); the rule below keeps
+# caret::train() as the default throughout this document.
+library(caret)
+conflictRules("generics", exclude = "train")
+
+# All helper functions are in R/ml_functions.R, organized by method.
+source("R/ml_functions.R")
+```
+
+### Load example dataset
+
+We use RNA-Seq data from **The Cancer Genome Atlas (TCGA)** — specifically primary
+tumor samples from the BRCA (breast cancer) project, stratified by **PAM50 molecular
+subtype**: Basal-like, HER2-enriched, Luminal A, and Luminal B. Data are retrieved via
+the `recount3` Bioconductor package and cached locally after the first download.
+Our classification task: **predict PAM50 subtype from gene expression**.
+
+This is a clinically meaningful question. PAM50 subtyping determines treatment strategy:
+Basal-like tumors respond to chemotherapy; HER2-enriched to trastuzumab (Herceptin);
+Luminal A/B to endocrine therapy (tamoxifen, aromatase inhibitors). Standard clinical
+subtyping requires immunohistochemistry (IHC) staining, which is resource-intensive.
+RNA-Seq-based prediction is a scalable, cost-effective alternative — and the exact
+problem that diagnostic ML tools such as Prosigna (PAM50) are built on.
+
+Unlike cross-tissue cancer-type classification (which is trivially easy because tissues
+have completely different transcriptional programs), subtype classification within a
+single cancer type is a genuinely hard problem: all four subtypes are breast tumors, and
+the signal comes from subtle patterns in proliferation, hormone receptor expression, and
+HER2 amplification. This difficulty produces realistic AUC values (~0.88–0.97) where
+the three classifiers can be meaningfully compared.
+
+With **75 samples per subtype (~300 total)**, the dataset is large enough that all three
+classifiers are fully data-efficient, including XGBoost which needs substantial n.
+
+::: {.callout-note}
+**First run only:** `load_brca_data()` downloads ~50 MB via `curatedTCGAData`
+(UQ-normalized `RNASeq2GeneNorm` assay) and caches to `data/brca_subtypes.rds`.
+Subsequent runs load from cache in seconds.
+Requires: `BiocManager::install("curatedTCGAData")`.
+:::
+
+```{r}
+#| label: load-data
+brca_data <- load_brca_data(n_per_subtype = 75, cache_file = "data/brca_subtypes.rds")
+expr_mat  <- brca_data$expr_mat
+meta      <- brca_data$meta
+
+cat("Expression matrix dimensions:", dim(expr_mat), "\n")
+cat("Subtype distribution:\n")
+print(table(meta$label))
+```
+
+### Feature selection (variance filtering)
+
+With ~20,000 genes and ~300 samples, we reduce dimensionality before ML.
+We keep the top 50 most variable genes (which capture the strongest subtype signal —
+largely driven by ER/PR expression, HER2 amplification, and proliferation genes) and
+pad with 450 randomly selected genes from the remainder. This 10% signal / 90%
+noise ratio makes the classification task realistically challenging while allowing the
+three algorithms to produce differentiated performance — a better illustration of
+their relative strengths than a feature set containing only discriminating genes.
+
+::: {.callout-note}
+In a real analysis you would use all top variable genes without deliberately adding
+noise. The mixing here is purely pedagogical. On your own dataset, try varying the
+number of top variable genes (100, 500, 2000) and observe how model performance and
+feature importance change — this is Exercise 1 below.
+:::
+
+```{r}
+#| label: feature-selection
+feat       <- select_features(expr_mat, meta, n_signal = 50, n_noise = 450)
+X          <- feat$X
+y          <- feat$y
+top_signal <- feat$top_signal
+
+cat("Feature matrix:", nrow(X), "samples x", ncol(X), "features\n")
+cat("  Signal genes (top 50 by variance):", length(top_signal), "\n")
+cat("  Noise genes (random):", length(feat$noise_genes), "\n")
+cat("Class distribution:\n")
+print(table(y))
+```
+
+## Exploratory Analysis
+
+Before fitting any model, always explore your data visually.
+
+### PCA of top variable genes
+
+```{r}
+#| label: fig-pca
+#| fig-cap: "PCA of the 500-gene mixed feature set (50 signal + 450 noise genes, log2-normalized). Points are coloured by PAM50 subtype. With noise added, subtype separation is reduced compared to using only top variable genes — reflecting the genuine difficulty of within-breast subtype classification."
+subtype_colors <- c(Basal = "#D62728", HER2 = "#9467BD", LumA = "#1F77B4", LumB = "#FF7F0E")
+plot_pca(X, meta, color_values = subtype_colors, color_label = "PAM50 subtype")
+```
+
+**Q: What does @fig-pca tell you about the separability of the classes?**
+
+### Heatmap of top 50 genes
+
+```{r}
+#| label: fig-heatmap
+#| fig-cap: "Heatmap of the top 50 most variable genes (signal component), scaled by row. Columns annotated by PAM50 subtype. Basal-like and LumA clusters are typically most distinct; HER2 and LumB show partial overlap."
+#| fig-height: 8
+plot_heatmap(expr_mat, top_signal, meta, color_values = subtype_colors)
+```
+
+## Data Splitting and Model Comparison Setup
+
+With ~300 samples and balanced classes (~75 per subtype), the BRCA dataset supports a
+meaningful head-to-head comparison with 5-fold stratified CV — each fold has ~60
+samples per class, AUC and mlogloss are well-defined, and XGBoost has enough data
+to tune its boosting rounds properly.
+
+We additionally generate a **simulated dataset** (n=200, 500 features, 20 known signal
+genes) used exclusively to validate feature importance: because the ground truth is
+known (`Gene1`–`Gene20` carry the signal), we can verify that the models identify the
+right features. This is not possible on real data where the "true" signal genes are
+unknown by definition.
+
+```{r}
+#| label: simulate-data
+sim       <- simulate_data(n_samples = 200, n_features = 500, n_signal = 20)
+X_sim     <- sim$X_sim
+y_sim     <- sim$y_sim
+y_sim_int <- sim$y_sim_int
+
+cat("Simulated dataset:", nrow(X_sim), "samples x", ncol(X_sim), "features\n")
+cat("Class distribution:\n"); print(table(y_sim))
+```
+
+```{r}
+#| label: data-split
+# 5-fold stratified CV — all classes present in every fold.
+ctrl_cv <- make_cv_control(k = 5)
+# 0-indexed integer labels for XGBoost multiclass (alphabetical factor level order):
+# Basal=0, HER2=1, LumA=2, LumB=3
+y_int <- as.integer(y) - 1L
+
+cat("BRCA dataset:", nrow(X), "samples x", ncol(X), "features\n")
+cat("Class distribution:\n"); print(table(y))
+```
+
+## Model Training
+
+We train three classifiers on the BRCA PAM50 dataset (4-class: Basal, HER2, LumA, LumB)
+and compare them head-to-head. XGBoost uses its native API with the full three-stage
+workflow; RF and SVM use caret with 5-fold stratified CV.
+
+### Random Forest
+
+```{r}
+#| label: rf-model
+rf_model <- train_rf(X, y, ctrl_cv, mtry_grid = c(10, 22, 50))
+print(rf_model)
+```
+
+### Gradient Boosting (XGBoost)
+
+XGBoost builds trees sequentially, each correcting the residuals of the previous.
+It is one of the most widely used ML algorithms in genomics and computational biology,
+combining speed, regularisation, and strong predictive performance. We use xgboost's
+native API directly rather than the caret wrapper, which has compatibility issues with
+recent xgboost versions.
+
+The standard XGBoost workflow has three stages:
+
+1. **`xgb.cv` with early stopping** — finds the optimal `nrounds` without overfitting
+2. **Manual 5-fold CV loop** — generates held-out probabilities for an unbiased ROC curve
+3. **Final model on all data** — trained with the selected `nrounds` for deployment or
+   feature importance extraction
+
+With n≈300 and balanced classes, all three stages work cleanly on the BRCA data. We run
+the same workflow a second time on the simulated dataset (below) to validate feature
+importance against known ground truth.
+
+#### BRCA subtypes (n ≈ 300, 4-class)
+
+```{r}
+#| label: xgb-tcga
+xgb_params <- xgb_params_multiclass(num_class = nlevels(y))
+
+# ── Stage 1: xgb.cv to find optimal nrounds (minimises mlogloss) ──────────────
+best_nrounds <- tune_xgb_nrounds(X, y_int, params = xgb_params)
+
+# ── Stage 2: 5-fold CV loop — returns n × 4 probability matrix ────────────────
+xgb_probs <- xgb_cv_probs(X, y, y_int,
+                           params       = xgb_params,
+                           best_nrounds = best_nrounds)
+
+mc_auc <- pROC::auc(pROC::multiclass.roc(y, xgb_probs, quiet = TRUE))
+cat("5-fold CV multiclass AUC (XGBoost, BRCA subtypes):", round(mc_auc, 3), "\n")
+
+# ── Stage 3: final model on all data ──────────────────────────────────────────
+xgb_final <- train_xgb_final(X, y_int, params = xgb_params, nrounds = best_nrounds)
+```
+
+#### Simulated dataset (n = 200, feature importance validation)
+
+```{r}
+#| label: xgb-simulated
+xgb_params_sim <- xgb_params_large_n()
+
+# ── Stage 1 ────────────────────────────────────────────────────────────────────
+best_nrounds_sim <- tune_xgb_nrounds(X_sim, y_sim_int, params = xgb_params_sim)
+
+# ── Stage 2 ────────────────────────────────────────────────────────────────────
+xgb_probs_sim <- xgb_cv_probs(X_sim, y_sim, y_sim_int,
+                               params       = xgb_params_sim,
+                               best_nrounds = best_nrounds_sim)
+
+# ── Stage 3 ────────────────────────────────────────────────────────────────────
+xgb_final_sim <- train_xgb_final(X_sim, y_sim_int,
+                                  params  = xgb_params_sim,
+                                  nrounds = best_nrounds_sim)
+
+imp_sim <- xgboost::xgb.importance(model = xgb_final_sim)
+cat("Top 10 features by gain:\n")
+print(head(imp_sim[, c("Feature", "Gain", "Cover", "Frequency")], 10))
+```
+
+```{r}
+#| label: fig-xgb-importance
+#| fig-cap: "XGBoost feature importance (gain) for the simulated dataset. The first 20 features carry the true signal; recovery of these in the top ranks validates the model."
+xgboost::xgb.plot.importance(imp_sim, top_n = 20,
+                               main = "XGBoost Feature Importance (simulated data)")
+```
+
+::: {.callout-tip}
+**When using your own dataset:** apply this three-stage workflow (xgb.cv →
+CV probability loop → final model) whenever n > ~50 per class. Key parameters
+to tune via `xgb.cv` are `max_depth` (typically 3–6), `eta` (0.01–0.1, lower
+with more rounds), and `colsample_bytree` (0.3–0.8 for high-dimensional omics
+data). Use `stratified = TRUE` in `xgb.cv` whenever classes are imbalanced.
+:::
+
+
+### Support Vector Machine (RBF kernel)
+
+SVMs find a maximum-margin hyperplane in a transformed feature space.
+The RBF kernel handles nonlinear class boundaries.
+
+```{r}
+#| label: svm-model
+svm_model <- train_svm(X, y, ctrl_cv, tune_length = 5)
+print(svm_model)
+```
+
+## Model Comparison
+
+### ROC curves
+
+```{r}
+#| label: fig-roc
+#| fig-cap: "One-vs-rest ROC curves for RF, XGBoost, and SVM on BRCA PAM50 subtypes (5-fold CV). Each panel shows one subtype vs all others. AUC values reflect realistic within-breast-cancer classification difficulty."
+#| fig-width: 9
+#| fig-height: 9
+
+# Extract n × 4 probability matrices from caret models
+subtype_levels <- levels(y)
+rf_prob_mat  <- as.matrix(rf_model$pred[order(rf_model$pred$rowIndex), subtype_levels])
+svm_prob_mat <- as.matrix(svm_model$pred[order(svm_model$pred$rowIndex), subtype_levels])
+
+roc_all <- plot_roc_multiclass(y, rf_prob_mat, xgb_probs, svm_prob_mat)
+```
+
+### Performance summary
+
+```{r}
+#| label: tbl-perf
+#| tbl-cap: "Model performance summary (5-fold CV multiclass AUC, BRCA PAM50 4-class). Multiclass AUC uses the Hand-Till method (average over all pairwise class comparisons)."
+perf_summary <- make_perf_summary(y, rf_prob_mat, xgb_probs, svm_prob_mat,
+                                   rf_model, svm_model, best_nrounds)
+knitr::kable(perf_summary)
+```
+
+See @fig-roc for the full ROC curves and @tbl-perf for the summary.
+
+### Interpreting the performance ranking
+
+With n≈300 and 4 balanced classes, all three classifiers have sufficient data to
+perform well — and the ranking is genuinely competitive. Unlike the small-n regime
+where RF almost always wins, at this scale XGBoost's sequential error-correction
+has enough samples per boosting round to generalize, and may match or exceed RF.
+
+The hardest subtype boundaries are typically **LumA vs LumB** (both ER+, differ mainly
+in proliferation rate) and **HER2 vs Basal** (both ER−, differ in HER2 amplification).
+The easiest boundary is **Basal vs LumA** — Basal tumors are triple-negative (ER−, PR−,
+HER2−) while LumA are strongly ER+, producing a large transcriptional difference. You
+should see this reflected in the per-subtype AUC panels: Basal one-vs-rest AUC is
+typically highest (~0.97+), while LumA vs LumB is the weakest.
+
+RF remains a strong baseline due to bagging and random feature subsets that act as
+implicit regularization [@Diaz-Uriarte2006-so; @Qi2012]. SVM with an RBF kernel is
+competitive when the feature space is well-normalized — as it is here after VST
+transformation — but tends to be slower to train than tree-based methods at larger n
+. XGBoost with proper `nrounds` tuning via `xgb.cv` can match or
+surpass RF on well-structured classification problems with sufficient data; in a breast
+cancer study using TCGA gene expression data, optimized XGBoost achieved the highest
+AUC among RF, SVM, decision trees, KNN, and logistic regression.
+
+The practical recommendation: **use RF as the default baseline** — it is robust
+without tuning and gives competitive results immediately. Invest in XGBoost tuning
+via `xgb.cv` when n > ~50 per class and additional performance matters [@Chen2016-pr].
+
+
+## Feature Importance
+
+One of the most useful outputs of ML is knowing *which features* the model relies on.
+We validate this on the simulated dataset where ground truth is known (`Gene1`–`Gene20`
+carry the signal), then examine feature importance on the TCGA data for biological
+interpretation.
+
+### Ground truth validation (simulated data)
+
+```{r}
+#| label: fig-importance
+#| fig-cap: "Top 20 genes by Random Forest importance on the simulated dataset. Genes 1–20 carry the true signal; their recovery in the top ranks validates the model."
+#| fig-height: 6
+# Train RF on simulated data — separate from the BRCA rf_model used for ROC comparison.
+rf_model_sim <- train_rf(X_sim, y_sim, ctrl_cv, mtry_grid = c(10, 22, 50))
+plot_rf_importance(rf_model_sim, top_n = 20, signal_genes = paste0("Gene", 1:20))
+```
+
+The XGBoost importance plot from the simulated data is shown above (@fig-xgb-importance).
+Compare the two rankings: both should recover `Gene1`–`Gene20` in the top positions,
+confirming that the classifiers have learned the true signal rather than noise.
+
+### BRCA data: which genes best distinguish PAM50 subtypes?
+
+```{r}
+#| label: fig-importance-brca
+#| fig-cap: "Top 20 genes by Random Forest importance (mean decrease in Gini impurity) on the BRCA PAM50 dataset."
+#| fig-height: 6
+plot_rf_importance(rf_model, top_n = 20)
+```
+
+```{r}
+#| label: fig-importance-brca-xgb
+#| fig-cap: "Top 20 genes by XGBoost importance (gain) on the BRCA PAM50 dataset. Gain measures the average improvement in loss when a gene is used as a split node."
+#| fig-height: 6
+imp_brca <- xgboost::xgb.importance(model = xgb_final)
+xgboost::xgb.plot.importance(imp_brca, top_n = 20,
+                              main = "XGBoost Feature Importance — BRCA PAM50")
+```
+
+```{r}
+#| label: tbl-importance-overlap
+#| tbl-cap: "Overlap between the top 20 RF and XGBoost importance genes on the BRCA dataset."
+top_rf  <- rownames(rf_model$finalModel$importance)[
+             order(rf_model$finalModel$importance[, "MeanDecreaseGini"],
+                   decreasing = TRUE)][1:20]
+top_xgb <- imp_brca$Feature[1:20]
+overlap  <- intersect(top_rf, top_xgb)
+cat("RF top-20:  ", paste(top_rf,  collapse = ", "), "\n\n")
+cat("XGB top-20: ", paste(top_xgb, collapse = ", "), "\n\n")
+cat("Overlap (", length(overlap), " genes): ", paste(overlap, collapse = ", "), "\n")
+```
+
+**Discussion:** The top importance genes are those whose expression profiles differ
+most consistently across the four PAM50 subtypes. Known subtype markers you should
+expect to see in one or both rankings:
+
+- **ER/PR pathway**: *ESR1*, *PGR*, *FOXA1*, *GATA3* — high in LumA/LumB, low in Basal
+- **HER2 amplicon**: *ERBB2*, *GRB7*, *STARD3* — high in HER2, low in others
+- **Proliferation**: *MKI67*, *TOP2A*, *PCNA* — high in Basal and LumB (fast-growing)
+- **Basal markers**: *KRT5*, *KRT14*, *KRT17* — specific to Basal-like
+- **Luminal markers**: *KRT8*, *KRT18*, *MLPH* — shared by LumA/LumB/HER2
+
+**RF vs XGBoost importance — what to expect:** RF importance (mean decrease Gini)
+tends to favour genes with broad, consistent effects across all subtypes. XGBoost
+gain favours genes that produce the sharpest single splits — often the most extreme
+subtype contrasts (e.g. a gene that perfectly separates Basal from the rest in one
+tree node). Genes in the overlap are the most robustly important by both criteria.
+Genes unique to one ranking are worth investigating: they may reflect the different
+decision boundaries each algorithm exploits.
+
+## SHAP Values {#sec-shap}
+
+Gini impurity and XGBoost gain tell you which features are *globally* important across all trees,
+but not *how* or *why* a model made any particular prediction. **SHAP (SHapley Additive
+exPlanations)** provides both: for every sample, it assigns each feature a signed contribution
+(SHAP value) that explains the model's output relative to a background expectation. Summing all
+SHAP values for a sample exactly recovers the model's prediction margin — making SHAP *locally
+faithful*, not just globally correlated with importance.
+
+The theoretical foundation is cooperative game theory. SHAP values are Shapley values: the unique
+solution satisfying four axioms (efficiency, symmetry, dummy, additivity) that fairly distribute
+the prediction "credit" across features [@Lundberg2020-gl]. This makes SHAP the only importance
+measure that is both *locally* faithful (per-sample) and *globally* consistent (rankings do not
+contradict local effects).
+
+For tree-based models, TreeSHAP computes exact Shapley values in polynomial time [@Lundberg2020],
+making it practical for the ~300 × 500 matrices used here.
+
+::: {.callout-note}
+**Key distinction from Gini / gain:**
+Gini and gain are by-products of the tree-building algorithm — they measure how much a gene *was
+used* to reduce impurity across all training trees. SHAP values measure how much a gene *shifts
+the model's output* for a specific sample. A gene can have high Gini importance (used in many
+splits) but small SHAP values if those splits produce offsetting positive and negative effects
+across the population.
+:::
+
+### Computing TreeSHAP
+
+```{r}
+#| label: shap-compute
+#| cache: true
+# TreeSHAP computation (~1-2 min for n=300, p=500)
+sv_xgb <- compute_shap_xgb(xgb_final, X)
+sv_rf  <- compute_shap_rf(rf_model, X)
+
+# For multiclass XGBoost, shapviz returns one set of SHAP values per class (mshapviz).
+# For multiclass RF, treeshap returns a single combined matrix (plain shapviz).
+cat("XGBoost SHAP object type:", class(sv_xgb), "\n")
+cat("RF SHAP object type:     ", class(sv_rf),  "\n")
+if (inherits(sv_xgb, "mshapviz"))
+  cat("XGBoost SHAP classes:", paste(names(sv_xgb), collapse = ", "), "\n")
+```
+
+### Beeswarm plot — XGBoost SHAP
+
+The beeswarm shows the top 20 genes by mean |SHAP|. Each dot is one sample, coloured by
+expression level (red = high, blue = low). The SHAP values here are aggregated across all four
+PAM50 classes by treeshap into a single combined importance score per gene. Genes with
+consistently large |SHAP| values are the strongest overall discriminators across all class
+boundaries.
+
+```{r}
+#| label: fig-shap-beeswarm
+#| fig-cap: "SHAP beeswarm (XGBoost, BRCA PAM50). Each dot is one sample; colour encodes gene expression level (red = high, blue = low). Genes are sorted by mean |SHAP| across samples. treeshap aggregates SHAP values across all four PAM50 classes into a single combined score, so the ranking reflects overall discriminative importance rather than class-specific effects. Known PAM50 markers (ESR1, ERBB2, KRT5, MKI67) should appear near the top."
+#| fig-height: 8
+sv_importance(sv_xgb, kind = "beeswarm", max_display = 20)
+```
+
+### XGBoost SHAP vs RF Gini importance
+
+treeshap computes SHAP values for multiclass Random Forest by propagating contributions
+through each tree, but for this version of the package the RF SHAP matrix is returned
+mostly as `NA` (features absent from a given tree's path are unresolvable for the combined
+multiclass output). After zero-filling those NAs the RF SHAP importance is flat and
+uninformative. We therefore compare XGBoost SHAP directly against RF Gini importance —
+both are legitimate global importance measures, and the comparison remains meaningful.
+
+```{r}
+#| label: fig-shap-bar
+#| fig-cap: "Global feature importance for the top 20 genes: XGBoost mean |SHAP| (left) vs RF mean-decrease-Gini (right). XGBoost SHAP is a game-theoretically grounded measure of each gene's average contribution to the prediction margin; RF Gini measures how much each gene reduces node impurity across all trees. Genes appearing prominently in both panels are the most robustly important PAM50 markers regardless of the importance framework used."
+#| fig-width: 11
+#| fig-height: 6
+p_xgb <- sv_importance(sv_xgb, kind = "bar", max_display = 20) +
+           ggplot2::ggtitle("XGBoost — mean |SHAP|")
+
+gini_df <- data.frame(
+  Feature    = rownames(rf_model$finalModel$importance),
+  Importance = rf_model$finalModel$importance[, "MeanDecreaseGini"]
+) |>
+  dplyr::arrange(dplyr::desc(Importance)) |>
+  head(20)
+
+p_rf <- ggplot2::ggplot(gini_df,
+          ggplot2::aes(x = Importance, y = reorder(Feature, Importance))) +
+          ggplot2::geom_col(fill = "#4472C4") +
+          ggplot2::labs(x = "Mean decrease Gini", y = NULL,
+                        title = "Random Forest — Gini importance") +
+          ggplot2::theme_bw()
+
+p_xgb + p_rf
+```
+
+### Waterfall plots — individual sample explanations
+
+A waterfall plot decomposes one prediction into its feature contributions. The baseline
+(leftmost bar) is the model's average prediction across training data; each subsequent bar
+adds the SHAP contribution of one gene. The final value is the model's output for that sample.
+Comparing a correctly classified and a misclassified sample reveals which features led the
+model astray.
+
+```{r}
+#| label: shap-waterfall-index
+# Identify one correctly and one incorrectly classified sample using 5-fold CV probabilities.
+# xgb_probs is the n×4 held-out probability matrix from xgb_cv_probs().
+pred_class  <- colnames(xgb_probs)[apply(xgb_probs, 1, which.max)]
+correct_idx <- which(pred_class == as.character(y))[1]
+wrong_idx   <- which(pred_class != as.character(y))
+wrong_idx   <- if (length(wrong_idx) > 0) wrong_idx[1] else which.min(apply(xgb_probs, 1, max))
+
+cat("Correctly classified — index:", correct_idx,
+    "| true:", as.character(y)[correct_idx],
+    "| predicted:", pred_class[correct_idx], "\n")
+cat("Misclassified — index:", wrong_idx,
+    "| true:", as.character(y)[wrong_idx],
+    "| predicted:", pred_class[wrong_idx], "\n")
+```
+
+```{r}
+#| label: fig-shap-waterfall-correct
+#| fig-cap: "SHAP waterfall for a correctly classified sample (XGBoost, aggregated across PAM50 classes). Each bar shows how one gene shifts the model's output from the baseline expectation E[f(X)] toward the final prediction f(x). A tight waterfall with a few dominant genes indicates a high-confidence, interpretable prediction."
+#| fig-height: 6
+sv_waterfall(sv_xgb, row_id = correct_idx, max_display = 15)
+```
+
+```{r}
+#| label: fig-shap-waterfall-wrong
+#| fig-cap: "SHAP waterfall for a misclassified sample (XGBoost, aggregated across PAM50 classes). Conflicting SHAP contributions — genes pushing in opposite directions — indicate the sample sits near a decision boundary. Misclassified PAM50 samples are often biologically ambiguous (e.g. tumors with mixed ER/HER2 expression)."
+#| fig-height: 6
+sv_waterfall(sv_xgb, row_id = wrong_idx, max_display = 15)
+```
+
+### Three-way importance comparison: Gini / Gain / SHAP
+
+```{r}
+#| label: tbl-shap-rank
+#| tbl-cap: "Three-way importance ranking for the top 20 genes by XGBoost SHAP importance (BRCA PAM50). Ranks are computed independently within each metric across all genes in the feature set; lower rank = more important. Spearman correlations (printed above table) quantify agreement between SHAP, gain, and Gini. Genes near the top of all three columns are the most robustly supported subtype markers."
+rank_df <- make_shap_rank_table(sv_xgb, sv_rf, rf_model, imp_brca, top_n = 20)
+knitr::kable(rank_df, digits = 0,
+             col.names = c("Gene", "SHAP-XGB rank", "Gain rank", "Gini rank"))
+```
+
+**Interpreting the three-way table:** Genes near rank 1 across all four columns (SHAP-XGB,
+SHAP-RF, Gain, Gini) are the most algorithm-agnostic PAM50 markers — the signal is strong enough
+that every metric and every model finds them. Genes with high SHAP rank but low Gini/gain rank
+(or vice versa) are worth investigating: they may reflect features that are globally used many
+times in shallow splits (high Gini/gain) but whose per-sample contributions average out, or
+conversely, features that provide decisive contributions in a subset of samples even if rarely
+used overall.
+
+Expected biological check: *ESR1*, *GATA3*, *FOXA1* (LumA markers), *ERBB2*, *GRB7*
+(HER2 markers), *KRT5*, *KRT14* (Basal markers), and *MKI67*, *TOP2A* (proliferation)
+should appear in the top 10 of at least one SHAP column. If they do not, check that
+`xgb_final` and `rf_model` are the BRCA models (not the simulated-data models).
+
+## Class Imbalance {#sec-imbalance}
+
+Real genomics datasets often have severe class imbalance (e.g., 95% controls, 5% cases).
+Below we show how to enable SMOTE-based correction within the `caret` framework.
+
+```{r}
+#| label: class-imbalance
+#| eval: false
+# Requires the 'themis' package: install.packages("themis")
+library(themis)
+
+ctrl_smote <- trainControl(
+  method          = "cv",
+  number          = 5,
+  classProbs      = TRUE,
+  summaryFunction = twoClassSummary,
+  sampling        = "smote"   # oversample minority class
+)
+
+# Then use ctrl_smote in place of ctrl_loocv in any train() call above
+```
+
+For further discussion of class imbalance strategies, see @sec-imbalance and the
+exercises below.
+
+## Exercises {#sec-exercises}
+
+1. **Signal-to-noise ratio** — Retrain the Random Forest varying the number of signal
+   genes (top variable) mixed with 450 noise genes: try 10, 25, 100, and 500 signal
+   genes. Plot AUC vs. signal gene count. At what point does performance collapse?
+   What does this tell you about feature selection in high-dimensional genomics data?
+
+2. **Binary subproblem** — Instead of 4-class classification, train a binary RF on just
+   two subtypes: the most similar pair (LumA vs LumB — both ER+, differ in proliferation)
+   and the most different pair (Basal vs LumA — triple-negative vs strongly ER+). Does
+   AUC improve for the easy pair and drop for the hard pair? What does this tell you
+   about the difficulty of each pairwise boundary?
+
+3. **Permutation test** — Shuffle the subtype labels randomly and retrain the RF.
+   What multiclass AUC do you get? What does this baseline tell you about the significance
+   of your original result?
+
+4. **Biological interpretation** — Look up the top 5 RF importance genes in GeneCards
+   or NCBI Gene. Are they known PAM50 subtype markers (e.g. *ESR1*, *ERBB2*, *KRT5*,
+   *MKI67*)? Do their expression directions match known biology (e.g. *ESR1* high in
+   LumA, low in Basal)?
+
+5. **Sample size effect** — Retrain all three classifiers using only 25, 50, and 75
+   samples per subtype. Plot multiclass AUC vs n. At what n does XGBoost start to
+   match RF? Does the crossover point match the n > ~50 per class rule of thumb?
+
+   *Starter code:*
+
+   ```r
+   aucs <- lapply(c(25, 50, 75), function(n) {
+     idx <- unlist(lapply(levels(y), function(cls)
+       sample(which(y == cls), n)))
+     X_sub <- X[idx, ]; y_sub <- y[idx]
+     # retrain RF, XGBoost, SVM on X_sub / y_sub ...
+   })
+   ```
+
+6. **SHAP for a binary subproblem** — Repeat the SHAP analysis on a binary classifier
+   trained on just LumA vs LumB (the hardest pairwise boundary from Exercise 2). Do
+   the same genes appear in the SHAP top 20 as in the 4-class analysis? What does
+   this reveal about subtype-specific markers (LumA/LumB-specific) vs general
+   discriminators (used in all pairwise comparisons)? Note that for a binary model,
+   the shapviz object will be a single \code{shapviz} rather than an \code{mshapviz},
+   so \code{sv_xgb[[1]]} is not needed — use \code{sv_xgb} directly.
+
+## Session Info
+
+```{r}
+#| label: session-info
+sessionInfo()
+```
+
+# References

@@ -159,6 +159,8 @@ website:
               href: tutorials/sprnaseq/sprnaseq_index.qmd
             - text: "Enrichment Analysis"
               href: tutorials/rfea/rfea_index.qmd
+            - text: "ML/AI for Genomics"
+              href: tutorials/ml/ml_tutorial_index.qmd
             - text: "Cluster Analysis"
               href: tutorials/rclustering/rclustering_index.qmd
             - text: "ChIP-Seq Workflow"
