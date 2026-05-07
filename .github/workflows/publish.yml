@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-4.5-${{ hashFiles('.github/workflows/publish.yml') }}-v4
+          key: ${{ runner.os }}-r-4.5-${{ hashFiles('.github/workflows/publish.yml') }}-v5
           restore-keys: ${{ runner.os }}-r-4.5-
 
       # ── 4. Install system libraries ───────────────────────────────────────────
@@ -68,7 +68,8 @@ jobs:
               "tidyverse", "batchtools", "kableExtra", "ggseqlogo", "randomForest",
               "xgboost", "e1071", "pROC", "treeshap", "shapviz", "patchwork", "caret",
               "conflicted",
-              "MLmetrics", "ranger", "partykit", "themis", "bench"
+              "MLmetrics", "ranger", "partykit", "themis", "bench",
+              "kernlab", "ipred", "proxy", "MASS", "Matrix", "rpart", "nnet"
             )
             install.packages(cran_pkgs, repos = "https://cloud.r-project.org")
           '
