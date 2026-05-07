@@ -131,8 +131,8 @@ three algorithms to produce differentiated performance — a better illustration
 their relative strengths than a feature set containing only discriminating genes.
 
 ::: {.callout-note}
-In a real analysis you would use all top variable genes without deliberately adding
-noise. The mixing here is purely pedagogical. On your own dataset, try varying the
+In a real analysis one would use all top variable genes without deliberately adding
+noise. The mixing here is purely pedagogical. On a custom dataset, one can try varying the
 number of top variable genes (100, 500, 2000) and observe how model performance and
 feature importance change — this is Exercise 1 below.
 :::
