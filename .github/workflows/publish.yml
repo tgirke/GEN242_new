@@ -65,7 +65,9 @@ jobs:
               "ggplot2", "reticulate", "htmlwidgets", "plotly",
               "tidyr", "stringr", "tibble", "purrr", "readr",
               "RSQLite", "dbplyr", "ggrepel", "pheatmap", "RColorBrewer", 
-              "tidyverse", "batchtools", "kableExtra", "ggseqlogo"
+              "tidyverse", "batchtools", "kableExtra", "ggseqlogo", "randomForest"
+              "xgboost", "e1071", "pROC", "treeshap", "shapviz", "patchwork", "caret",
+              "conflicted"
             )
             install.packages(cran_pkgs, repos = "https://cloud.r-project.org")
           '
@@ -161,6 +163,13 @@ jobs:
             } else {
               cat("\n===== ALL EXPECTED PACKAGES PRESENT =====\n")
             }
+          '
+      # ── Install curatedTCGAData ───────────────────────────────────────────
+      - name: Install curatedTCGAData
+        if: steps.cache-r.outputs.cache-hit != 'true'
+        run: |
+          Rscript -e '
+            BiocManager::install("curatedTCGAData", ask = FALSE, update = FALSE)
           '
 
       # ── 12. Set up Python ─────────────────────────────────────────────────────
