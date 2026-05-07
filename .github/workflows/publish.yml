@@ -65,7 +65,7 @@ jobs:
               "ggplot2", "reticulate", "htmlwidgets", "plotly",
               "tidyr", "stringr", "tibble", "purrr", "readr",
               "RSQLite", "dbplyr", "ggrepel", "pheatmap", "RColorBrewer", 
-              "tidyverse", "batchtools", "kableExtra", "ggseqlogo", "randomForest"
+              "tidyverse", "batchtools", "kableExtra", "ggseqlogo", "randomForest",
               "xgboost", "e1071", "pROC", "treeshap", "shapviz", "patchwork", "caret",
               "conflicted"
             )
@@ -164,7 +164,7 @@ jobs:
               cat("\n===== ALL EXPECTED PACKAGES PRESENT =====\n")
             }
           '
-      # ── Install curatedTCGAData ───────────────────────────────────────────
+# ── Install curatedTCGAData ───────────────────────────────────────────
       - name: Install curatedTCGAData
         if: steps.cache-r.outputs.cache-hit != 'true'
         run: |
