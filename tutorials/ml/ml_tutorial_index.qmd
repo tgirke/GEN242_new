@@ -48,7 +48,7 @@ and biological interpretation.
 
 ### Install and load packages
 
-To work with this tutorial, download its `qmd` file (from [here](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/tutorials/ml/ml_tutorial_index.qmd)) as well as 
+To work with this tutorial, download its `qmd` file (from [here](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/tutorials/ml/ml_tutorial_index.qmd), or use blue QMD button above) as well as 
 the associated `R` script (from [here](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/tutorials/ml/R/ml_functions.R)) that defines the functions used by the `qmd` 
 script. The R file needs to be stored in a subdirectory named R.
 
