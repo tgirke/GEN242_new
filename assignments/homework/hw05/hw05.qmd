@@ -108,8 +108,8 @@ encoding(quality(fqsub))  # see score-to-character mapping
 #| eval: false
 ## Download FASTQ test files used in the NGS tutorial
 library(ShortRead)
-fastq <- dir(system.file("extdata", package = "ShortRead"),
-             pattern = "fastq$", full.names = TRUE)
+fastq <- list.files(system.file("extdata", "E-MTAB-1147", package = "ShortRead"), full.names=TRUE)
+
 
 ## Run your function on the first test file
 demultiplex_trim(x = fastq[1], barcode = c("TT", "AA", "GG"),
@@ -298,8 +298,7 @@ demultiplex_trim <- function(x, barcode, nreads, cutoff = 20) {
 }
 
 ## Usage example
-# fastq <- dir(system.file("extdata", package = "ShortRead"),
-#              pattern = "fastq$", full.names = TRUE)
+# fastq <- fastq <- list.files(system.file("extdata", "E-MTAB-1147", package = "ShortRead"), full.names=TRUE)
 # demultiplex_trim(x = fastq[1], barcode = c("TT", "AA", "GG"),
 #                 nreads = 50, cutoff = 20)
 
