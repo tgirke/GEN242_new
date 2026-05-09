@@ -83,11 +83,12 @@ source("R/ml_functions.R")
 
 ### Load example dataset
 
-The RNA-Seq data used in this tutorial is from **The Cancer Genome Atlas (TCGA)** — specifically primary
-tumor samples from the BRCA (breast cancer) project, stratified by **PAM50 molecular
-subtype**: Basal-like, HER2-enriched, Luminal A, and Luminal B. Data are retrieved via
-the `recount3` Bioconductor package and cached locally after the first download.
-The classification task is: **predict PAM50 subtype from gene expression**.
+The RNA-Seq data used in this tutorial is from **The Cancer Genome Atlas
+(TCGA)** — specifically primary tumor samples from the BRCA (breast cancer)
+project, stratified by **PAM50 molecular subtype**: Basal-like, HER2-enriched,
+Luminal A, and Luminal B. Data are retrieved via the `curatedTCGAData`
+Bioconductor package and cached locally after the first download. The
+classification task is: **predict PAM50 subtype from gene expression**.
 
 This is a clinically meaningful question. PAM50 subtyping determines treatment strategy:
 Basal-like tumors respond to chemotherapy; HER2-enriched to trastuzumab (Herceptin);
