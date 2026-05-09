@@ -2,10 +2,15 @@ project:
   type: website
   output-dir: docs
   render:
-    - "**/*.qmd"        # render all .qmd files everywhere
-    - "**/*.md"         # render all .md files
-    - "!**/*.Rmd"       # exclude .Rmd (keep as reference source)
-    - "!**/*.html"      # exclude pre-rendered HTML decks (RevealJS etc.)
+    - "*.qmd"
+    - "*.md"
+    - "!**/*.Rmd"
+  resources:
+    - "CNAME"
+    - "assignments/**/*.html"
+    - "assignments/**/*.sh"
+    - "assignments/**/*.R"
+
 
 website:
   title: "GEN242"
