@@ -40,7 +40,7 @@ To render this R Markdown document, one needs to download the following files to
 Next, one can render the report to HTML, PDF and other formats following the instructions below. Both the HTML and PDF versions are linked. Note, the rendering needs to be performed from the same directory where the downloaded `*.Rmd`, `*.R` and `*.bib` files are located.
 
    + [HTML](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw03/hw3_solution/HW3_key.html): this report in HTML format
-   + [PDF](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw03/hw3_solution/HW3_key.pdf): corresponding PDF version
+   + [PDF](https://github.com/tgirke/GEN242/blob/main/assignments/homework/hw03/hw3_solution/HW3_key.pdf): corresponding PDF version
 
 
 The HTML report can be rendered with `rmarkdown::render()` as follows. 
