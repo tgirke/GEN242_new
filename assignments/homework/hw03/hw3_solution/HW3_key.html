@@ -1826,18 +1826,18 @@ Rscript -e "rmarkdown::render('HW3_key.Rmd', c('html_document', 'pdf_document'),
 <h1>Rendering Instructions</h1>
 <p>To render this R Markdown document, one needs to download the following files to the same directory.</p>
 <ul>
-<li><a href="https://raw.githubusercontent.com/tgirke/GEN242/main/content/en/assignments/Homework/HW04/hw4_solution/HW4_key.Rmd">HW4_key.Rmd</a>: Rmd source file for this document</li>
-<li><a href="https://raw.githubusercontent.com/tgirke/GEN242/main/content/en/assignments/Homework/HW04/hw4_solution/pairwiseAlign_Fct.R">pairwiseAlign_Fct.R</a>: R script defining pairwise alignment functions</li>
-<li><a href="https://raw.githubusercontent.com/tgirke/GEN242/main/content/en/assignments/Homework/HW04/hw4_solution/bibtex.bib">bibtex.bib</a>: references cited in the text in BibTeX format</li>
+<li><a href="https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw03/hw3_solution/HW3_key.html">HW3_key.Rmd</a>: Rmd source file for this document</li>
+<li><a href>pairwiseAlign_Fct.R</a>: R script defining pairwise alignment functions</li>
+<li><a href="https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw03/hw3_solution/bibtex.bib">bibtex.bib</a>: references cited in the text in BibTeX format</li>
 </ul>
 <p>Next, one can render the report to HTML, PDF and other formats following the instructions below. Both the HTML and PDF versions are linked. Note, the rendering needs to be performed from the same directory where the downloaded <code>*.Rmd</code>, <code>*.R</code> and <code>*.bib</code> files are located.</p>
 <ul>
-<li><a href="https://girke.bioinformatics.ucr.edu/GEN242/assignments/Homework/HW04/hw4_solution/HW4_key.html">HTML</a>: this report in HTML format</li>
-<li><a href="https://girke.bioinformatics.ucr.edu/GEN242/assignments/Homework/HW04/hw4_solution/HW4_key.pdf">PDF</a>: corresponding PDF version</li>
+<li><a href="https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw03/hw3_solution/HW3_key.html">HTML</a>: this report in HTML format</li>
+<li><a href="https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw03/hw3_solution/HW3_key.pdf">PDF</a>: corresponding PDF version</li>
 </ul>
 <p>The HTML report can be rendered with <code>rmarkdown::render()</code> as follows.</p>
 <pre class="r"><code>rmarkdown::render(&#39;HW4_key.Rmd&#39;) # From R
-Rscript -e &quot;rmarkdown::render(&#39;HW4_key.Rmd&#39;)&quot; # From command-line</code></pre>
+Roscript -e &quot;rmarkdown::render(&#39;HW4_key.Rmd&#39;)&quot; # From command-line</code></pre>
 <p>To render a PDF file instead of HTML, one can instruct the rendering function to do so like this: <code>rmarkdown::render(&#39;HW4_key.Rmd&#39;, c(&#39;pdf_document&#39;)</code>. To render to several formats with a single command, one can concatenate the formatting values with <code>c(&#39;html_document&#39;, &#39;pdf_document&#39;)</code>.</p>
 </div>
 <div id="a.-choice-of-sequence-type" class="section level1">
