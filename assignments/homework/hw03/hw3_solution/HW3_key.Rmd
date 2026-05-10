@@ -33,8 +33,8 @@ Source code downloads: &nbsp; &nbsp;
 
 To render this R Markdown document, one needs to download the following files to the same directory.
 
-   + [HW3_key.Rmd](https://girke.bioinformatics.ucr.edu/GEN242/assignments/homework/hw03/hw3_solution/HW3_key.html): Rmd source file for this document
-   + [pairwiseAlign_Fct.R](): R script defining pairwise alignment functions
+   + [HW3_key.Rmd](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw03/hw3_solution/HW3_key.Rmd): Rmd source file for this document
+   + [pairwiseAlign_Fct.R](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw03/hw3_solution/pairwiseAlign_Fct.R): R script defining pairwise alignment functions
    + [bibtex.bib](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw03/hw3_solution/bibtex.bib): references cited in the text in BibTeX format
 
 Next, one can render the report to HTML, PDF and other formats following the instructions below. Both the HTML and PDF versions are linked. Note, the rendering needs to be performed from the same directory where the downloaded `*.Rmd`, `*.R` and `*.bib` files are located.
