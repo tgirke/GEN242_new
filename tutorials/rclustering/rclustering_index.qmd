@@ -7,8 +7,12 @@ bibliography: bibtex.bib
 ---
 
 <p align="right">
+  <img src="https://img.shields.io/badge/Open-grey?style=for-the-badge" alt="Open">
+  <a href="https://girke.bioinformatics.ucr.edu/GEN242/slides/cluster_analysis/cluster_analysis.html" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
+    <img src="https://img.shields.io/badge/Slideshow-blue?style=for-the-badge" alt="Slideshow">
+  </a>
   <a href="https://raw.githubusercontent.com/tgirke/GEN242/main/tutorials/rclustering/rclustering_index.qmd">
-    <img src="https://img.shields.io/badge/Download-.qmd-blue?style=for-the-badge&logoColor=white" alt="Download qmd">
+    <img src="https://img.shields.io/badge/.QMD-blue?style=for-the-badge" alt="Download qmd">
   </a>
 </p>
 
@@ -204,6 +208,7 @@ km$cluster
 - Thus, items at the edge of a cluster, may be in a cluster to a lesser degree than items at the center of a cluster. 
 - Typically, each item has as many coefficients (weights) as there are clusters that sum up for each item to one.
 
+
 #### Examples
 
 ##### Fuzzy Clustering with `fanny`
@@ -277,6 +282,23 @@ text(loc[,1], -loc[,2], rownames(loc), cex=0.8)
 Finds in matrix subgroups of rows and columns which are as similar as possible to each other and as different as possible to the remaining data points.
 
 ![PCA](images/biclust.png){fig-align="center"}
+
+### Clustering for Single-Cell RNA-Seq Data
+
+Graph-based clustering methods such as Louvain and Leiden, together with UMAP
+visualization, have become the standard approach for identifying cell type
+populations in single-cell RNA-Seq (scRNA-Seq) data. Because these methods are
+tightly integrated with embedding and dimensionality reduction steps specific to
+the scRNA-Seq workflow, they are covered in the dedicated scRNA-Seq tutorial:
+
+**[scRNA-Seq Embedding Algorithm and Clustering Methods](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/scrnaseq/scrnaseq_index.html)**
+
+That tutorial covers:
+
+1. Data preprocessing and normalization basics
+2. Dimensionality reduction: PCA, UMAP, and tSNE
+3. Graph-based clustering: Louvain and Leiden algorithms
+4. Cluster visualization and cell type annotation
 
 ### Similarity Measures for Clusters
 
