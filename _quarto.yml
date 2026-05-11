@@ -167,7 +167,7 @@ website:
             - text: "ML/AI for Genomics"
               href: tutorials/ml/ml_tutorial_index.qmd
             - text: "Cluster Analysis"
-              href: tutorials/rclustering/rclustering_index.qmd
+              href: tutorials/cluster_analysis/cluster_analysis.qmd
             - text: "ChIP-Seq Workflow"
               href: tutorials/spchipseq/spchipseq_index.qmd
             - text: "scRNA-Seq Methods"

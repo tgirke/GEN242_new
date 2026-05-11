@@ -1,0 +1,9 @@
+---
+title: "Cluster Analysis"
+sidebar: slides
+---
+
+
+[ [Slides](https://docs.google.com/presentation/d/1Rq1GHzUWM8eA8OhinOpGIAY5Eibz07lwtK4i9gn9ShQ/edit?usp=sharing) ] &nbsp; &nbsp; [ [Tutorial](https://docs.google.com/presentation/d/1Rq1GHzUWM8eA8OhinOpGIAY5Eibz07lwtK4i9gn9ShQ/edit?usp=sharing) ]
+
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQ4iBPFn0vd6MJFLykc84UWrXHRtc1iZqK-MchJf0_W5bIBHa-qmq0ZnfdpWkTd8s-cDfnbRmg61MlZ/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
