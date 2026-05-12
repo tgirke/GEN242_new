@@ -1,0 +1,6 @@
+---
+title: "Project Reports"
+sidebar: assignments
+---
+
+Project reports instructions.

@@ -206,10 +206,12 @@ website:
             #  href: assignments/homework/hw08/index.qmd
         - section: "Projects"
           contents:
-            - text: "Project Overview"
-              href: assignments/projects/index.qmd
-            - text: "Project Data"
-              href: assignments/projects/project_data/index.qmd
+            - text: "Paper Presentations"
+              href: assignments/paper_presentations/paper_presentations.qmd
+            - text: "Project Presentations"
+              href: assignments/project_presentations/project_presentations.qmd
+            - text: "Project Reports"
+              href: assignments/projects/project_report/project_report.qmd
 
   # ── Footer ─────────────────────────────────────────────────────────────────
   page-footer:

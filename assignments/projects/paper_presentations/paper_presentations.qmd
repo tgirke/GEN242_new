@@ -1,0 +1,59 @@
+---
+title: "Paper Presentations"
+sidebar: assignments
+---
+
+
+## Overview
+
+Each student has been assigned one journal publication to present in class. The
+expected structure of the paper presentations is outlined in this [Slideshow Template](https://docs.google.com/presentation/d/1hOlRmBfrAnXku6-Oq61sh0wkvnBqDTAw3tIEAXaStxw/edit). 
+Students can use any slide show presentation software they wish, but should follow the 
+presentation structure of the template.
+A detailed presentation schedule is available in the internal [Course Planning Sheet](https://elearn.ucr.edu/courses/224081) sheet (see Columns Q-R of Projects Tab). 
+The grading of both the paper and project presentations includes
+anonymous feedback from all students as well as the instructor, where
+understanding of the material, clarity of the oral presentations and critical
+thinking are the main grading criteria. The grading forms will be provided in the 
+Presentation Schedule (internal google sheet) shortly before the presentations start
+on May 14th and May 19th. The following lists the assigned papers organized by 
+course project topics.
+
+
+## Publication list
+
+All references in [Paperpile](https://paperpile.com/shared/GEN242-2026-fm6L56jC5QIiEwSUq3827kg)
+
+
+Argelaguet R, Arnol D, Bredikhin D, Deloro Y, Velten B, Marioni JC, Stegle O (2020) MOFA+: a statistical framework for comprehensive integration of multi-modal single-cell data. Genome Biol 21: 111
+
+Badia-I-Mompel P, Vélez Santiago J, Braunger J, Geiss C, Dimitrov D, Müller-Dott S, Taus P, Dugourd A, Holland CH, Ramirez Flores RO, et al (2022) decoupleR: ensemble of computational methods to infer biological activities from omics data. Bioinform Adv 2: vbac016
+
+Bouhaddani SE, Houwing-Duistermaat J, Salo P, Perola M, Jongbloed G, Uh H-W (2016) Evaluation of O2PLS in Omics data integration. BMC Bioinformatics 17 Suppl 2: 11
+
+Cantini L, Zakeri P, Hernandez C, Naldi A, Thieffry D, Remy E, Baudot A (2021) Benchmarking joint multi-omics dimensionality reduction approaches for the study of cancer. Nat Commun 12: 124
+
+Chen T, Guestrin C (2016a) XGBoost: A Scalable Tree Boosting System. arXiv [csLG]. doi: 10.48550/arXiv.1603.02754
+
+Chen T, Guestrin C (2016b) XGBoost: A Scalable Tree Boosting System. Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining. ACM, New York, NY, USA, pp 785–794
+
+Díaz-Uriarte R, Alvarez de Andrés S (2006) Gene selection and classification of microarray data using random forest. BMC Bioinformatics 7: 3
+
+Griss J, Viteri G, Sidiropoulos K, Nguyen V, Fabregat A, Hermjakob H (2020) ReactomeGSA - Efficient Multi-Omics Comparative Pathway Analysis. Mol Cell Proteomics 19: 2115–2125
+
+Gu Z, El Bouhaddani S, Pei J, Houwing-Duistermaat J, Uh H-W (2021) Statistical integration of two omics datasets using GO2PLS. BMC Bioinformatics 22: 131
+
+Lundberg SM, Erion G, Chen H, DeGrave A, Prutkin JM, Nair B, Katz R, Himmelfarb J, Bansal N, Lee S-I (2020) From local explanations to global understanding with explainable AI for trees. Nat Mach Intell 2: 56–67
+
+Meng C, Basunia A, Peters B, Gholami AM, Kuster B, Culhane AC (2019) MOGSA: Integrative single sample gene-set analysis of multiple omics data. Mol Cell Proteomics 18: S153–S168
+
+Odom GJ, Ban Y, Colaprico A, Liu L, Silva TC, Sun X, Pico AR, Zhang B, Wang L, Chen X (2020) PathwayPCA: An R/Bioconductor package for pathway based integrative analysis of multi-omics data. Proteomics 20: e1900409
+
+Pai S, Hui S, Isserlin R, Shah MA, Kaka H, Bader GD (2019) netDx: interpretable patient classification using integrated patient similarity networks. Mol Syst Biol 15: e8497
+
+Schubert M, Klinger B, Klünemann M, Sieber A, Uhlitz F, Sauer S, Garnett MJ, Blüthgen N, Saez-Rodriguez J (2018) Perturbation-response genes reveal signaling footprints in cancer gene expression. Nat Commun 9: 20
+
+Singh A, Shannon CP, Gautier B, Rohart F, Vacher M, Tebbutt SJ, Lê Cao K-A (2019) DIABLO: an integrative approach for identifying key molecular drivers from multi-omics assays. Bioinformatics 35: 3055–3062
+
+Strobl C, Boulesteix A-L, Zeileis A, Hothorn T (2007) Bias in random forest variable importance measures: illustrations, sources and a solution. BMC Bioinformatics 8: 25
+
