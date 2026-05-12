@@ -76,7 +76,7 @@ The subsequent clustering steps are performed on single cell data only.
 #### Create `SummarizedExperiment` and coerce to `SingleCellExperiment`
 
 The required `targetsPE.txt` and `countDFeByg.xls` files can be downloaded 
-from [here](https://github.com/tgirke/GEN242/tree/main/content/en/tutorials/scrnaseq/results).
+from [here](https://github.com/tgirke/GEN242/tree/main/tutorials/scrnaseq/results).
 
 ```{r create_se_sce1a}
 #| message: false
