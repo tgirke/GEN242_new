@@ -70,6 +70,8 @@ by first creating a `SummarizedExperiment` object and then coercing it to a
 `SingleCellExperiment` object, as well as intializing the `SingleCellExperiment` 
 directly. 
 
+The subsequent clustering steps are performed on single cell data only. 
+
 
 #### Create `SummarizedExperiment` and coerce to `SingleCellExperiment`
 
