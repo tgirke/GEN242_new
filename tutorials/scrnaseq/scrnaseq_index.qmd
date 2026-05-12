@@ -75,8 +75,10 @@ The subsequent clustering steps are performed on single cell data only.
 
 #### Create `SummarizedExperiment` and coerce to `SingleCellExperiment`
 
-The required `targetsPE.txt` and `countDFeByg.xls` files can be downloaded 
-from [here](https://github.com/tgirke/GEN242/tree/main/tutorials/scrnaseq/results).
+To work with this tutorial, download its `qmd` file (from 
+[here](https://raw.githubusercontent.com/tgirke/GEN242/main/tutorials/scrnaseq/scrnaseq_index.qmd), 
+or use blue QMD button above). In addition, download the required `targetsPE.txt` and `countDFeByg.xls` files 
+from [here](https://github.com/tgirke/GEN242/tree/main/tutorials/scrnaseq/results) to a new directory named `results`.
 
 ```{r create_se_sce1a}
 #| message: false
