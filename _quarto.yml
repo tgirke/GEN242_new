@@ -207,9 +207,9 @@ website:
         - section: "Projects"
           contents:
             - text: "Paper Presentations"
-              href: assignments/paper_presentations/paper_presentations.qmd
+              href: assignments/projects/paper_presentations/paper_presentations.qmd
             - text: "Project Presentations"
-              href: assignments/project_presentations/project_presentations.qmd
+              href: assignments/projects/project_presentations/project_presentations.qmd
             - text: "Project Reports"
               href: assignments/projects/project_report/project_report.qmd
 
