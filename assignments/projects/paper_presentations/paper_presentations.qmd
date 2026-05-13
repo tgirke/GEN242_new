@@ -29,7 +29,7 @@ All references in [Paperpile](https://paperpile.com/shared/GEN242-2026-fm6L56jC5
 
 1. Kim D, Langmead B, Salzberg SL (2015) HISAT: a fast spliced aligner with low memory requirements. Nat Methods 12: 357–360. [PubMed](https://pubmed.ncbi.nlm.nih.gov/25751142/)
 
-2. Bray NL, Pimentel H, Melsted P, Pachter L (2016) Near-optimal probabilistic RNA-seq quantification. Nat Biotechnol 34: 525–527. [Pubmed](ncbi.nlm.nih.gov/pubmed/27043002)
+2. Bray NL, Pimentel H, Melsted P, Pachter L (2016) Near-optimal probabilistic RNA-seq quantification. Nat Biotechnol 34: 525–527. [Pubmed](https://pubmed.ncbi.nlm.nih.gov/27043002/)
 
 ### DEG Analysis Methods
 
@@ -40,6 +40,12 @@ All references in [Paperpile](https://paperpile.com/shared/GEN242-2026-fm6L56jC5
 5. Zhou X, Lindsay H, Robinson MD (2014) Robustly detecting differential expression in RNA sequencing data using observation weights. Nucleic Acids Res 42: e91. [PubMed](https://pubmed.ncbi.nlm.nih.gov/24753412/)
 
 ### Functional Interpretation
+
+6. Subramanian A, Tamayo P, Mootha VK, Mukherjee S, Ebert BL, Gillette MA, Paulovich A, Pomeroy SL, Golub TR, Lander ES, et al (2005) Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. Proc Natl Acad Sci U S A 102: 15545–15550. [PubMed](https://pubmed.ncbi.nlm.nih.gov/16199517/)
+
+7. Schubert M, Klinger B, Klünemann M, Sieber A, Uhlitz F, Sauer S, Garnett MJ, Blüthgen N, Saez-Rodriguez J (2018) Perturbation-response genes reveal signaling footprints in cancer gene expression. Nat Commun 9: 20. [PubMed](https://pubmed.ncbi.nlm.nih.gov/29295995/)   
+
+8. Hänzelmann S, Castelo R, Guinney J (2013) GSVA: gene set variation analysis for microarray and RNA-seq data. BMC Bioinformatics 14: 7. [PubMed](https://pubmed.ncbi.nlm.nih.gov/23323831/)
 
 ### AI/ML Classification
 
