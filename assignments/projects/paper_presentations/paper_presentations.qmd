@@ -20,9 +20,39 @@ on May 14th and May 19th. The following lists the assigned papers organized by
 course project topics.
 
 
-## Publication list
+## Publications organized by course projects
 
 All references in [Paperpile](https://paperpile.com/shared/GEN242-2026-fm6L56jC5QIiEwSUq3827kg)
+
+
+### RNA-Seq Aligners
+
+1. Kim D, Langmead B, Salzberg SL (2015) HISAT: a fast spliced aligner with low memory requirements. Nat Methods 12: 357–360. [PubMed](https://pubmed.ncbi.nlm.nih.gov/25751142/)
+
+2. Bray NL, Pimentel H, Melsted P, Pachter L (2016) Near-optimal probabilistic RNA-seq quantification. Nat Biotechnol 34: 525–527. [Pubmed](ncbi.nlm.nih.gov/pubmed/27043002)
+
+### DEG Analysis Methods
+
+3. Love MI, Huber W, Anders S (2014) Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol 15: 550. [PubMed](https://pubmed.ncbi.nlm.nih.gov/25516281)
+
+4. Guo Y, Li C-I, Ye F, Shyr Y (2013) Evaluation of read count based RNAseq analysis methods. BMC Genomics 14 Suppl 8: S2. [PubMed](https://pubmed.ncbi.nlm.nih.gov/24564449/) 
+
+5. Zhou X, Lindsay H, Robinson MD (2014) Robustly detecting differential expression in RNA sequencing data using observation weights. Nucleic Acids Res 42: e91. [PubMed](https://pubmed.ncbi.nlm.nih.gov/24753412/)
+
+### Functional Interpretation
+
+### AI/ML Classification
+
+### Single-cell Genomics: Clustering Significance & Dimensionality Reduction
+ 
+### Single-cell Genomics: Cell-type Annotation & Trajectory Inference
+
+### Multi-omics: Integration & Pathways
+
+### Multi-omics: Classification & Network analysis
+
+
+
 
 
 Argelaguet R, Arnol D, Bredikhin D, Deloro Y, Velten B, Marioni JC, Stegle O (2020) MOFA+: a statistical framework for comprehensive integration of multi-modal single-cell data. Genome Biol 21: 111
