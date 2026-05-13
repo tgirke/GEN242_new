@@ -211,7 +211,7 @@ website:
             - text: "Project Presentations"
               href: assignments/projects/project_presentations/project_presentations.qmd
             - text: "Project Reports"
-              href: assignments/projects/project_report/project_report.qmd
+              href: assignments/projects/project_reports/project_reports.qmd
 
   # ── Footer ─────────────────────────────────────────────────────────────────
   page-footer:

@@ -3,4 +3,57 @@ title: "Project Reports"
 sidebar: assignments
 ---
 
-Project reports instructions.
+## Introduction
+
+Every student will work on a Course Project addressing a specific data analysis
+task within one of four major topic areas: Expression Profiling, AI/ML &
+Functional Interpretation, Single-cell Genomics, or Multi-omics Integration.
+The projects are organized as group projects with 2-3 students per sub-topic,
+where each student is assigned their own paper to present and analyze. Students
+will also present a scientific paper closely related to their project topic (see
+[here](https://girke.bioinformatics.ucr.edu/GEN242/assignments/projects/paper_presentations/paper_presentations.html)).
+To facilitate teamwork and communication with the instructor, each course project
+will be assigned a private GitHub repository.
+
+The results of the Course Projects will be presented by each student
+during the last week of the course (see Slideshow Template
+[here](https://docs.google.com/presentation/d/1EUNivObkHTEhPtt6XSWAO2WmkXQmrq0fJpyCC9Q41aM/edit?usp=sharing)).
+In addition, each student will write a detailed analysis report for their
+assigned course project. The final project reports will be written in Quarto
+(`.qmd`). A basic tutorial on Quarto is available
+[here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rmarkdown/rmarkdown_index.html).
+Both the Quarto source script (`.qmd`) along with the rendered HTML (or PDF)
+report will be submitted to each student's private project GitHub repository.
+All helper code used for the project needs to be organized in well-documented R
+functions in each project's `*_Fct.R` script. The custom functions defined in
+`*_Fct.R` need to be imported (sourced) and used in the main `.qmd` project
+report. Other scripts used by the project need to be called from `*_Fct.R`
+(_e.g._ via R's [system
+function](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rprogramming/rprogramming_index.html#calling-external-software))
+
+and also uploaded to the project repository. The expected structure of the final
+project report is outlined below.
+
+The reports should be submitted to each student's private project GitHub
+repository. For the report, each student should create in this repository a new
+directory named after their project and include in it the following files:
+
+* `.qmd` Quarto source script for the project report
+* Report rendered from the `.qmd` source file in HTML or PDF format
+* `*_Fct.R` file containing all helper functions written for the project, sourced and used in the corresponding Quarto report — **this file is mandatory**
+* __Submission Deadline__ for reports: 6:00 PM, June 10th, 2025
+
+
+## Structure of final project report
+
+1. Abstract
+2. Introduction
+3. Methods
+    + Description of methods and tools used for the project
+4. Results and Discussion
+    + All analysis steps, code, and results of the project
+5. Conclusions
+6. Acknowledgments
+7. References
+8. Supplement (optional)
+
