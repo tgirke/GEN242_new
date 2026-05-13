@@ -65,9 +65,21 @@ All references in [Paperpile](https://paperpile.com/shared/GEN242-2026-fm6L56jC5
 
 ### Single-cell Genomics: Cell-type Annotation & Trajectory Inference
 
+15. Street K, Risso D, Fletcher RB, Das D, Ngai J, Yosef N, Purdom E, Dudoit S (2018) Slingshot: cell lineage and pseudotime inference for single-cell transcriptomics. BMC Genomics 19: 477. [PubMed](https://pubmed.ncbi.nlm.nih.gov/29914354/) 
+
+16. Aran D, Looney AP, Liu L, Wu E, Fong V, Hsu A, Chak S, Naikawadi RP, Wolters PJ, Abate AR, et al (2019) Reference-based analysis of lung single-cell sequencing reveals a transitional profibrotic macrophage. Nat Immunol 20: 163–172. [PubMed](https://pubmed.ncbi.nlm.nih.gov/30643263/)
+
+17. Crowell HL, Soneson C, Germain P-L, Calini D, Collin L, Raposo C, Malhotra D, Robinson MD (2020) Muscat detects subpopulation-specific state transitions from multi-sample multi-condition single-cell transcriptomics data. Nat Commun 11: 6077. [PubMed](https://pubmed.ncbi.nlm.nih.gov/33257685/)
+
 ### Multi-omics: Integration & Pathways
+
+18. Argelaguet R, Arnol D, Bredikhin D, Deloro Y, Velten B, Marioni JC, Stegle O (2020) MOFA+: a statistical framework for comprehensive integration of multi-modal single-cell data. Genome Biol 21: 111. [PubMed](https://pubmed.ncbi.nlm.nih.gov/32393329/)
+
+19. Odom GJ, Ban Y, Colaprico A, Liu L, Silva TC, Sun X, Pico AR, Zhang B, Wang L, Chen X (2020) PathwayPCA: An R/Bioconductor package for pathway based integrative analysis of multi-omics data. Proteomics 20: e1900409. [PubMed](https://pubmed.ncbi.nlm.nih.gov/32430990/)
 
 ### Multi-omics: Classification & Network analysis
 
+20. Pai S, Hui S, Isserlin R, Shah MA, Kaka H, Bader GD (2019) netDx: interpretable patient classification using integrated patient similarity networks. Mol Syst Biol 15: e8497. [PubMed](https://pubmed.ncbi.nlm.nih.gov/30872331/)
 
+21. Singh A, Shannon CP, Gautier B, Rohart F, Vacher M, Tebbutt SJ, Lê Cao K-A (2019) DIABLO: an integrative approach for identifying key molecular drivers from multi-omics assays. Bioinformatics 35: 3055–3062. [PubMed](https://pubmed.ncbi.nlm.nih.gov/30657866/) 
 
