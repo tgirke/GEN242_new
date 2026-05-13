@@ -3,4 +3,4 @@ title: "Project Presentations"
 sidebar: assignments
 ---
 
-Project presentation information goes here.
+Project presentation information is provided [here](https://girke.bioinformatics.ucr.edu/GEN242/assignments/projects/project_reports/project_reports.html).
