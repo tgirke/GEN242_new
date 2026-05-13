@@ -655,7 +655,7 @@ edgeDF_pos        <- run_edgeR(countDF = stranded_pos,
 
 ## Due Date
 
-This homework is due **Thursday, May 14th at 6:00 PM**.
+This homework is due **Thursday, May 21st at 6:00 PM**.
 
 ## Homework Solutions
 
