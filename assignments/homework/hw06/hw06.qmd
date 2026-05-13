@@ -550,12 +550,12 @@ results/edgeR_timecourse_interaction.csv   # bonus only
 1. Use **`featureCounts()`** from `Rsubread` for all read counting (Parts A and B)
 2. Define all variables with the **exact names** specified throughout
 3. Include **comment text** for all four points of Task A3
-4. Commit both **Venn diagram PDF files** alongside `HW7.R`
+4. Commit both **Venn diagram PDF files** alongside `HW6.R`
 5. Script must be well structured following the recommended layout below
 
 ### Bonus requirement (+1 point)
 
-To earn the bonus point, additionally include in `HW7.R`:
+To earn the bonus point, additionally include in `HW6.R`:
 
 - The full native edgeR workflow for the interaction model (`~ treatment + time + treatment:time`)
 - Variable `tc_results` containing the full DEG table from `topTags(..., n = Inf)`
