@@ -36,12 +36,14 @@ project report is outlined below.
 
 The reports should be submitted to each student's private project GitHub
 repository. For the report, each student should create in this repository a new
-directory named after their project and include in it the following files:
+directory named after their project and include in it the following three files.
+All three files are mandatory. 
 
-* `.qmd` Quarto source script for the project report
-* Report rendered from the `.qmd` source file in HTML or PDF format
-* `*_Fct.R` file containing all helper functions written for the project, sourced and used in the corresponding Quarto report — **this file is mandatory**
-* __Submission Deadline__ for reports: 6:00 PM, June 10th, 2025
+1. `.qmd` Quarto source script for the project report
+2. Report rendered from the `.qmd` source file in HTML or PDF format
+3. `*_Fct.R` file containing all helper functions written for the project, sourced and used in the corresponding Quarto report.
+
+__Submission Deadline__ for reports: 6:00 PM, June 9th, 2026
 
 
 ## Structure of final project report
