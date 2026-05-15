@@ -99,14 +99,14 @@ trimTails(fqsub, k = 2, a = encoding(cutoff))
 ## PhredQuality encoding: quality score 20 = ASCII '5'
 ## Use encoding() to convert numeric cutoff to the correct character
 quality(fqsub)  # inspect quality scores
-encoding(quality(fqsub))  # see score-to-character mapping
+rawToChar(as.raw(cutoff+33)) or encoding(cutoff) # see score-to-character mapping
 ```
 
 **Test data:** Download the FASTQ test files from the tutorial:
 
 ```{r}
 #| eval: false
-## Download FASTQ test files used in the NGS tutorial
+## Download FASTQ test files as used in the NGS tutorial, or obtain from ShortRead package:
 library(ShortRead)
 fastq <- list.files(system.file("extdata", "E-MTAB-1147", package = "ShortRead"), full.names=TRUE)
 
@@ -328,4 +328,4 @@ This homework is due **Thursday, May 7th at 6:00 PM**.
 
 ## Homework Solutions
 
-To be posted after the due date.
+See [here](https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/assignments/homework/hw05/hw5_solution.R). 
