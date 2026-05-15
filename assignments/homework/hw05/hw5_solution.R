@@ -7,8 +7,7 @@ library(Biostrings)
 library(GenomicRanges)
 library(rtracklayer)
 
-## ── Part A: Demultiplexing with Quality Trimming ──────────────
-
+## Part A: Demultiplexing with Quality Trimming 
 ## The trimTails() function trims bases from the 3' end where quality
 ## drops below the cutoff. The cutoff (Phred score) is converted to the
 ## corresponding ASCII quality character using rawToChar(as.raw(cutoff+33)).
@@ -40,7 +39,7 @@ fastq <- dir(system.file("extdata", package = "ShortRead"),
 demultiplex_trim(x = fastq[1], barcode = c("TT", "AA", "GG"),
                  nreads = 50, cutoff = 20)
 
-## ── Part B: Sequence Parsing from GFF and Genome ─────────────
+## Part B: Sequence Parsing from GFF and Genome
 
 dir.create("data", showWarnings = FALSE)
 
@@ -80,7 +79,7 @@ names(p2) <- names(gene[names(gene) %in% neg])
 ## Write combined protein sequences to FASTA file
 writeXStringSet(c(p1, p2), "data/mypep.fasta")
 
-## ── Task B2: Reduce overlapping gene ranges ───────────────────
+## Task B2: Reduce overlapping gene ranges 
 
 ## Collapse overlapping ranges to non-redundant single ranges
 ## ignore.strand=TRUE is appropriate here since we are looking at
@@ -92,7 +91,7 @@ gffgene_reduced <- reduce(gffgene, ignore.strand = TRUE)
 gene_reduced <- DNAStringSet(Views(chr[[1]],
                     IRanges(start(gffgene_reduced), end(gffgene_reduced))))
 
-## ── Task B3: Generate intergenic ranges and parse sequences ───
+## Task B3: Generate intergenic ranges and parse sequences 
 
 ## Compute gaps between reduced gene ranges = intergenic regions
 intergenic <- gaps(gffgene_reduced)
