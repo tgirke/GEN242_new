@@ -104,10 +104,10 @@ bibliography: bibtex.bib
 
 - Help on these functions
     - `?myfct`
-<p style='text-align: right;'> __[ Scroll down to continue ]__ </p>
-<br/><br/>
     - `?plot`
     - `?par`
+
+<p style='text-align: right;'> __[ Scroll down to continue ]__ </p>
 
 ### Preferred Input Data Objects
 
@@ -675,12 +675,19 @@ print(p) # Setting se=FALSE removes error shade
     - `scales`
 	- `coordinates`
 	- `facet`
+
+<br/>
+
 <p style='text-align: right;'> __[ Scroll down to continue ]__ </p>
-<br/><br/>
+
+<br/>
+<br/>
+
 - `aes()` mappings can be passed on to all components (`ggplot, geom`, etc.). Effects are global when passed on to `ggplot()` and local for other components.
     - `x, y`
 	- `color`: grouping vector (factor) 
 	- `group`: grouping vector (factor)
+
 
 <br/>
 
@@ -1290,15 +1297,15 @@ cophyloplot(tree1, tree2, assoc = association,
 	- The `ggbio` package [@Yin2012-jj] facilitates plotting of complex genome data objects, such as read alignments (SAM/BAM), genomic context/annotation information (gff/txdb), variant calls (VCF/BCF), and more. To easily compare these data sets, it extends the faceting facility of `ggplot2` to genome browser-like tracks.
 	- Most of the core object types for handling genomic data with R/Bioconductor are supported: `GRanges`, `GAlignments`, `VCF`, etc. For more details, see Table 1.1 of the `ggbio` vignette [here](http://www.bioconductor.org/packages/release/bioc/vignettes/ggbio/inst/doc/ggbio.pdf).
     - `ggbio`'s convenience plotting function is `autoplot`. For more customizable plots, one can use the generic `ggplot` function.
-<p style='text-align: right;'> __[ Scroll down to continue ]__ </p>
-<br/><br/>
 	- Apart from the standard `ggplot2` plotting components, `ggbio` defines serval new components useful for genomic data visualization. A detailed list is given in Table 1.2 of the vignette [here](http://www.bioconductor.org/packages/release/bioc/vignettes/ggbio/inst/doc/ggbio.pdf). 
 	- Useful web sites:
 		- [ggbio Bioc vignette](http://bioconductor.org/packages/release/bioc/html/ggbio.html)
         - [ggbio online manual](https://lawremi.github.io/ggbio/)
 		- [autoplot demo](https://lawremi.github.io/ggbio/docs/man/autoplot-method.html)
 
-<br/>
+<p style='text-align: right;'> __[ Scroll down to continue ]__ </p>
+
+<br/><br/>
 
 #### Tracks: aligning plots along chromosomes
 
