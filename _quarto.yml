@@ -97,7 +97,7 @@ website:
             - text: "R on HPC"
               href: slides/rhpc/rhpc_page.qmd
             - text: "Graphics in R"
-              href: slides/slides_21.qmd
+              href: slides/rgraphics/rgraphics_page.qmd
             - text: "Tidyverse & SQLite"
               href: slides/slides_22.qmd
             - text: "Building R Packages"

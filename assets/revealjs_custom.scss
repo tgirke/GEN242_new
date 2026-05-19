@@ -94,13 +94,13 @@
 
 /* Level 2 bullets — indented once */
 .reveal .slides ul > li > ul > li {
-  font-size:    0.72em;           /* SIZE  — relative to parent li */
+  font-size:    0.9em;           /* SIZE  — relative to parent li */
   color:        #333333;          /* COLOR */
 }
 
 /* Level 3 bullets — indented twice */
 .reveal .slides ul > li > ul > li > ul > li {
-  font-size:    0.72em;           /* SIZE  — relative to grandparent */
+  font-size:    0.9em;           /* SIZE  — relative to grandparent */
   color:        #555555;          /* COLOR */
 }
 
