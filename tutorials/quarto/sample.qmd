@@ -222,7 +222,7 @@ Custom functions can be kept in a separate R file (here [`custom_Fct.R`](https:/
 with the `source()` command. In the following example, the `custom_Fct.R` file is located on GitHub.  
 
 ```{r import_custom_fct, eval=TRUE}
-source("https://raw.githubusercontent.com/tgirke/GEN242/main/content/en/tutorials/rmarkdown/custom_Fct.R")
+source("https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/tutorials/quarto/custom_Fct.R")
 ```
 
 Now the imported function (here `myMAcomp`) can be used.
