@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-4.5-${{ hashFiles('.github/workflows/publish.yml') }}-v6
+          key: ${{ runner.os }}-r-4.5-${{ hashFiles('.github/workflows/publish.yml') }}-v7
           restore-keys: ${{ runner.os }}-r-4.5-
 
       # ── 4. Install system libraries ───────────────────────────────────────────
@@ -137,7 +137,8 @@ jobs:
           Rscript -e '
             BiocManager::install(c(
               "ChIPseeker", "DiffBind",
-              "VariantAnnotation", "VariantFiltering"
+              "VariantAnnotation", "VariantFiltering",
+              "ChemmineR"
             ), ask = FALSE, update = FALSE)
           '
 
