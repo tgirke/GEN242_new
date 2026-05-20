@@ -21,7 +21,7 @@ during the last week of the course (see Slideshow Template
 In addition, each student will write a detailed analysis report for their
 assigned course project. The final project reports will be written in Quarto
 (`.qmd`). A basic tutorial on Quarto is available
-[here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rmarkdown/rmarkdown_index.html).
+[here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/quarto/quarto_index.html).
 Both the Quarto source script (`.qmd`) along with the rendered HTML (or PDF)
 report will be submitted to each student's private project GitHub repository.
 All helper code used for the project needs to be organized in well-documented R

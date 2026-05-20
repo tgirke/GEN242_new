@@ -102,7 +102,7 @@ write.table(result, "result.txt", sep="\t", quote=FALSE)
 
 `.Rmd` and `.qmd` files extend R scripts with narrative text, results, and
 formatted output. They render to HTML, PDF, and other formats.
-Details in the [R Markdown tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rmarkdown/rmarkdown_index.html).
+Details in the [R Markdown tutorial](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/quarto/quarto_index.html).
 
 ---
 
