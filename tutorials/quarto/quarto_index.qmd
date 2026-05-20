@@ -185,9 +185,9 @@ user. Note, R Markdown source files containing JavaScript components can only be
 ### With `DT::datatable` 
 
 ```{r dt}
+#| eval: false
 library(DT)
 datatable(iris)
-
 ```
 
 ### Figures
