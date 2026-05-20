@@ -146,8 +146,8 @@ website:
               href: tutorials/rprogramming/rprogramming_index.qmd
             - text: "Parallel R"
               href: tutorials/rparallel/rparallel_index.qmd
-            - text: "R Markdown"
-              href: tutorials/rmarkdown/rmarkdown_index.qmd
+            - text: "Quarto & R Markdown"
+              href: tutorials/quarto/quarto_index.qmd
             - text: "Graphics & Visualization"
               href: tutorials/rgraphics/rgraphics_index.qmd
             - text: "Shiny Apps"
