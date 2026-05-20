@@ -7,19 +7,11 @@ bibliography: bibtex.bib
 ---
 
 <p align="right">
-  <a href="https://raw.githubusercontent.com/tgirke/GEN242/main/tutorials/rmarkdown/rmarkdown_index.qmd">
+  <a href="https://raw.githubusercontent.com/tgirke/GEN242/main/tutorials/quarto/quarto_index.qmd">
     <img src="https://img.shields.io/badge/Download-.qmd-blue?style=for-the-badge&logoColor=white" alt="Download qmd">
   </a>
 </p>
 
-<!--
-- Compile from command-line
-Rscript -e "rmarkdown::render('rmarkdown.Rmd', c('html_document'), clean=F); knitr::knit('rmarkdown.Rmd', tangle=TRUE)"
-- Render qmd from command line:
-quarto render rmarkdown_index.qmd
-Render qmd from R:
-quarto::quarto_render("rmarkdown_index.qmd")
--->
 
 ## R Markdown Overview
 
@@ -58,8 +50,8 @@ then modify it as needed. Note the file name of an R Markdown scirpt needs to
 have the extension `.Rmd`. Template files for the following examples are available 
 here:
 
-+ R Markdown sample script: [`sample.Rmd`](https://raw.githubusercontent.com/tgirke/GEN242/main/static/custom/rmarkdown/sample.Rmd)
-+ Bibtex file for handling citations and reference section: [`bibtex.bib`](https://raw.githubusercontent.com/tgirke/GEN242/main/content/en/tutorials/rmarkdown/bibtex.bib)
++ R Markdown sample script: [`sample.Rmd`](https://raw.githubusercontent.com/tgirke/GEN242/main/static/custom/quarto/sample.Rmd)
++ Bibtex file for handling citations and reference section: [`bibtex.bib`](https://raw.githubusercontent.com/tgirke/GEN242/main/content/en/tutorials/quarto/bibtex.bib)
 
 Users want to download these files, open the `sample.Rmd` file with their preferred R IDE 
 (_e.g._ RStudio, vim or emacs), initilize an R session and then direct their R session to 
@@ -229,11 +221,11 @@ dev.off()
 
 ### Custom functions
 
-Custom functions can be kept in a separate R file (here [`custom_Fct.R`](https://raw.githubusercontent.com/tgirke/GEN242/main/content/en/tutorials/rmarkdown/custom_Fct.R)) and then imported
+Custom functions can be kept in a separate R file (here [`custom_Fct.R`](https://raw.githubusercontent.com/tgirke/GEN242/main/content/en/tutorials/quarto/custom_Fct.R)) and then imported
 with the `source()` command. In the following example, the `custom_Fct.R` file is located on GitHub.  
 
 ```{r import_custom_fct}
-source("https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/tutorials/rmarkdown/custom_Fct.R")
+source("https://raw.githubusercontent.com/tgirke/GEN242/refs/heads/main/tutorials/quarto/custom_Fct.R")
 
 ```
 
