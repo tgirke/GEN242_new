@@ -117,7 +117,7 @@ download.file("https://raw.githubusercontent.com/tgirke/GEN242/main/tutorials/rb
 
 2. Load `*.qmd`, `*.Rmd` or `*.R` file in Nvim-R-Tmux or RStudio.
 
-3. Send code from code editor to R console by pressing `Enter` in Nvim-R or `Ctrl + Enter` in RStudio. In `*.Rmd` and `qmd` files the code lines are in so called [code chunks](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rmarkdown/rmarkdown_index.html#metadata-section) and only those ones can be sent to the console. To obtain in Nvim-R-Tmux a connected R session one has to initiate it by pressing the `\rf` key combination. For details see [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/linux/linux.html#nvim-r-tmux-essentials).
+3. Send code from code editor to R console by pressing `Enter` in Nvim-R or `Ctrl + Enter` in RStudio. In `*.Rmd` and `qmd` files the code lines are in so called [code chunks](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/quarto/quarto_index.html#metadata-section) and only those ones can be sent to the console. To obtain in Nvim-R-Tmux a connected R session one has to initiate it by pressing the `\rf` key combination. For details see [here](https://girke.bioinformatics.ucr.edu/GEN242/tutorials/linux/linux.html#nvim-r-tmux-essentials).
 
 
 ## Installation of R, RStudio and R Packages
